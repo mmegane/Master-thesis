@@ -1,0 +1,13 @@
+Code/progressive_growing_of_gans/datasets/
+Code/progressive_growing_of_gans/results/
+Code/progressive_growing_of_gans/git-folder/
+
+Code/SPADE/checkpoints/
+Code/SPADE/results/
+Code/SPADE/git-folder/
+
+Code/Unet-weights/
+
+Conda/
+
+Data/

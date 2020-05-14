@@ -1,0 +1,1164 @@
+Initializing TensorFlow...
+Running train.train_progressive_gan()...
+Streaming data using dataset.TFRecordDataset...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Code/progressive_growing_of_gans/dataset.py:74: tf_record_iterator (from tensorflow.python.lib.io.tf_record) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use eager execution and: 
+`tf.data.TFRecordDataset(path)`
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+Dataset shape = [1, 256, 256]
+Dynamic range = [0, 6]
+Label size    = 0
+Constructing networks...
+
+G                           Params      OutputShape             WeightShape             
+---                         ---         ---                     ---                     
+latents_in                  -           (?, 512)                -                       
+labels_in                   -           (?, 0)                  -                       
+lod                         -           ()                      -                       
+4x4/PixelNorm               -           (?, 512)                -                       
+4x4/Dense                   4194816     (?, 512, 4, 4)          (512, 8192)             
+4x4/Conv                    2359808     (?, 512, 4, 4)          (3, 3, 512, 512)        
+ToRGB_lod6                  513         (?, 1, 4, 4)            (1, 1, 512, 1)          
+8x8/Conv0_up                2359808     (?, 512, 8, 8)          (3, 3, 512, 512)        
+8x8/Conv1                   2359808     (?, 512, 8, 8)          (3, 3, 512, 512)        
+ToRGB_lod5                  513         (?, 1, 8, 8)            (1, 1, 512, 1)          
+Upscale2D                   -           (?, 1, 8, 8)            -                       
+Grow_lod5                   -           (?, 1, 8, 8)            -                       
+16x16/Conv0_up              2359808     (?, 512, 16, 16)        (3, 3, 512, 512)        
+16x16/Conv1                 2359808     (?, 512, 16, 16)        (3, 3, 512, 512)        
+ToRGB_lod4                  513         (?, 1, 16, 16)          (1, 1, 512, 1)          
+Upscale2D_1                 -           (?, 1, 16, 16)          -                       
+Grow_lod4                   -           (?, 1, 16, 16)          -                       
+32x32/Conv0_up              2359808     (?, 512, 32, 32)        (3, 3, 512, 512)        
+32x32/Conv1                 2359808     (?, 512, 32, 32)        (3, 3, 512, 512)        
+ToRGB_lod3                  513         (?, 1, 32, 32)          (1, 1, 512, 1)          
+Upscale2D_2                 -           (?, 1, 32, 32)          -                       
+Grow_lod3                   -           (?, 1, 32, 32)          -                       
+64x64/Conv0_up              1179904     (?, 256, 64, 64)        (3, 3, 256, 512)        
+64x64/Conv1                 590080      (?, 256, 64, 64)        (3, 3, 256, 256)        
+ToRGB_lod2                  257         (?, 1, 64, 64)          (1, 1, 256, 1)          
+Upscale2D_3                 -           (?, 1, 64, 64)          -                       
+Grow_lod2                   -           (?, 1, 64, 64)          -                       
+128x128/Conv0_up            295040      (?, 128, 128, 128)      (3, 3, 128, 256)        
+128x128/Conv1               147584      (?, 128, 128, 128)      (3, 3, 128, 128)        
+ToRGB_lod1                  129         (?, 1, 128, 128)        (1, 1, 128, 1)          
+Upscale2D_4                 -           (?, 1, 128, 128)        -                       
+Grow_lod1                   -           (?, 1, 128, 128)        -                       
+256x256/Conv0_up            73792       (?, 64, 256, 256)       (3, 3, 64, 128)         
+256x256/Conv1               36928       (?, 64, 256, 256)       (3, 3, 64, 64)          
+ToRGB_lod0                  65          (?, 1, 256, 256)        (1, 1, 64, 1)           
+Upscale2D_5                 -           (?, 1, 256, 256)        -                       
+Grow_lod0                   -           (?, 1, 256, 256)        -                       
+images_out                  -           (?, 1, 256, 256)        -                       
+---                         ---         ---                     ---                     
+Total                       23039303                                                    
+
+
+D                           Params      OutputShape             WeightShape             
+---                         ---         ---                     ---                     
+images_in                   -           (?, 1, 256, 256)        -                       
+lod                         -           ()                      -                       
+FromRGB_lod0                128         (?, 64, 256, 256)       (1, 1, 1, 64)           
+256x256/Conv0               36928       (?, 64, 256, 256)       (3, 3, 64, 64)          
+256x256/Conv1_down          73856       (?, 128, 128, 128)      (3, 3, 64, 128)         
+Downscale2D                 -           (?, 1, 128, 128)        -                       
+FromRGB_lod1                256         (?, 128, 128, 128)      (1, 1, 1, 128)          
+Grow_lod0                   -           (?, 128, 128, 128)      -                       
+128x128/Conv0               147584      (?, 128, 128, 128)      (3, 3, 128, 128)        
+128x128/Conv1_down          295168      (?, 256, 64, 64)        (3, 3, 128, 256)        
+Downscale2D_1               -           (?, 1, 64, 64)          -                       
+FromRGB_lod2                512         (?, 256, 64, 64)        (1, 1, 1, 256)          
+Grow_lod1                   -           (?, 256, 64, 64)        -                       
+64x64/Conv0                 590080      (?, 256, 64, 64)        (3, 3, 256, 256)        
+64x64/Conv1_down            1180160     (?, 512, 32, 32)        (3, 3, 256, 512)        
+Downscale2D_2               -           (?, 1, 32, 32)          -                       
+FromRGB_lod3                1024        (?, 512, 32, 32)        (1, 1, 1, 512)          
+Grow_lod2                   -           (?, 512, 32, 32)        -                       
+32x32/Conv0                 2359808     (?, 512, 32, 32)        (3, 3, 512, 512)        
+32x32/Conv1_down            2359808     (?, 512, 16, 16)        (3, 3, 512, 512)        
+Downscale2D_3               -           (?, 1, 16, 16)          -                       
+FromRGB_lod4                1024        (?, 512, 16, 16)        (1, 1, 1, 512)          
+Grow_lod3                   -           (?, 512, 16, 16)        -                       
+16x16/Conv0                 2359808     (?, 512, 16, 16)        (3, 3, 512, 512)        
+16x16/Conv1_down            2359808     (?, 512, 8, 8)          (3, 3, 512, 512)        
+Downscale2D_4               -           (?, 1, 8, 8)            -                       
+FromRGB_lod5                1024        (?, 512, 8, 8)          (1, 1, 1, 512)          
+Grow_lod4                   -           (?, 512, 8, 8)          -                       
+8x8/Conv0                   2359808     (?, 512, 8, 8)          (3, 3, 512, 512)        
+8x8/Conv1_down              2359808     (?, 512, 4, 4)          (3, 3, 512, 512)        
+Downscale2D_5               -           (?, 1, 4, 4)            -                       
+FromRGB_lod6                1024        (?, 512, 4, 4)          (1, 1, 1, 512)          
+Grow_lod5                   -           (?, 512, 4, 4)          -                       
+4x4/MinibatchStddev         -           (?, 1, 4, 4)            -                       
+4x4/Conv                    2364416     (?, 512, 4, 4)          (3, 3, 513, 512)        
+4x4/Dense0                  4194816     (?, 512)                (8192, 512)             
+4x4/Dense1                  513         (?, 1)                  (512, 1)                
+scores_out                  -           (?, 1)                  -                       
+labels_out                  -           (?, 0)                  -                       
+---                         ---         ---                     ---                     
+Total                       23047361                                                    
+
+Building TensorFlow graph...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+Setting up snapshot image grid...
+Setting up result dir...
+Saving results to results/038-pgan-masks_complete_no_blacks-preset-v2-1gpu-fp32
+Training...
+tick 1     kimg 160.3    lod 6.00  minibatch 128  time 48s          sec/tick 47.8    sec/kimg 0.30    maintenance 25.9
+tick 2     kimg 320.5    lod 6.00  minibatch 128  time 1m 37s       sec/tick 44.8    sec/kimg 0.28    maintenance 4.3
+tick 3     kimg 480.8    lod 6.00  minibatch 128  time 2m 22s       sec/tick 44.9    sec/kimg 0.28    maintenance 0.0
+tick 4     kimg 621.1    lod 5.97  minibatch 128  time 3m 19s       sec/tick 57.0    sec/kimg 0.41    maintenance 0.0
+tick 5     kimg 761.3    lod 5.73  minibatch 128  time 5m 40s       sec/tick 141.2   sec/kimg 1.01    maintenance 0.1
+tick 6     kimg 901.6    lod 5.50  minibatch 128  time 8m 03s       sec/tick 141.7   sec/kimg 1.01    maintenance 0.9
+tick 7     kimg 1041.9   lod 5.26  minibatch 128  time 10m 25s      sec/tick 141.8   sec/kimg 1.01    maintenance 0.0
+tick 8     kimg 1182.2   lod 5.03  minibatch 128  time 12m 46s      sec/tick 141.8   sec/kimg 1.01    maintenance 0.0
+tick 9     kimg 1322.5   lod 5.00  minibatch 128  time 15m 06s      sec/tick 139.4   sec/kimg 0.99    maintenance 0.0
+tick 10    kimg 1462.8   lod 5.00  minibatch 128  time 17m 46s      sec/tick 160.4   sec/kimg 1.14    maintenance 0.0
+tick 11    kimg 1603.1   lod 5.00  minibatch 128  time 20m 29s      sec/tick 162.6   sec/kimg 1.16    maintenance 0.3
+tick 12    kimg 1743.4   lod 5.00  minibatch 128  time 23m 11s      sec/tick 162.0   sec/kimg 1.15    maintenance 0.1
+tick 13    kimg 1863.7   lod 4.89  minibatch 128  time 27m 40s      sec/tick 268.4   sec/kimg 2.23    maintenance 0.1
+tick 14    kimg 1984.0   lod 4.69  minibatch 128  time 33m 57s      sec/tick 377.4   sec/kimg 3.14    maintenance 0.1
+tick 15    kimg 2104.3   lod 4.49  minibatch 128  time 40m 15s      sec/tick 377.8   sec/kimg 3.14    maintenance 0.1
+tick 16    kimg 2224.6   lod 4.29  minibatch 128  time 46m 31s      sec/tick 375.5   sec/kimg 3.12    maintenance 0.3
+tick 17    kimg 2345.0   lod 4.09  minibatch 128  time 52m 49s      sec/tick 377.6   sec/kimg 3.14    maintenance 0.0
+tick 18    kimg 2465.3   lod 4.00  minibatch 128  time 59m 02s      sec/tick 373.6   sec/kimg 3.10    maintenance 0.1
+tick 19    kimg 2585.6   lod 4.00  minibatch 128  time 1h 05m 14s   sec/tick 371.3   sec/kimg 3.09    maintenance 0.1
+tick 20    kimg 2705.9   lod 4.00  minibatch 128  time 1h 11m 24s   sec/tick 370.7   sec/kimg 3.08    maintenance 0.1
+Initializing TensorFlow...
+Running train.train_progressive_gan()...
+Streaming data using dataset.TFRecordDataset...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Code/progressive_growing_of_gans/dataset.py:74: tf_record_iterator (from tensorflow.python.lib.io.tf_record) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use eager execution and: 
+`tf.data.TFRecordDataset(path)`
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+Dataset shape = [1, 256, 256]
+Dynamic range = [0, 6]
+Label size    = 0
+Loading networks from "results/038-pgan-masks_complete_no_blacks-preset-v2-1gpu-fp32/network-snapshot-008000.pkl"...
+
+G                           Params      OutputShape             WeightShape             
+---                         ---         ---                     ---                     
+latents_in                  -           (?, 512)                -                       
+labels_in                   -           (?, 0)                  -                       
+lod                         -           ()                      -                       
+4x4/PixelNorm               -           (?, 512)                -                       
+4x4/Dense                   4194816     (512,)                  (512, 8192)             
+4x4/Conv                    2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod6                  513         (1,)                    (1, 1, 512, 1)          
+8x8/Conv0_up                2359808     (512,)                  (3, 3, 512, 512)        
+8x8/Conv1                   2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod5                  513         (1,)                    (1, 1, 512, 1)          
+Upscale2D                   -           (?, 1, 8, 8)            -                       
+Grow_lod5                   -           (?, 1, 8, 8)            -                       
+16x16/Conv0_up              2359808     (512,)                  (3, 3, 512, 512)        
+16x16/Conv1                 2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod4                  513         (1,)                    (1, 1, 512, 1)          
+Upscale2D_1                 -           (?, 1, 16, 16)          -                       
+Grow_lod4                   -           (?, 1, 16, 16)          -                       
+32x32/Conv0_up              2359808     (512,)                  (3, 3, 512, 512)        
+32x32/Conv1                 2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod3                  513         (1,)                    (1, 1, 512, 1)          
+Upscale2D_2                 -           (?, 1, 32, 32)          -                       
+Grow_lod3                   -           (?, 1, 32, 32)          -                       
+64x64/Conv0_up              1179904     (256,)                  (3, 3, 256, 512)        
+64x64/Conv1                 590080      (256,)                  (3, 3, 256, 256)        
+ToRGB_lod2                  257         (1,)                    (1, 1, 256, 1)          
+Upscale2D_3                 -           (?, 1, 64, 64)          -                       
+Grow_lod2                   -           (?, 1, 64, 64)          -                       
+128x128/Conv0_up            295040      (128,)                  (3, 3, 128, 256)        
+128x128/Conv1               147584      (128,)                  (3, 3, 128, 128)        
+ToRGB_lod1                  129         (1,)                    (1, 1, 128, 1)          
+Upscale2D_4                 -           (?, 1, 128, 128)        -                       
+Grow_lod1                   -           (?, 1, 128, 128)        -                       
+256x256/Conv0_up            73792       (64,)                   (3, 3, 64, 128)         
+256x256/Conv1               36928       (64,)                   (3, 3, 64, 64)          
+ToRGB_lod0                  65          (1,)                    (1, 1, 64, 1)           
+Upscale2D_5                 -           (?, 1, 256, 256)        -                       
+Grow_lod0                   -           (?, 1, 256, 256)        -                       
+images_out                  -           (?, 1, 256, 256)        -                       
+---                         ---         ---                     ---                     
+Total                       23039303                                                    
+
+
+D                           Params      OutputShape             WeightShape             
+---                         ---         ---                     ---                     
+images_in                   -           (?, 1, 256, 256)        -                       
+lod                         -           ()                      -                       
+FromRGB_lod0                128         (64,)                   (1, 1, 1, 64)           
+256x256/Conv0               36928       (64,)                   (3, 3, 64, 64)          
+256x256/Conv1_down          73856       (128,)                  (3, 3, 64, 128)         
+Downscale2D                 -           (?, 1, 128, 128)        -                       
+FromRGB_lod1                256         (128,)                  (1, 1, 1, 128)          
+Grow_lod0                   -           (?, 128, 128, 128)      -                       
+128x128/Conv0               147584      (128,)                  (3, 3, 128, 128)        
+128x128/Conv1_down          295168      (256,)                  (3, 3, 128, 256)        
+Downscale2D_1               -           (?, 1, 64, 64)          -                       
+FromRGB_lod2                512         (256,)                  (1, 1, 1, 256)          
+Grow_lod1                   -           (?, 256, 64, 64)        -                       
+64x64/Conv0                 590080      (256,)                  (3, 3, 256, 256)        
+64x64/Conv1_down            1180160     (512,)                  (3, 3, 256, 512)        
+Downscale2D_2               -           (?, 1, 32, 32)          -                       
+FromRGB_lod3                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod2                   -           (?, 512, 32, 32)        -                       
+32x32/Conv0                 2359808     (512,)                  (3, 3, 512, 512)        
+32x32/Conv1_down            2359808     (512,)                  (3, 3, 512, 512)        
+Downscale2D_3               -           (?, 1, 16, 16)          -                       
+FromRGB_lod4                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod3                   -           (?, 512, 16, 16)        -                       
+16x16/Conv0                 2359808     (512,)                  (3, 3, 512, 512)        
+16x16/Conv1_down            2359808     (512,)                  (3, 3, 512, 512)        
+Downscale2D_4               -           (?, 1, 8, 8)            -                       
+FromRGB_lod5                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod4                   -           (?, 512, 8, 8)          -                       
+8x8/Conv0                   2359808     (512,)                  (3, 3, 512, 512)        
+8x8/Conv1_down              2359808     (512,)                  (3, 3, 512, 512)        
+Downscale2D_5               -           (?, 1, 4, 4)            -                       
+FromRGB_lod6                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod5                   -           (?, 512, 4, 4)          -                       
+4x4/MinibatchStddev         -           (?, 1, 4, 4)            -                       
+4x4/Conv                    2364416     (512,)                  (3, 3, 513, 512)        
+4x4/Dense0                  4194816     (512,)                  (8192, 512)             
+4x4/Dense1                  513         (1,)                    (512, 1)                
+scores_out                  -           (?, 1)                  -                       
+labels_out                  -           (?, 0)                  -                       
+---                         ---         ---                     ---                     
+Total                       23047361                                                    
+
+Building TensorFlow graph...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+Setting up snapshot image grid...
+Setting up result dir...
+Saving results to results/041-pgan-masks_complete_no_blacks-preset-v2-1gpu-fp32
+Training...
+tick 1     kimg 8040.1   lod 0.00  minibatch 8    time 2d 14h 37m   sec/tick 3341.7  sec/kimg 83.54   maintenance 40.6
+tick 2     kimg 8080.1   lod 0.00  minibatch 8    time 2d 15h 33m   sec/tick 3336.7  sec/kimg 83.42   maintenance 3.6
+tick 3     kimg 8120.1   lod 0.00  minibatch 8    time 2d 16h 28m   sec/tick 3332.9  sec/kimg 83.32   maintenance 0.2
+tick 4     kimg 8160.1   lod 0.00  minibatch 8    time 2d 17h 24m   sec/tick 3332.3  sec/kimg 83.31   maintenance 0.2
+tick 5     kimg 8200.1   lod 0.00  minibatch 8    time 2d 18h 20m   sec/tick 3332.9  sec/kimg 83.32   maintenance 0.2
+tick 6     kimg 8240.1   lod 0.00  minibatch 8    time 2d 19h 15m   sec/tick 3332.7  sec/kimg 83.32   maintenance 1.1
+tick 7     kimg 8280.1   lod 0.00  minibatch 8    time 2d 20h 11m   sec/tick 3331.4  sec/kimg 83.29   maintenance 0.2
+tick 8     kimg 8320.1   lod 0.00  minibatch 8    time 2d 21h 06m   sec/tick 3333.5  sec/kimg 83.34   maintenance 0.2
+tick 9     kimg 8360.1   lod 0.00  minibatch 8    time 2d 22h 02m   sec/tick 3333.6  sec/kimg 83.34   maintenance 0.2
+tick 10    kimg 8400.1   lod 0.00  minibatch 8    time 2d 22h 57m   sec/tick 3332.7  sec/kimg 83.32   maintenance 0.2
+tick 11    kimg 8440.1   lod 0.00  minibatch 8    time 2d 23h 53m   sec/tick 3333.8  sec/kimg 83.34   maintenance 0.4
+tick 12    kimg 8480.1   lod 0.00  minibatch 8    time 3d 00h 48m   sec/tick 3333.7  sec/kimg 83.34   maintenance 0.2
+tick 13    kimg 8520.1   lod 0.00  minibatch 8    time 3d 01h 44m   sec/tick 3333.9  sec/kimg 83.35   maintenance 0.2
+tick 14    kimg 8560.1   lod 0.00  minibatch 8    time 3d 02h 40m   sec/tick 3334.0  sec/kimg 83.35   maintenance 0.2
+tick 15    kimg 8600.1   lod 0.00  minibatch 8    time 3d 03h 35m   sec/tick 3334.1  sec/kimg 83.35   maintenance 0.2
+tick 16    kimg 8640.1   lod 0.00  minibatch 8    time 3d 04h 31m   sec/tick 3334.0  sec/kimg 83.35   maintenance 0.4
+tick 17    kimg 8680.1   lod 0.00  minibatch 8    time 3d 05h 26m   sec/tick 3334.4  sec/kimg 83.36   maintenance 0.2
+tick 18    kimg 8720.1   lod 0.00  minibatch 8    time 3d 06h 22m   sec/tick 3334.2  sec/kimg 83.35   maintenance 0.2
+tick 19    kimg 8760.1   lod 0.00  minibatch 8    time 3d 07h 17m   sec/tick 3333.2  sec/kimg 83.33   maintenance 0.2
+tick 20    kimg 8800.1   lod 0.00  minibatch 8    time 3d 08h 13m   sec/tick 3332.6  sec/kimg 83.32   maintenance 0.2
+tick 21    kimg 8840.1   lod 0.00  minibatch 8    time 3d 09h 08m   sec/tick 3324.3  sec/kimg 83.11   maintenance 0.4
+tick 22    kimg 8880.1   lod 0.00  minibatch 8    time 3d 10h 04m   sec/tick 3331.2  sec/kimg 83.28   maintenance 0.2
+tick 23    kimg 8920.1   lod 0.00  minibatch 8    time 3d 10h 59m   sec/tick 3333.3  sec/kimg 83.33   maintenance 0.2
+tick 24    kimg 8960.1   lod 0.00  minibatch 8    time 3d 11h 55m   sec/tick 3334.5  sec/kimg 83.36   maintenance 0.2
+tick 25    kimg 9000.1   lod 0.00  minibatch 8    time 3d 12h 51m   sec/tick 3335.2  sec/kimg 83.38   maintenance 0.2
+tick 26    kimg 9040.1   lod 0.00  minibatch 8    time 3d 13h 46m   sec/tick 3309.1  sec/kimg 82.73   maintenance 0.4
+tick 27    kimg 9080.1   lod 0.00  minibatch 8    time 3d 14h 40m   sec/tick 3270.9  sec/kimg 81.77   maintenance 0.2
+tick 28    kimg 9120.1   lod 0.00  minibatch 8    time 3d 15h 35m   sec/tick 3260.0  sec/kimg 81.50   maintenance 0.2
+Initializing TensorFlow...
+Running util_scripts.evaluate_metrics()...
+Logging output to results/041-pgan-masks_complete_no_blacks-preset-v2-1gpu-fp32/metric-swd-16k.txt
+Streaming data using dataset.TFRecordDataset...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Code/progressive_growing_of_gans/dataset.py:74: tf_record_iterator (from tensorflow.python.lib.io.tf_record) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use eager execution and: 
+`tf.data.TFRecordDataset(path)`
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+Dataset shape = [1, 256, 256]
+Dynamic range = [0, 6]
+Label size    = 0
+Initializing metrics.sliced_wasserstein.API...
+
+Snapshot  Time_eval   SWDx1e3_256  SWDx1e3_128  SWDx1e3_64   SWDx1e3_32   SWDx1e3_16   SWDx1e3_avg  
+---       ---         ---          ---          ---          ---          ---          ---          
+Reals     14m 40s     0.0000       0.0000       0.0000       0.0000       0.0000       0.0000       
+Reals2    tick 29    kimg 9160.1   lod 0.00  minibatch 8    time 3d 16h 29m   sec/tick 3266.4  sec/kimg 81.66   maintenance 0.2
+14m 39s     1.6145       1.3541       1.4181       1.8357       1.5923       1.5629       
+9000      17m 47s     8.2996       3.9208       3.5927       4.5102       4.9809       5.0608       
+8800      17m 41s     6.4834       3.5348       3.6545       4.0948       3.8246       4.3184       
+8600      tick 30    kimg 9200.1   lod 0.00  minibatch 8    time 3d 17h 23m   sec/tick 3252.0  sec/kimg 81.30   maintenance 0.2
+17m 39s     5.4556       3.5892       3.4381       3.7993       3.7929       4.0150       
+8400      17m 37s     6.1606       2.9085       2.9837       3.4000       4.5365       3.9978       
+8200      17m 39s     5.2015       3.0752       2.9361       3.6473       3.6726       3.7065       
+
+Exiting...
+Initializing TensorFlow...
+Running util_scripts.evaluate_metrics()...
+Logging output to results/038-pgan-masks_complete_no_blacks-preset-v2-1gpu-fp32/metric-swd-16k.txt
+Streaming data using dataset.TFRecordDataset...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Code/progressive_growing_of_gans/dataset.py:74: tf_record_iterator (from tensorflow.python.lib.io.tf_record) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use eager execution and: 
+`tf.data.TFRecordDataset(path)`
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+Dataset shape = [1, 256, 256]
+Dynamic range = [0, 6]
+Label size    = 0
+Initializing metrics.sliced_wasserstein.API...
+
+Snapshot  Time_eval   SWDx1e3_256  SWDx1e3_128  SWDx1e3_64   SWDx1e3_32   SWDx1e3_16   SWDx1e3_avg  
+---       ---         ---          ---          ---          ---          ---          ---          
+Reals     tick 31    kimg 9240.1   lod 0.00  minibatch 8    time 3d 18h 18m   sec/tick 3260.2  sec/kimg 81.50   maintenance 0.5
+14m 39s     0.0000       0.0000       0.0000       0.0000       0.0000       0.0000       
+Reals2    14m 39s     1.6145       1.3541       1.4181       1.8357       1.5923       1.5629       
+8000      17m 40s     7.5089       4.3542       3.1498       3.5331       3.8760       4.4844       
+7800      tick 32    kimg 9280.1   lod 0.00  minibatch 8    time 3d 19h 12m   sec/tick 3251.1  sec/kimg 81.28   maintenance 0.2
+17m 39s     5.5249       2.6331       3.0109       3.3825       3.9089       3.6921       
+7600      17m 40s     6.9249       3.7197       2.7985       3.4950       3.8253       4.1527       
+7400      17m 40s     5.4970       2.6609       3.1045       4.0029       3.9885       3.8508       
+7200      tick 33    kimg 9320.1   lod 0.00  minibatch 8    time 3d 20h 06m   sec/tick 3253.9  sec/kimg 81.35   maintenance 0.2
+18m 14s     7.3131       8.4495       9.0454       11.8735      8.2942       8.9951       
+7000      18m 04s     10.3984      3.3864       2.4367       2.5462       3.5785       4.4693       
+6800      18m 19s     18.3283      7.4907       5.4429       4.7490       4.2022       8.0426       
+6600      tick 34    kimg 9360.1   lod 0.00  minibatch 8    time 3d 21h 00m   sec/tick 3252.8  sec/kimg 81.32   maintenance 0.2
+17m 50s     18.0662      8.7011       4.5280       4.1481       3.8902       7.8667       
+6308      17m 30s     18.7552      7.6089       4.3679       5.1128       4.0426       7.9775       
+6008      18m 03s     23.8357      12.1559      5.3490       7.3157       8.0816       11.3476      
+5707      tick 35    kimg 9400.1   lod 0.00  minibatch 8    time 3d 21h 55m   sec/tick 3257.0  sec/kimg 81.43   maintenance 0.2
+18m 07s     25.8616      13.4770      7.9801       7.3799       9.7748       12.8947      
+5407      17m 39s     29.4126      14.5454      10.6543      6.2300       5.3492       13.2383      
+5027      17m 00s     28.3368      14.3460      10.4046      6.1309       7.2591       13.2955      
+4627      Initializing TensorFlow...
+Running util_scripts.evaluate_metrics()...
+Logging output to results/041-pgan-masks_complete_no_blacks-preset-v2-1gpu-fp32/metric-swd-16k.txt
+Streaming data using dataset.TFRecordDataset...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Code/progressive_growing_of_gans/dataset.py:74: tf_record_iterator (from tensorflow.python.lib.io.tf_record) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use eager execution and: 
+`tf.data.TFRecordDataset(path)`
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+Dataset shape = [1, 256, 256]
+Dynamic range = [0, 6]
+Label size    = 0
+Initializing metrics.sliced_wasserstein.API...
+
+Snapshot  Time_eval   SWDx1e3_256  SWDx1e3_128  SWDx1e3_64   SWDx1e3_32   SWDx1e3_16   SWDx1e3_avg  
+---       ---         ---          ---          ---          ---          ---          ---          
+Reals     Initializing TensorFlow...
+Running util_scripts.evaluate_metrics()...
+Logging output to results/041-pgan-masks_complete_no_blacks-preset-v2-1gpu-fp32/metric-swd-16k.txt
+Streaming data using dataset.TFRecordDataset...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Code/progressive_growing_of_gans/dataset.py:74: tf_record_iterator (from tensorflow.python.lib.io.tf_record) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use eager execution and: 
+`tf.data.TFRecordDataset(path)`
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+Dataset shape = [1, 256, 256]
+Dynamic range = [0, 6]
+Label size    = 0
+Initializing metrics.sliced_wasserstein.API...
+
+Snapshot  Time_eval   SWDx1e3_256  SWDx1e3_128  SWDx1e3_64   SWDx1e3_32   SWDx1e3_16   SWDx1e3_avg  
+---       ---         ---          ---          ---          ---          ---          ---          
+Reals     14m 08s     0.0000       0.0000       0.0000       0.0000       0.0000       0.0000       
+Reals2    Initializing TensorFlow...
+Running train.train_progressive_gan()...
+Streaming data using dataset.TFRecordDataset...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Code/progressive_growing_of_gans/dataset.py:74: tf_record_iterator (from tensorflow.python.lib.io.tf_record) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use eager execution and: 
+`tf.data.TFRecordDataset(path)`
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+Dataset shape = [1, 256, 256]
+Dynamic range = [0, 6]
+Label size    = 0
+Loading networks from "results/038-pgan-masks_complete_no_blacks-preset-v2-1gpu-fp32/network-snapshot-008000.pkl"...
+
+G                           Params      OutputShape             WeightShape             
+---                         ---         ---                     ---                     
+latents_in                  -           (?, 512)                -                       
+labels_in                   -           (?, 0)                  -                       
+lod                         -           ()                      -                       
+4x4/PixelNorm               -           (?, 512)                -                       
+4x4/Dense                   4194816     (512,)                  (512, 8192)             
+4x4/Conv                    2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod6                  513         (1,)                    (1, 1, 512, 1)          
+8x8/Conv0_up                2359808     (512,)                  (3, 3, 512, 512)        
+8x8/Conv1                   2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod5                  513         (1,)                    (1, 1, 512, 1)          
+Upscale2D                   -           (?, 1, 8, 8)            -                       
+Grow_lod5                   -           (?, 1, 8, 8)            -                       
+16x16/Conv0_up              2359808     (512,)                  (3, 3, 512, 512)        
+16x16/Conv1                 2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod4                  513         (1,)                    (1, 1, 512, 1)          
+Upscale2D_1                 -           (?, 1, 16, 16)          -                       
+Grow_lod4                   -           (?, 1, 16, 16)          -                       
+32x32/Conv0_up              2359808     (512,)                  (3, 3, 512, 512)        
+32x32/Conv1                 2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod3                  513         (1,)                    (1, 1, 512, 1)          
+Upscale2D_2                 -           (?, 1, 32, 32)          -                       
+Grow_lod3                   -           (?, 1, 32, 32)          -                       
+64x64/Conv0_up              1179904     (256,)                  (3, 3, 256, 512)        
+64x64/Conv1                 590080      (256,)                  (3, 3, 256, 256)        
+ToRGB_lod2                  257         (1,)                    (1, 1, 256, 1)          
+Upscale2D_3                 -           (?, 1, 64, 64)          -                       
+Grow_lod2                   -           (?, 1, 64, 64)          -                       
+128x128/Conv0_up            295040      (128,)                  (3, 3, 128, 256)        
+128x128/Conv1               147584      (128,)                  (3, 3, 128, 128)        
+ToRGB_lod1                  129         (1,)                    (1, 1, 128, 1)          
+Upscale2D_4                 -           (?, 1, 128, 128)        -                       
+Grow_lod1                   -           (?, 1, 128, 128)        -                       
+256x256/Conv0_up            73792       (64,)                   (3, 3, 64, 128)         
+256x256/Conv1               36928       (64,)                   (3, 3, 64, 64)          
+ToRGB_lod0                  65          (1,)                    (1, 1, 64, 1)           
+Upscale2D_5                 -           (?, 1, 256, 256)        -                       
+Grow_lod0                   -           (?, 1, 256, 256)        -                       
+images_out                  -           (?, 1, 256, 256)        -                       
+---                         ---         ---                     ---                     
+Total                       23039303                                                    
+
+
+D                           Params      OutputShape             WeightShape             
+---                         ---         ---                     ---                     
+images_in                   -           (?, 1, 256, 256)        -                       
+lod                         -           ()                      -                       
+FromRGB_lod0                128         (64,)                   (1, 1, 1, 64)           
+256x256/Conv0               36928       (64,)                   (3, 3, 64, 64)          
+256x256/Conv1_down          73856       (128,)                  (3, 3, 64, 128)         
+Downscale2D                 -           (?, 1, 128, 128)        -                       
+FromRGB_lod1                256         (128,)                  (1, 1, 1, 128)          
+Grow_lod0                   -           (?, 128, 128, 128)      -                       
+128x128/Conv0               147584      (128,)                  (3, 3, 128, 128)        
+128x128/Conv1_down          295168      (256,)                  (3, 3, 128, 256)        
+Downscale2D_1               -           (?, 1, 64, 64)          -                       
+FromRGB_lod2                512         (256,)                  (1, 1, 1, 256)          
+Grow_lod1                   -           (?, 256, 64, 64)        -                       
+64x64/Conv0                 590080      (256,)                  (3, 3, 256, 256)        
+64x64/Conv1_down            1180160     (512,)                  (3, 3, 256, 512)        
+Downscale2D_2               -           (?, 1, 32, 32)          -                       
+FromRGB_lod3                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod2                   -           (?, 512, 32, 32)        -                       
+32x32/Conv0                 2359808     (512,)                  (3, 3, 512, 512)        
+32x32/Conv1_down            2359808     (512,)                  (3, 3, 512, 512)        
+Downscale2D_3               -           (?, 1, 16, 16)          -                       
+FromRGB_lod4                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod3                   -           (?, 512, 16, 16)        -                       
+16x16/Conv0                 2359808     (512,)                  (3, 3, 512, 512)        
+16x16/Conv1_down            2359808     (512,)                  (3, 3, 512, 512)        
+Downscale2D_4               -           (?, 1, 8, 8)            -                       
+FromRGB_lod5                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod4                   -           (?, 512, 8, 8)          -                       
+8x8/Conv0                   2359808     (512,)                  (3, 3, 512, 512)        
+8x8/Conv1_down              2359808     (512,)                  (3, 3, 512, 512)        
+Downscale2D_5               -           (?, 1, 4, 4)            -                       
+FromRGB_lod6                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod5                   -           (?, 512, 4, 4)          -                       
+4x4/MinibatchStddev         -           (?, 1, 4, 4)            -                       
+4x4/Conv                    2364416     (512,)                  (3, 3, 513, 512)        
+4x4/Dense0                  4194816     (512,)                  (8192, 512)             
+4x4/Dense1                  513         (1,)                    (512, 1)                
+scores_out                  -           (?, 1)                  -                       
+labels_out                  -           (?, 0)                  -                       
+---                         ---         ---                     ---                     
+Total                       23047361                                                    
+
+Building TensorFlow graph...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+Initializing TensorFlow...
+Running train.train_progressive_gan()...
+Streaming data using dataset.TFRecordDataset...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Code/progressive_growing_of_gans/dataset.py:74: tf_record_iterator (from tensorflow.python.lib.io.tf_record) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use eager execution and: 
+`tf.data.TFRecordDataset(path)`
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+Dataset shape = [1, 256, 256]
+Dynamic range = [0, 6]
+Label size    = 0
+Loading networks from "results/038-pgan-masks_complete_no_blacks-preset-v2-1gpu-fp32/network-snapshot-008000.pkl"...
+Setting up snapshot image grid...
+2020-04-12 08:56:32.975472: E tensorflow/stream_executor/cuda/cuda_dnn.cc:334] Could not create cudnn handle: CUDNN_STATUS_INTERNAL_ERROR
+2020-04-12 08:56:32.983214: E tensorflow/stream_executor/cuda/cuda_dnn.cc:334] Could not create cudnn handle: CUDNN_STATUS_INTERNAL_ERROR
+Traceback (most recent call last):
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1334, in _do_call
+    return fn(*args)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1319, in _run_fn
+    options, feed_dict, fetch_list, target_list, run_metadata)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1407, in _call_tf_sessionrun
+    run_metadata)
+tensorflow.python.framework.errors_impl.UnknownError: Failed to get convolution algorithm. This is probably because cuDNN failed to initialize, so try looking to see if a warning log message was printed above.
+	 [[{{node Gs/Run/Gs/4x4/Conv/Conv2D}}]]
+	 [[{{node Gs/Run/concat}}]]
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "train.py", line 290, in <module>
+    tfutil.call_func_by_name(**config.train)
+  File "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/tfutil.py", line 236, in call_func_by_name
+    return import_obj(func)(*args, **kwargs)
+  File "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/train.py", line 197, in train_progressive_gan
+    grid_fakes = Gs.run(grid_latents, grid_labels, minibatch_size=sched.minibatch//config.num_gpus)
+  File "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/tfutil.py", line 668, in run
+    mb_out = tf.get_default_session().run(out_expr, dict(zip(self.input_templates, mb_in)))
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 929, in run
+    run_metadata_ptr)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1152, in _run
+    feed_dict_tensor, options, run_metadata)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1328, in _do_run
+    run_metadata)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1348, in _do_call
+    raise type(e)(node_def, op, message)
+tensorflow.python.framework.errors_impl.UnknownError: Failed to get convolution algorithm. This is probably because cuDNN failed to initialize, so try looking to see if a warning log message was printed above.
+	 [[node Gs/Run/Gs/4x4/Conv/Conv2D (defined at <string>:48) ]]
+	 [[node Gs/Run/concat (defined at /nobackup/data/mehfo331/Code/progressive_growing_of_gans/tfutil.py:658) ]]
+
+Caused by op 'Gs/Run/Gs/4x4/Conv/Conv2D', defined at:
+  File "train.py", line 290, in <module>
+    tfutil.call_func_by_name(**config.train)
+  File "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/tfutil.py", line 236, in call_func_by_name
+    return import_obj(func)(*args, **kwargs)
+  File "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/train.py", line 197, in train_progressive_gan
+    grid_fakes = Gs.run(grid_latents, grid_labels, minibatch_size=sched.minibatch//config.num_gpus)
+  File "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/tfutil.py", line 645, in run
+    out_expr = self.get_output_for(*in_split[gpu], return_as_list=True, **dynamic_kwargs)
+  File "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/tfutil.py", line 509, in get_output_for
+    out_expr = self._build_func(*named_inputs, **all_kwargs)
+  File "<string>", line 225, in G_paper
+  File "<string>", line 220, in grow
+  File "<string>", line 188, in block
+  File "<string>", line 48, in conv2d
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/gen_nn_ops.py", line 1026, in conv2d
+    data_format=data_format, dilations=dilations, name=name)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py", line 788, in _apply_op_helper
+    op_def=op_def)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/util/deprecation.py", line 507, in new_func
+    return func(*args, **kwargs)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/ops.py", line 3300, in create_op
+    op_def=op_def)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/ops.py", line 1801, in __init__
+    self._traceback = tf_stack.extract_stack()
+
+UnknownError (see above for traceback): Failed to get convolution algorithm. This is probably because cuDNN failed to initialize, so try looking to see if a warning log message was printed above.
+	 [[node Gs/Run/Gs/4x4/Conv/Conv2D (defined at <string>:48) ]]
+	 [[node Gs/Run/concat (defined at /nobackup/data/mehfo331/Code/progressive_growing_of_gans/tfutil.py:658) ]]
+
+2020-04-12 08:56:33.722489: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.0KiB.  Current allocation summary follows.
+2020-04-12 08:56:33.722624: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:56:33.722836: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at assign_op.h:117 : Resource exhausted: OOM when allocating tensor with shape[512] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 08:56:43.723043: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.0KiB.  Current allocation summary follows.
+2020-04-12 08:56:43.723585: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:56:43.723657: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at random_op.cc:202 : Resource exhausted: OOM when allocating tensor with shape[1,1,512,1] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+Initializing TensorFlow...
+Running train.train_progressive_gan()...
+Streaming data using dataset.TFRecordDataset...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Code/progressive_growing_of_gans/dataset.py:74: tf_record_iterator (from tensorflow.python.lib.io.tf_record) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use eager execution and: 
+`tf.data.TFRecordDataset(path)`
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+Dataset shape = [1, 256, 256]
+Dynamic range = [0, 6]
+Label size    = 0
+Loading networks from "results/038-pgan-masks_complete_no_blacks-preset-v2-1gpu-fp32/network-snapshot-008000.pkl"...
+
+G                           Params      OutputShape             WeightShape             
+---                         ---         ---                     ---                     
+latents_in                  -           (?, 512)                -                       
+labels_in                   -           (?, 0)                  -                       
+lod                         -           ()                      -                       
+4x4/PixelNorm               -           (?, 512)                -                       
+4x4/Dense                   4194816     (512,)                  (512, 8192)             
+4x4/Conv                    2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod6                  513         (1,)                    (1, 1, 512, 1)          
+8x8/Conv0_up                2359808     (512,)                  (3, 3, 512, 512)        
+8x8/Conv1                   2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod5                  513         (1,)                    (1, 1, 512, 1)          
+Upscale2D                   -           (?, 1, 8, 8)            -                       
+Grow_lod5                   -           (?, 1, 8, 8)            -                       
+16x16/Conv0_up              2359808     (512,)                  (3, 3, 512, 512)        
+16x16/Conv1                 2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod4                  513         (1,)                    (1, 1, 512, 1)          
+Upscale2D_1                 -           (?, 1, 16, 16)          -                       
+Grow_lod4                   -           (?, 1, 16, 16)          -                       
+32x32/Conv0_up              2359808     (512,)                  (3, 3, 512, 512)        
+32x32/Conv1                 2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod3                  513         (1,)                    (1, 1, 512, 1)          
+Upscale2D_2                 -           (?, 1, 32, 32)          -                       
+Grow_lod3                   -           (?, 1, 32, 32)          -                       
+64x64/Conv0_up              1179904     (256,)                  (3, 3, 256, 512)        
+64x64/Conv1                 590080      (256,)                  (3, 3, 256, 256)        
+ToRGB_lod2                  257         (1,)                    (1, 1, 256, 1)          
+Upscale2D_3                 -           (?, 1, 64, 64)          -                       
+Grow_lod2                   -           (?, 1, 64, 64)          -                       
+128x128/Conv0_up            295040      (128,)                  (3, 3, 128, 256)        
+128x128/Conv1               147584      (128,)                  (3, 3, 128, 128)        
+ToRGB_lod1                  129         (1,)                    (1, 1, 128, 1)          
+Upscale2D_4                 -           (?, 1, 128, 128)        -                       
+Grow_lod1                   -           (?, 1, 128, 128)        -                       
+256x256/Conv0_up            73792       (64,)                   (3, 3, 64, 128)         
+256x256/Conv1               36928       (64,)                   (3, 3, 64, 64)          
+ToRGB_lod0                  65          (1,)                    (1, 1, 64, 1)           
+Upscale2D_5                 -           (?, 1, 256, 256)        -                       
+Grow_lod0                   -           (?, 1, 256, 256)        -                       
+images_out                  -           (?, 1, 256, 256)        -                       
+---                         ---         ---                     ---                     
+Total                       23039303                                                    
+
+
+D                           Params      OutputShape             WeightShape             
+---                         ---         ---                     ---                     
+images_in                   -           (?, 1, 256, 256)        -                       
+lod                         -           ()                      -                       
+FromRGB_lod0                128         (64,)                   (1, 1, 1, 64)           
+256x256/Conv0               36928       (64,)                   (3, 3, 64, 64)          
+256x256/Conv1_down          73856       (128,)                  (3, 3, 64, 128)         
+Downscale2D                 -           (?, 1, 128, 128)        -                       
+FromRGB_lod1                256         (128,)                  (1, 1, 1, 128)          
+Grow_lod0                   -           (?, 128, 128, 128)      -                       
+128x128/Conv0               147584      (128,)                  (3, 3, 128, 128)        
+128x128/Conv1_down          295168      (256,)                  (3, 3, 128, 256)        
+Downscale2D_1               -           (?, 1, 64, 64)          -                       
+FromRGB_lod2                512         (256,)                  (1, 1, 1, 256)          
+Grow_lod1                   -           (?, 256, 64, 64)        -                       
+64x64/Conv0                 590080      (256,)                  (3, 3, 256, 256)        
+64x64/Conv1_down            1180160     (512,)                  (3, 3, 256, 512)        
+Downscale2D_2               -           (?, 1, 32, 32)          -                       
+FromRGB_lod3                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod2                   -           (?, 512, 32, 32)        -                       
+32x32/Conv0                 2359808     (512,)                  (3, 3, 512, 512)        
+32x32/Conv1_down            2359808     (512,)                  (3, 3, 512, 512)        
+Downscale2D_3               -           (?, 1, 16, 16)          -                       
+FromRGB_lod4                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod3                   -           (?, 512, 16, 16)        -                       
+16x16/Conv0                 2359808     (512,)                  (3, 3, 512, 512)        
+16x16/Conv1_down            2359808     (512,)                  (3, 3, 512, 512)        
+Downscale2D_4               -           (?, 1, 8, 8)            -                       
+FromRGB_lod5                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod4                   -           (?, 512, 8, 8)          -                       
+8x8/Conv0                   2359808     (512,)                  (3, 3, 512, 512)        
+8x8/Conv1_down              2359808     (512,)                  (3, 3, 512, 512)        
+Downscale2D_5               -           (?, 1, 4, 4)            -                       
+FromRGB_lod6                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod5                   -           (?, 512, 4, 4)          -                       
+4x4/MinibatchStddev         -           (?, 1, 4, 4)            -                       
+4x4/Conv                    2364416     (512,)                  (3, 3, 513, 512)        
+4x4/Dense0                  4194816     (512,)                  (8192, 512)             
+4x4/Dense1                  513         (1,)                    (512, 1)                
+scores_out                  -           (?, 1)                  -                       
+labels_out                  -           (?, 0)                  -                       
+---                         ---         ---                     ---                     
+Total                       23047361                                                    
+
+Building TensorFlow graph...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+2020-04-12 08:56:53.723840: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 4B.  Current allocation summary follows.
+2020-04-12 08:56:53.723990: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:56:53.724022: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at assign_op.h:117 : Resource exhausted: OOM when allocating tensor with shape[1] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+Setting up snapshot image grid...
+2020-04-12 08:57:03.724128: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 9.00MiB.  Current allocation summary follows.
+2020-04-12 08:57:03.724251: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:57:03.724270: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at random_op.cc:202 : Resource exhausted: OOM when allocating tensor with shape[3,3,512,512] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+Setting up result dir...
+Saving results to results/046-pgan-masks_complete_no_blacks-preset-v2-1gpu-fp32
+Training...
+2020-04-12 08:57:13.724379: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.0KiB.  Current allocation summary follows.
+2020-04-12 08:57:13.724494: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:57:13.724511: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at assign_op.h:117 : Resource exhausted: OOM when allocating tensor with shape[512] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 08:57:23.724694: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 9.00MiB.  Current allocation summary follows.
+2020-04-12 08:57:23.725266: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:57:23.725342: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at random_op.cc:202 : Resource exhausted: OOM when allocating tensor with shape[3,3,512,512] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 08:57:33.725552: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.0KiB.  Current allocation summary follows.
+2020-04-12 08:57:33.726120: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:57:33.726195: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at assign_op.h:117 : Resource exhausted: OOM when allocating tensor with shape[512] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 08:57:43.726414: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.0KiB.  Current allocation summary follows.
+2020-04-12 08:57:43.726984: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:57:43.727055: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at random_op.cc:202 : Resource exhausted: OOM when allocating tensor with shape[1,1,512,1] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 08:57:53.727256: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 4B.  Current allocation summary follows.
+2020-04-12 08:57:53.727810: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:57:53.727893: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at assign_op.h:117 : Resource exhausted: OOM when allocating tensor with shape[1] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 08:58:03.728143: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 9.00MiB.  Current allocation summary follows.
+2020-04-12 08:58:03.728684: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:58:03.728754: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at random_op.cc:202 : Resource exhausted: OOM when allocating tensor with shape[3,3,512,512] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 08:58:13.729010: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.0KiB.  Current allocation summary follows.
+2020-04-12 08:58:13.729559: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:58:13.729627: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at assign_op.h:117 : Resource exhausted: OOM when allocating tensor with shape[512] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+Initializing TensorFlow...
+Running train.train_progressive_gan()...
+Streaming data using dataset.TFRecordDataset...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Code/progressive_growing_of_gans/dataset.py:74: tf_record_iterator (from tensorflow.python.lib.io.tf_record) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use eager execution and: 
+`tf.data.TFRecordDataset(path)`
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+Dataset shape = [1, 256, 256]
+Dynamic range = [0, 6]
+Label size    = 0
+Loading networks from "results/038-pgan-masks_complete_no_blacks-preset-v2-1gpu-fp32/network-snapshot-008000.pkl"...
+
+G                           Params      OutputShape             WeightShape             
+---                         ---         ---                     ---                     
+latents_in                  -           (?, 512)                -                       
+labels_in                   -           (?, 0)                  -                       
+lod                         -           ()                      -                       
+4x4/PixelNorm               -           (?, 512)                -                       
+4x4/Dense                   4194816     (512,)                  (512, 8192)             
+4x4/Conv                    2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod6                  513         (1,)                    (1, 1, 512, 1)          
+8x8/Conv0_up                2359808     (512,)                  (3, 3, 512, 512)        
+8x8/Conv1                   2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod5                  513         (1,)                    (1, 1, 512, 1)          
+Upscale2D                   -           (?, 1, 8, 8)            -                       
+Grow_lod5                   -           (?, 1, 8, 8)            -                       
+16x16/Conv0_up              2359808     (512,)                  (3, 3, 512, 512)        
+16x16/Conv1                 2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod4                  513         (1,)                    (1, 1, 512, 1)          
+Upscale2D_1                 -           (?, 1, 16, 16)          -                       
+Grow_lod4                   -           (?, 1, 16, 16)          -                       
+32x32/Conv0_up              2359808     (512,)                  (3, 3, 512, 512)        
+32x32/Conv1                 2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod3                  513         (1,)                    (1, 1, 512, 1)          
+Upscale2D_2                 -           (?, 1, 32, 32)          -                       
+Grow_lod3                   -           (?, 1, 32, 32)          -                       
+64x64/Conv0_up              1179904     (256,)                  (3, 3, 256, 512)        
+64x64/Conv1                 590080      (256,)                  (3, 3, 256, 256)        
+ToRGB_lod2                  257         (1,)                    (1, 1, 256, 1)          
+Upscale2D_3                 -           (?, 1, 64, 64)          -                       
+Grow_lod2                   -           (?, 1, 64, 64)          -                       
+128x128/Conv0_up            295040      (128,)                  (3, 3, 128, 256)        
+128x128/Conv1               147584      (128,)                  (3, 3, 128, 128)        
+ToRGB_lod1                  129         (1,)                    (1, 1, 128, 1)          
+Upscale2D_4                 -           (?, 1, 128, 128)        -                       
+Grow_lod1                   -           (?, 1, 128, 128)        -                       
+256x256/Conv0_up            73792       (64,)                   (3, 3, 64, 128)         
+256x256/Conv1               36928       (64,)                   (3, 3, 64, 64)          
+ToRGB_lod0                  65          (1,)                    (1, 1, 64, 1)           
+Upscale2D_5                 -           (?, 1, 256, 256)        -                       
+Grow_lod0                   -           (?, 1, 256, 256)        -                       
+images_out                  -           (?, 1, 256, 256)        -                       
+---                         ---         ---                     ---                     
+Total                       23039303                                                    
+
+
+D                           Params      OutputShape             WeightShape             
+---                         ---         ---                     ---                     
+images_in                   -           (?, 1, 256, 256)        -                       
+lod                         -           ()                      -                       
+FromRGB_lod0                128         (64,)                   (1, 1, 1, 64)           
+256x256/Conv0               36928       (64,)                   (3, 3, 64, 64)          
+256x256/Conv1_down          73856       (128,)                  (3, 3, 64, 128)         
+Downscale2D                 -           (?, 1, 128, 128)        -                       
+FromRGB_lod1                256         (128,)                  (1, 1, 1, 128)          
+Grow_lod0                   -           (?, 128, 128, 128)      -                       
+128x128/Conv0               147584      (128,)                  (3, 3, 128, 128)        
+128x128/Conv1_down          295168      (256,)                  (3, 3, 128, 256)        
+Downscale2D_1               -           (?, 1, 64, 64)          -                       
+FromRGB_lod2                512         (256,)                  (1, 1, 1, 256)          
+Grow_lod1                   -           (?, 256, 64, 64)        -                       
+64x64/Conv0                 590080      (256,)                  (3, 3, 256, 256)        
+64x64/Conv1_down            1180160     (512,)                  (3, 3, 256, 512)        
+Downscale2D_2               -           (?, 1, 32, 32)          -                       
+FromRGB_lod3                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod2                   -           (?, 512, 32, 32)        -                       
+32x32/Conv0                 2359808     (512,)                  (3, 3, 512, 512)        
+32x32/Conv1_down            2359808     (512,)                  (3, 3, 512, 512)        
+Downscale2D_3               -           (?, 1, 16, 16)          -                       
+FromRGB_lod4                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod3                   -           (?, 512, 16, 16)        -                       
+16x16/Conv0                 2359808     (512,)                  (3, 3, 512, 512)        
+16x16/Conv1_down            2359808     (512,)                  (3, 3, 512, 512)        
+Downscale2D_4               -           (?, 1, 8, 8)            -                       
+FromRGB_lod5                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod4                   -           (?, 512, 8, 8)          -                       
+8x8/Conv0                   2359808     (512,)                  (3, 3, 512, 512)        
+8x8/Conv1_down              2359808     (512,)                  (3, 3, 512, 512)        
+Downscale2D_5               -           (?, 1, 4, 4)            -                       
+FromRGB_lod6                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod5                   -           (?, 512, 4, 4)          -                       
+4x4/MinibatchStddev         -           (?, 1, 4, 4)            -                       
+4x4/Conv                    2364416     (512,)                  (3, 3, 513, 512)        
+4x4/Dense0                  4194816     (512,)                  (8192, 512)             
+4x4/Dense1                  513         (1,)                    (512, 1)                
+scores_out                  -           (?, 1)                  -                       
+labels_out                  -           (?, 0)                  -                       
+---                         ---         ---                     ---                     
+Total                       23047361                                                    
+
+Building TensorFlow graph...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+2020-04-12 08:58:23.729813: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 9.00MiB.  Current allocation summary follows.
+2020-04-12 08:58:23.729961: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:58:23.729993: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at random_op.cc:202 : Resource exhausted: OOM when allocating tensor with shape[3,3,512,512] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+Setting up snapshot image grid...
+2020-04-12 08:58:33.730169: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.0KiB.  Current allocation summary follows.
+2020-04-12 08:58:33.730348: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:58:33.730401: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at assign_op.h:117 : Resource exhausted: OOM when allocating tensor with shape[512] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+Setting up result dir...
+Saving results to results/047-pgan-masks_complete_no_blacks-preset-v2-1gpu-fp32
+Training...
+2020-04-12 08:58:43.730527: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.0KiB.  Current allocation summary follows.
+2020-04-12 08:58:43.730653: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:58:43.730673: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at random_op.cc:202 : Resource exhausted: OOM when allocating tensor with shape[1,1,512,1] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 08:58:53.730855: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 4B.  Current allocation summary follows.
+2020-04-12 08:58:53.731419: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:58:53.731483: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at assign_op.h:117 : Resource exhausted: OOM when allocating tensor with shape[1] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 08:59:03.731679: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 4.50MiB.  Current allocation summary follows.
+2020-04-12 08:59:03.732131: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:59:03.732192: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at random_op.cc:202 : Resource exhausted: OOM when allocating tensor with shape[3,3,256,512] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 08:59:13.732404: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 1.0KiB.  Current allocation summary follows.
+2020-04-12 08:59:13.732816: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:59:13.732882: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at assign_op.h:117 : Resource exhausted: OOM when allocating tensor with shape[256] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 08:59:23.733061: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.25MiB.  Current allocation summary follows.
+2020-04-12 08:59:23.733616: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:59:23.733687: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at random_op.cc:202 : Resource exhausted: OOM when allocating tensor with shape[3,3,256,256] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 08:59:33.733908: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 1.0KiB.  Current allocation summary follows.
+2020-04-12 08:59:33.734699: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:59:33.734779: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at assign_op.h:117 : Resource exhausted: OOM when allocating tensor with shape[256] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 08:59:43.735032: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 1.0KiB.  Current allocation summary follows.
+2020-04-12 08:59:43.735578: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:59:43.735644: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at random_op.cc:202 : Resource exhausted: OOM when allocating tensor with shape[1,1,256,1] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 08:59:53.735843: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 4B.  Current allocation summary follows.
+2020-04-12 08:59:53.736404: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 08:59:53.736472: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at assign_op.h:117 : Resource exhausted: OOM when allocating tensor with shape[1] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 09:00:03.736719: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 1.12MiB.  Current allocation summary follows.
+2020-04-12 09:00:03.737287: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 09:00:03.737360: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at random_op.cc:202 : Resource exhausted: OOM when allocating tensor with shape[3,3,128,256] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 09:00:13.737594: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 512B.  Current allocation summary follows.
+2020-04-12 09:00:13.738161: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 09:00:13.738235: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at assign_op.h:117 : Resource exhausted: OOM when allocating tensor with shape[128] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 09:00:23.738472: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 576.0KiB.  Current allocation summary follows.
+2020-04-12 09:00:23.739034: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 09:00:23.739105: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at random_op.cc:202 : Resource exhausted: OOM when allocating tensor with shape[3,3,128,128] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 09:00:33.739337: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 512B.  Current allocation summary follows.
+2020-04-12 09:00:33.739899: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 09:00:33.739966: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at assign_op.h:117 : Resource exhausted: OOM when allocating tensor with shape[128] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 09:00:43.740123: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 512B.  Current allocation summary follows.
+2020-04-12 09:00:43.740325: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 09:00:43.740351: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at random_op.cc:202 : Resource exhausted: OOM when allocating tensor with shape[1,1,128,1] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 09:00:53.740520: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 4B.  Current allocation summary follows.
+2020-04-12 09:00:53.740807: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 09:00:53.740843: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at assign_op.h:117 : Resource exhausted: OOM when allocating tensor with shape[1] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 09:01:03.740997: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 288.0KiB.  Current allocation summary follows.
+2020-04-12 09:01:03.741284: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 09:01:03.741321: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at random_op.cc:202 : Resource exhausted: OOM when allocating tensor with shape[3,3,64,128] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 09:01:13.741472: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 256B.  Current allocation summary follows.
+2020-04-12 09:01:13.741633: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 09:01:13.741653: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at assign_op.h:117 : Resource exhausted: OOM when allocating tensor with shape[64] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 09:01:23.741783: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 144.0KiB.  Current allocation summary follows.
+2020-04-12 09:01:23.741927: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 09:01:23.741947: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at random_op.cc:202 : Resource exhausted: OOM when allocating tensor with shape[3,3,64,64] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 09:01:33.742043: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 256B.  Current allocation summary follows.
+2020-04-12 09:01:33.742165: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 09:01:33.742181: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at assign_op.h:117 : Resource exhausted: OOM when allocating tensor with shape[64] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 09:01:43.742275: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 256B.  Current allocation summary follows.
+2020-04-12 09:01:43.742404: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 09:01:43.742422: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at random_op.cc:202 : Resource exhausted: OOM when allocating tensor with shape[1,1,64,1] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 09:01:53.742558: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 4B.  Current allocation summary follows.
+2020-04-12 09:01:53.742756: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 09:01:53.742781: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at assign_op.h:117 : Resource exhausted: OOM when allocating tensor with shape[1] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 09:02:03.746981: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 16.00MiB.  Current allocation summary follows.
+2020-04-12 09:02:03.747207: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************************************************************************************xxxxxxxx
+2020-04-12 09:02:03.747237: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at assign_op.h:117 : Resource exhausted: OOM when allocating tensor with shape[512,8192] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+2020-04-12 09:02:13.747475: W tensorflow/core/common_runtime/bfc_allocator.cc:267] Allocator (GPU_0_bfc) ran out of memory trying to allocate 9.00MiB.  Current allocation summary follows.
+2020-04-12 09:02:13.748059: W tensorflow/core/common_runtime/bfc_allocator.cc:271] ********************xxxxxxxxxxxxx*___________________***************************************xxxxxxxx
+2020-04-12 09:02:13.748148: W tensorflow/core/framework/op_kernel.cc:1401] OP_REQUIRES failed at assign_op.h:117 : Resource exhausted: OOM when allocating tensor with shape[3,3,512,512] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+Traceback (most recent call last):
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1334, in _do_call
+    return fn(*args)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1319, in _run_fn
+    options, feed_dict, fetch_list, target_list, run_metadata)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1407, in _call_tf_sessionrun
+    run_metadata)
+tensorflow.python.framework.errors_impl.ResourceExhaustedError: OOM when allocating tensor with shape[512] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+	 [[{{node G/8x8/Conv1/bias/Assign}}]]
+Hint: If you want to see a list of allocated tensors when OOM happens, add report_tensor_allocations_upon_oom to RunOptions for current allocation info.
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "train.py", line 290, in <module>
+    tfutil.call_func_by_name(**config.train)
+  File "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/tfutil.py", line 236, in call_func_by_name
+    return import_obj(func)(*args, **kwargs)
+  File "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/train.py", line 158, in train_progressive_gan
+    G, D, Gs = misc.load_pkl(network_pkl)
+  File "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/misc.py", line 30, in load_pkl
+    return legacy.LegacyUnpickler(file, encoding='latin1').load()
+  File "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/tfutil.py", line 572, in __setstate__
+    self.reset_vars()
+  File "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/tfutil.py", line 495, in reset_vars
+    run([var.initializer for var in self.vars.values()])
+  File "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/tfutil.py", line 21, in run
+    return tf.get_default_session().run(*args, **kwargs)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 929, in run
+    run_metadata_ptr)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1152, in _run
+    feed_dict_tensor, options, run_metadata)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1328, in _do_run
+    run_metadata)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/client/session.py", line 1348, in _do_call
+    raise type(e)(node_def, op, message)
+tensorflow.python.framework.errors_impl.ResourceExhaustedError: OOM when allocating tensor with shape[512] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+	 [[node G/8x8/Conv1/bias/Assign (defined at <string>:54) ]]
+Hint: If you want to see a list of allocated tensors when OOM happens, add report_tensor_allocations_upon_oom to RunOptions for current allocation info.
+
+
+Caused by op 'G/8x8/Conv1/bias/Assign', defined at:
+  File "train.py", line 290, in <module>
+    tfutil.call_func_by_name(**config.train)
+  File "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/tfutil.py", line 236, in call_func_by_name
+    return import_obj(func)(*args, **kwargs)
+  File "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/train.py", line 158, in train_progressive_gan
+    G, D, Gs = misc.load_pkl(network_pkl)
+  File "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/misc.py", line 30, in load_pkl
+    return legacy.LegacyUnpickler(file, encoding='latin1').load()
+  File "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/tfutil.py", line 571, in __setstate__
+    self._init_graph()
+  File "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/tfutil.py", line 476, in _init_graph
+    out_expr = self._build_func(*self.input_templates, is_template_graph=True, **self.static_kwargs)
+  File "<string>", line 211, in G_paper
+  File "<string>", line 198, in block
+  File "<string>", line 54, in apply_bias
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/variable_scope.py", line 1479, in get_variable
+    aggregation=aggregation)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/variable_scope.py", line 1220, in get_variable
+    aggregation=aggregation)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/variable_scope.py", line 547, in get_variable
+    aggregation=aggregation)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/variable_scope.py", line 499, in _true_getter
+    aggregation=aggregation)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/variable_scope.py", line 911, in _get_single_variable
+    aggregation=aggregation)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/variables.py", line 213, in __call__
+    return cls._variable_v1_call(*args, **kwargs)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/variables.py", line 176, in _variable_v1_call
+    aggregation=aggregation)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/variables.py", line 155, in <lambda>
+    previous_getter = lambda **kwargs: default_variable_creator(None, **kwargs)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/variable_scope.py", line 2495, in default_variable_creator
+    expected_shape=expected_shape, import_scope=import_scope)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/variables.py", line 217, in __call__
+    return super(VariableMetaclass, cls).__call__(*args, **kwargs)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/variables.py", line 1395, in __init__
+    constraint=constraint)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/variables.py", line 1547, in _init_from_args
+    validate_shape=validate_shape).op
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/state_ops.py", line 223, in assign
+    validate_shape=validate_shape)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/gen_state_ops.py", line 64, in assign
+    use_locking=use_locking, name=name)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py", line 788, in _apply_op_helper
+    op_def=op_def)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/util/deprecation.py", line 507, in new_func
+    return func(*args, **kwargs)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/ops.py", line 3300, in create_op
+    op_def=op_def)
+  File "/nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/ops.py", line 1801, in __init__
+    self._traceback = tf_stack.extract_stack()
+
+ResourceExhaustedError (see above for traceback): OOM when allocating tensor with shape[512] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+	 [[node G/8x8/Conv1/bias/Assign (defined at <string>:54) ]]
+Hint: If you want to see a list of allocated tensors when OOM happens, add report_tensor_allocations_upon_oom to RunOptions for current allocation info.
+
+
+tick 1     kimg 8040.1   lod 0.00  minibatch 8    time 2d 14h 37m   sec/tick 3345.1  sec/kimg 83.63   maintenance 17.9
+tick 2     kimg 8080.1   lod 0.00  minibatch 8    time 2d 15h 33m   sec/tick 3342.5  sec/kimg 83.56   maintenance 4.5
+tick 3     kimg 8120.1   lod 0.00  minibatch 8    time 2d 16h 29m   sec/tick 3335.7  sec/kimg 83.39   maintenance 0.4
+tick 4     kimg 8160.1   lod 0.00  minibatch 8    time 2d 17h 24m   sec/tick 3334.7  sec/kimg 83.37   maintenance 0.4
+tick 5     kimg 8200.1   lod 0.00  minibatch 8    time 2d 18h 20m   sec/tick 3335.0  sec/kimg 83.38   maintenance 0.4
+tick 6     kimg 8240.1   lod 0.00  minibatch 8    time 2d 19h 15m   sec/tick 3335.0  sec/kimg 83.37   maintenance 0.4
+Initializing TensorFlow...
+Running util_scripts.evaluate_metrics()...
+Logging output to results/047-pgan-masks_complete_no_blacks-preset-v2-1gpu-fp32/metric-swd-16k.txt
+Streaming data using dataset.TFRecordDataset...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Code/progressive_growing_of_gans/dataset.py:74: tf_record_iterator (from tensorflow.python.lib.io.tf_record) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use eager execution and: 
+`tf.data.TFRecordDataset(path)`
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+Dataset shape = [1, 256, 256]
+Dynamic range = [0, 6]
+Label size    = 0
+Initializing metrics.sliced_wasserstein.API...
+
+Snapshot  Time_eval   SWDx1e3_256  SWDx1e3_128  SWDx1e3_64   SWDx1e3_32   SWDx1e3_16   SWDx1e3_avg  
+---       ---         ---          ---          ---          ---          ---          ---          
+Reals     14m 06s     0.0000       0.0000       0.0000       0.0000       0.0000       0.0000       
+Reals2    14m 07s     1.6145       1.3541       1.4181       1.8357       1.5923       1.5629       
+8240      15m 44s     7.2098       2.9446       3.2241       3.3754       3.6526       4.0813       
+8200      15m 46s     6.8572       3.7954       3.3417       4.3391       4.4948       4.5657       
+8160      15m 40s     5.5119       3.0786       2.8989       3.5237       3.4044       3.6835       
+8120      15m 41s     5.1943       2.7760       3.2958       3.6988       4.1037       3.8137       
+8080      15m 43s     6.0205       3.0366       2.6134       3.1008       3.0963       3.5735       
+8040      15m 41s     4.3420       3.3107       3.3077       4.2441       5.6956       4.1800       
+
+Exiting...
+Initializing TensorFlow...
+Running train.train_progressive_gan()...
+Streaming data using dataset.TFRecordDataset...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Code/progressive_growing_of_gans/dataset.py:74: tf_record_iterator (from tensorflow.python.lib.io.tf_record) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use eager execution and: 
+`tf.data.TFRecordDataset(path)`
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+Dataset shape = [1, 256, 256]
+Dynamic range = [0, 6]
+Label size    = 0
+Loading networks from "results/047-pgan-masks_complete_no_blacks-preset-v2-1gpu-fp32/network-snapshot-008240.pkl"...
+
+G                           Params      OutputShape             WeightShape             
+---                         ---         ---                     ---                     
+latents_in                  -           (?, 512)                -                       
+labels_in                   -           (?, 0)                  -                       
+lod                         -           ()                      -                       
+4x4/PixelNorm               -           (?, 512)                -                       
+4x4/Dense                   4194816     (512,)                  (512, 8192)             
+4x4/Conv                    2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod6                  513         (1,)                    (1, 1, 512, 1)          
+8x8/Conv0_up                2359808     (512,)                  (3, 3, 512, 512)        
+8x8/Conv1                   2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod5                  513         (1,)                    (1, 1, 512, 1)          
+Upscale2D                   -           (?, 1, 8, 8)            -                       
+Grow_lod5                   -           (?, 1, 8, 8)            -                       
+16x16/Conv0_up              2359808     (512,)                  (3, 3, 512, 512)        
+16x16/Conv1                 2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod4                  513         (1,)                    (1, 1, 512, 1)          
+Upscale2D_1                 -           (?, 1, 16, 16)          -                       
+Grow_lod4                   -           (?, 1, 16, 16)          -                       
+32x32/Conv0_up              2359808     (512,)                  (3, 3, 512, 512)        
+32x32/Conv1                 2359808     (512,)                  (3, 3, 512, 512)        
+ToRGB_lod3                  513         (1,)                    (1, 1, 512, 1)          
+Upscale2D_2                 -           (?, 1, 32, 32)          -                       
+Grow_lod3                   -           (?, 1, 32, 32)          -                       
+64x64/Conv0_up              1179904     (256,)                  (3, 3, 256, 512)        
+64x64/Conv1                 590080      (256,)                  (3, 3, 256, 256)        
+ToRGB_lod2                  257         (1,)                    (1, 1, 256, 1)          
+Upscale2D_3                 -           (?, 1, 64, 64)          -                       
+Grow_lod2                   -           (?, 1, 64, 64)          -                       
+128x128/Conv0_up            295040      (128,)                  (3, 3, 128, 256)        
+128x128/Conv1               147584      (128,)                  (3, 3, 128, 128)        
+ToRGB_lod1                  129         (1,)                    (1, 1, 128, 1)          
+Upscale2D_4                 -           (?, 1, 128, 128)        -                       
+Grow_lod1                   -           (?, 1, 128, 128)        -                       
+256x256/Conv0_up            73792       (64,)                   (3, 3, 64, 128)         
+256x256/Conv1               36928       (64,)                   (3, 3, 64, 64)          
+ToRGB_lod0                  65          (1,)                    (1, 1, 64, 1)           
+Upscale2D_5                 -           (?, 1, 256, 256)        -                       
+Grow_lod0                   -           (?, 1, 256, 256)        -                       
+images_out                  -           (?, 1, 256, 256)        -                       
+---                         ---         ---                     ---                     
+Total                       23039303                                                    
+
+
+D                           Params      OutputShape             WeightShape             
+---                         ---         ---                     ---                     
+images_in                   -           (?, 1, 256, 256)        -                       
+lod                         -           ()                      -                       
+FromRGB_lod0                128         (64,)                   (1, 1, 1, 64)           
+256x256/Conv0               36928       (64,)                   (3, 3, 64, 64)          
+256x256/Conv1_down          73856       (128,)                  (3, 3, 64, 128)         
+Downscale2D                 -           (?, 1, 128, 128)        -                       
+FromRGB_lod1                256         (128,)                  (1, 1, 1, 128)          
+Grow_lod0                   -           (?, 128, 128, 128)      -                       
+128x128/Conv0               147584      (128,)                  (3, 3, 128, 128)        
+128x128/Conv1_down          295168      (256,)                  (3, 3, 128, 256)        
+Downscale2D_1               -           (?, 1, 64, 64)          -                       
+FromRGB_lod2                512         (256,)                  (1, 1, 1, 256)          
+Grow_lod1                   -           (?, 256, 64, 64)        -                       
+64x64/Conv0                 590080      (256,)                  (3, 3, 256, 256)        
+64x64/Conv1_down            1180160     (512,)                  (3, 3, 256, 512)        
+Downscale2D_2               -           (?, 1, 32, 32)          -                       
+FromRGB_lod3                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod2                   -           (?, 512, 32, 32)        -                       
+32x32/Conv0                 2359808     (512,)                  (3, 3, 512, 512)        
+32x32/Conv1_down            2359808     (512,)                  (3, 3, 512, 512)        
+Downscale2D_3               -           (?, 1, 16, 16)          -                       
+FromRGB_lod4                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod3                   -           (?, 512, 16, 16)        -                       
+16x16/Conv0                 2359808     (512,)                  (3, 3, 512, 512)        
+16x16/Conv1_down            2359808     (512,)                  (3, 3, 512, 512)        
+Downscale2D_4               -           (?, 1, 8, 8)            -                       
+FromRGB_lod5                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod4                   -           (?, 512, 8, 8)          -                       
+8x8/Conv0                   2359808     (512,)                  (3, 3, 512, 512)        
+8x8/Conv1_down              2359808     (512,)                  (3, 3, 512, 512)        
+Downscale2D_5               -           (?, 1, 4, 4)            -                       
+FromRGB_lod6                1024        (512,)                  (1, 1, 1, 512)          
+Grow_lod5                   -           (?, 512, 4, 4)          -                       
+4x4/MinibatchStddev         -           (?, 1, 4, 4)            -                       
+4x4/Conv                    2364416     (512,)                  (3, 3, 513, 512)        
+4x4/Dense0                  4194816     (512,)                  (8192, 512)             
+4x4/Dense1                  513         (1,)                    (512, 1)                
+scores_out                  -           (?, 1)                  -                       
+labels_out                  -           (?, 0)                  -                       
+---                         ---         ---                     ---                     
+Total                       23047361                                                    
+
+Building TensorFlow graph...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/ops/math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+Setting up snapshot image grid...
+Setting up result dir...
+Saving results to results/048-pgan-masks_complete_no_blacks-preset-v2-1gpu-fp32
+Training...
+tick 1     kimg 8280.1   lod 0.00  minibatch 8    time 2d 20h 10m   sec/tick 3353.6  sec/kimg 83.84   maintenance 17.9
+tick 2     kimg 8320.1   lod 0.00  minibatch 8    time 2d 21h 06m   sec/tick 3357.1  sec/kimg 83.93   maintenance 4.5
+tick 3     kimg 8360.1   lod 0.00  minibatch 8    time 2d 22h 02m   sec/tick 3352.2  sec/kimg 83.80   maintenance 0.4
+tick 4     kimg 8400.1   lod 0.00  minibatch 8    time 2d 22h 58m   sec/tick 3335.6  sec/kimg 83.39   maintenance 0.4
+Initializing TensorFlow...
+Running util_scripts.evaluate_metrics()...
+Logging output to results/048-pgan-masks_complete_no_blacks-preset-v2-1gpu-fp32/metric-swd-16k.txt
+Streaming data using dataset.TFRecordDataset...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Code/progressive_growing_of_gans/dataset.py:74: tf_record_iterator (from tensorflow.python.lib.io.tf_record) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use eager execution and: 
+`tf.data.TFRecordDataset(path)`
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+Dataset shape = [1, 256, 256]
+Dynamic range = [0, 6]
+Label size    = 0
+Initializing metrics.sliced_wasserstein.API...
+
+Snapshot  Time_eval   SWDx1e3_256  SWDx1e3_128  SWDx1e3_64   SWDx1e3_32   SWDx1e3_16   SWDx1e3_avg  
+---       ---         ---          ---          ---          ---          ---          ---          
+Reals     14m 08s     0.0000       0.0000       0.0000       0.0000       0.0000       0.0000       
+Reals2    14m 06s     1.6145       1.3541       1.4181       1.8357       1.5923       1.5629       
+8400      15m 43s     7.8822       3.6818       2.8778       3.5533       3.8887       4.3768       
+8360      15m 41s     6.1657       2.9383       3.2200       3.3734       3.4263       3.8247       
+8320      15m 42s     7.0095       3.9186       3.1316       3.7182       3.4293       4.2414       
+8280      15m 40s     5.5272       2.4965       3.3009       3.5540       3.7727       3.7302       
+
+Exiting...

@@ -1,0 +1,3 @@
+python train.py --name PGAN-brains2 --dataset_mode custom --label_dir /nobackup/data/mehfo331/Data/Slices/z/Padded/Masks_complete/Training --image_dir /nobackup/data/mehfo331/Data/Slices/z/Padded/t1ce/Training --label_nc 7 --gpu_ids 0 --preprocess_mode none --no_flip --no_instance --output_nc 1 --no_vgg_loss
+
+python test.py --name PGAN-brains2 --dataset_mode custom --no_instance --label_nc 7 --preprocess_mode none --no_flip --no_instance --output_nc 1 --label_dir /nobackup/data/mehfo331/Code/progressive_growing_of_gans/results/051-fake-images-47 --image_dir /nobackup/data/mehfo331/Code/progressive_growing_of_gans/results/051-fake-images-47 --gpu_ids 0
