@@ -1,49 +1,62 @@
 import os
 import numpy as np
 
-#classes = ["Background", "NCR/NET", "ED", "ET", "WM", "GM", "CSF"]
+classes = ["Background", "NCR/NET", "ED", "ET", "WM", "GM", "CSF"]
 #classes = ["Background", "NCR/NET", "ED", "ET"]
-classes = ["Non-tumor", "Tumor"]
+#classes = ["Non-tumor", "Tumor"]
+
+class_type = "complete"
+class_dir = {"binary": "Masks", "incomplete": "Masks", "complete": "Masks_complete"}
+
 
 Nclasses = len(classes)
 
-#path = "/nobackup/data/mehfo331/Thesis/Data/Slices/z"
-path = "/nobackup/data/mehfo331/Thesis/Data/Slices/z/Padded/"
+slice_dim = "z"
+USE_GANS = True
 
-Ndata = len(os.listdir(path + "/Masks/Training"))
+#path = "/nobackup/data/mehfo331/Data/Slices/" + slice_dim
+path = "/nobackup/data/mehfo331/Data/Slices/" + slice_dim + "/Padded"
 
-if Ndata != len(os.listdir(path + "/Masks/Training")):
-    raise Exception('The number of images and image masks do not match.')
+# if Ndata != len(os.listdir(path + "/Masks/Training")):
+#     raise Exception('The number of images and image masks do not match.')
 
 
 #%%
 
 from PIL import Image
-from keras.preprocessing.image import img_to_array
 
-masks = []
+def read_data(path):
 
-print("---------------")
-print("Reading data...")
-print("---------------")
+    print("Reading data...")
+    Ndata = len(os.listdir(path))
 
-for i in range(Ndata):
+    masks = np.zeros((Ndata, 256, 256), dtype = 'uint8')
     
-    #mask = Image.open(path + "/Masks_complete/Training/train_mask" + str(i).zfill(5) + ".png")
-    mask = Image.open(path + "/Masks/Training/train_mask" + str(i).zfill(5) + ".png")
-    
-    mask_array = img_to_array(mask, dtype = 'uint8')
-    
-    if Nclasses == 2:
-        mask_array = mask_array.copy()
-        mask_array[mask_array != 0] = 1
-    
-    masks.append(mask_array)
-    
-print("Finished reading data.")
-print("---------------")
+    for i in range(Ndata):
+        
+        mask = Image.open(path + "/" + str(i).zfill(5) + ".png")
+        mask_array = np.asarray(mask, dtype = 'uint8')
+        
+        if Nclasses == 2:
+            mask_array = mask_array.copy()
+            mask_array[mask_array != 0] = 1
+            
+        #masks.append(mask_array)
+        #masks = np.asarray(masks, dtype = 'uint8')
+            
+        masks[i] = mask_array
+        
+    print("Finished reading data.")
+        
+    return(masks)
+        
 
-masks = np.asarray(masks, dtype = 'uint8')
+#%%
+
+masks = read_data(path + "/" + class_dir[class_type] + "/Training")
+
+if USE_GANS:
+    masks_GAN = read_data(path + "/" + class_dir[class_type] + "/GAN_preprocessed/Kept")
 
 #%%
 
@@ -57,10 +70,20 @@ def calculate_class_weights(Y):
 
 class_weights = calculate_class_weights(masks)
 
+if USE_GANS:
+    masks_total = np.concatenate((masks, masks_GAN), axis = 0)
+    class_weights_total = calculate_class_weights(masks_total)
+
 #%%
+
+#np.save(path + "/Class_weights/" + class_type + ".npy", class_weights)
+
+if USE_GANS:
+    np.save(path + "/Class_weights/" + class_type + "_with_GANs" + ".npy", class_weights_total)
 
 #np.save(path + "Class_weights/class_weights_complete.npy", class_weights)
 #np.save(path + "Class_weights/class_weights_incomplete.npy", class_weights)
-np.save(path + "Class_weights/class_weights_binary.npy", class_weights)
+#np.save(path + "Class_weights/class_weights_binary.npy", class_weights)
+    
 
 #%%
