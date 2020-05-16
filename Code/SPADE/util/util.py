@@ -108,8 +108,8 @@ def tensor2im(image_tensor, imtype=np.uint16, normalize=True, tile=False):
         #image_numpy = np.transpose(image_numpy, (1, 2, 0)) * 255.0
         image_numpy = adjust_dynamic_range(image_numpy, [0,1], [0,PIXEL_MAX])
     
-    image_numpy = np.rint(image_numpy).clip(0, PIXEL_MAX).astype(imtype)
-    #image_numpy = np.rint(image_numpy).clip(0, 255).astype(imtype)
+    image_numpy = np.rint(image_numpy).clip(0, PIXEL_MAX)
+    #image_numpy = np.rint(image_numpy).clip(0, 255)
     #image_numpy = np.clip(image_numpy, 0, 255)
     
     # if image_numpy.shape[2] == 1:
