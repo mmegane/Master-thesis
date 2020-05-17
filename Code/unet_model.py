@@ -8,26 +8,40 @@ from keras import backend as K
 
 class Unet(object):
     
-    def __init__(self, img_size, Nclasses, class_weights, Nfilter_start = 64, depth = 5):
+    def __init__(self, img_size, Nclasses, class_weights, use_GAN = False, class_weights_with_GAN = None, Nfilter_start = 64, depth = 5):
         self.img_size = img_size
         self.Nclasses = Nclasses
         self.class_weights = class_weights
-        #self.weights_path = weights_path
+        self.class_weights_with_GAN = class_weights_with_GAN
         self.Nfilter_start = Nfilter_start
         self.depth = depth
-        #self.batch_size = batch_size
+        self.use_GAN = use_GAN
 
         self.model = Sequential()
         inputs = Input(img_size)
- 
-        def weighted_dice_loss(y_true, y_pred):
-            eps = 1e-5
+    
+        # def weighted_dice_loss(y_true, y_pred):
+        #     eps = 1e-5
                 
-            num = 2. * K.sum(self.class_weights * K.sum(y_true * y_pred, axis = [0,1,2]))
-            den = K.sum(self.class_weights * K.sum(y_true + y_pred, axis = [0,1,2])) + eps
+        #     num = 2. * K.sum(self.class_weights * K.sum(y_true * y_pred, axis = [0,1,2]))
+        #     den = K.sum(self.class_weights * K.sum(y_true + y_pred, axis = [0,1,2])) + eps
             
-            loss = 1 - num/den
-            return(loss)
+        #     loss = 1 - num/den
+        #     return(loss)
+        
+        
+        def return_weighted_dice_loss(class_weights):
+            
+            def weighted_dice_loss(y_true, y_pred):
+                eps = 1e-5
+                    
+                num = 2. * K.sum(class_weights * K.sum(y_true * y_pred, axis = [0,1,2]))
+                den = K.sum(class_weights * K.sum(y_true + y_pred, axis = [0,1,2])) + eps
+                
+                loss = 1 - num/den
+                return(loss)
+            
+            return(weighted_dice_loss)
         
         
         # This is a help function that performs 2 convolutions (filter size (3 x 3), he normal initialization, same padding),
@@ -105,7 +119,17 @@ class Unet(object):
         
         self.model = Model(inputs = inputs, outputs = final)
         
-        self.model.compile(loss = weighted_dice_loss,
+        # Create loss and metric
+        
+        if self.use_GAN:
+            self.loss = return_weighted_dice_loss(self.class_weights_with_GAN)
+        else:
+            self.loss = return_weighted_dice_loss(self.class_weights)
+            
+        self.metric = return_weighted_dice_loss(self.class_weights)
+        
+        
+        self.model.compile(loss = self.loss,
                            optimizer = Adam(lr = 1e-4),
-                           metrics = [weighted_dice_loss]) 
+                           metrics = [self.metric]) 
         

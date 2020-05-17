@@ -37,7 +37,7 @@ K.tensorflow_backend.set_session(tf.Session(config=config))
 LOAD_WEIGHTS = False
 SAVE_WEIGHTS = True
 USE_GAN = True
-verbosity = 2
+verbosity = 1
 
 #%%
 
@@ -54,8 +54,8 @@ img_path = path + "/t1ce"
 mask_path = path  + "/Masks_complete"
 #mask_path = path + "/Masks"
 
-img_path_GAN = img_path + "/GAN"
-mask_path_GAN = mask_path + "/GAN"
+img_path_GAN = img_path + "/GAN_Preprocessed/Kept"
+mask_path_GAN = mask_path + "/GAN_Preprocessed/Kept"
 
 #%%
     
@@ -66,10 +66,14 @@ from keras.utils import to_categorical
 PIXEL_MAX = 11356
 #PIXEL_MAX = 65504
 IMG_MEAN = np.load(img_path + "/image_mean.npy")
+IMG_MEAN_WITH_GAN = np.load(img_path + "/image_mean_with_GANs.npy")
 
 #%%
 
-def data_generator(img_path, mask_path, load_size, batch_size, categorical = True, img_path_GAN = None, mask_path_GAN = None, use_GAN = False):
+def data_generator(img_path, mask_path, load_size, batch_size, categorical = True,
+                   use_GAN = False, img_path_GAN = None, mask_path_GAN = None, 
+                   normalization_constant = PIXEL_MAX, img_mean = IMG_MEAN):
+    
     img_dirs = [img_path + "/" + s for s in sorted(os.listdir(img_path))]
     mask_dirs = [mask_path + "/" + s for s in sorted(os.listdir(mask_path))]
     
@@ -147,10 +151,10 @@ def data_generator(img_path, mask_path, load_size, batch_size, categorical = Tru
         # Preprocessing:
             
         # Normalize:            
-        img_batch = img_batch/PIXEL_MAX
+        img_batch = img_batch/normalization_constant
         
         # Center:       
-        img_batch -= IMG_MEAN
+        img_batch -= img_mean
         
         # Categorize:   
         if categorical:
@@ -171,9 +175,13 @@ class_weights = np.load(path + "/Class_weights/class_weights_complete.npy")
 #class_weights = np.load(path + "/Class_weights/class_weights_incomplete.npy")
 #class_weights = np.load(path + "/Class_weights/class_weights_binary.npy")
 
+class_weights_with_GAN = np.load(path + "/Class_weights/complete_with_GANs.npy")
+
 net = Unet(img_size = image_shape,
              Nclasses = Nclasses,
              class_weights = class_weights,
+             class_weights_with_GAN = class_weights_with_GAN,
+             use_GAN = USE_GAN,
              depth = 5)
 
 #%%
@@ -187,14 +195,17 @@ if LOAD_WEIGHTS:
     #net.model.load_weights(weight_path + "/Saved/U-net_weights_incomplete.h5")
     #net.model.load_weights(weight_path + "/Saved/U-net_weights_binary.h5")
 #%%
+    
+if SAVE_WEIGHTS:    
 
-callbacks = [ModelCheckpoint(weight_path + "/U-net_weights_GAN.h5",
-                             verbose = 1,
-                             save_best_only = True,
-                             save_weights_only = True)]
-
-if (not SAVE_WEIGHTS):
+    callbacks = [ModelCheckpoint(weight_path + "/U-net_weights_GAN_2.h5",
+                                 verbose = 1,
+                                 save_best_only = True,
+                                 save_weights_only = True,
+                                 monitor = 'val_weighted_dice_loss')]
+else:
     callbacks = None
+
 
 #%%
         
@@ -220,12 +231,11 @@ load_size_val = int(validation_steps * batch_size)
 
 if USE_GAN:
     train_generator = data_generator(train_img_path, train_mask_path, load_size_train, batch_size,
-                                     img_path_GAN = img_path_GAN, mask_path_GAN = mask_path_GAN, use_GAN = True)
+                                     img_path_GAN = img_path_GAN, mask_path_GAN = mask_path_GAN, use_GAN = True,
+                                     normalization_constant = PIXEL_MAX, img_mean = IMG_MEAN_WITH_GAN)
 else:
     train_generator = data_generator(train_img_path, train_mask_path, load_size_train, batch_size)
     
-
-train_generator = data_generator(train_img_path, train_mask_path, load_size_train, batch_size)
 val_generator = data_generator(val_img_path, val_mask_path, load_size_val, batch_size)
 
 #%%
@@ -243,7 +253,7 @@ history = net.model.fit_generator(train_generator,
 
 # val_generator = data_generator(val_img_path, val_mask_path, load_size_val, batch_size)
 
-# dice, _ = net.model.evaluate_generator(val_generator, steps = validation_steps, verbose = 1)
+# _ , dice = net.model.evaluate_generator(val_generator, steps = validation_steps, verbose = 1)
 
 # #%%
 
