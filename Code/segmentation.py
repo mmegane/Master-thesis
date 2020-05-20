@@ -25,19 +25,12 @@ warnings.simplefilter(action='ignore', category = FutureWarning)
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 
 # The GPU id to use, usually either "0" or "1";
-os.environ["CUDA_VISIBLE_DEVICES"]="0";
+os.environ["CUDA_VISIBLE_DEVICES"]="1";
 
 # Allow growth of GPU memory (otherwise it will look like all the memory is being used, even if you only use 10 MB)
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 K.tensorflow_backend.set_session(tf.Session(config=config))
-
-#%%
-
-LOAD_WEIGHTS = False
-SAVE_WEIGHTS = True
-USE_GAN = True
-verbosity = 1
 
 #%%
 
@@ -58,28 +51,61 @@ img_path_GAN = img_path + "/GAN_Preprocessed/Kept"
 mask_path_GAN = mask_path + "/GAN_Preprocessed/Kept"
 
 #%%
+
+LOAD_WEIGHTS = False
+SAVE_WEIGHTS = False
+
+BATCH_SIZE = 8
+EPOCHS = 150
+VERBOSITY = 1
+
+LOAD_NAME = "U-net_weights_GAN.h5"
+SAVE_NAME = "U-net_weights_GAN_(5k).h5"
+
+USE_GAN = True
+
+TRAIN_RATIO = 0
+GAN_RATIO = 1
+
+PIXEL_MAX = 11356
+#PIXEL_MAX = 65504
+IMG_MEAN = np.load(img_path + "/image_mean.npy")
+IMG_MEAN_WITH_GAN = np.load(img_path + "/image_mean_with_GANs_(5k).npy")
+
+CLASS_WEIGHTS = np.load(path + "/Class_weights/class_weights_complete.npy")
+#CLASS_WEIGHTS = np.load(path + "/Class_weights/class_weights_incomplete.npy")
+#CLASS_WEIGHTS = np.load(path + "/Class_weights/class_weights_binary.npy")
+
+CLASS_WEIGHTS_WITH_GAN = np.load(path + "/Class_weights/complete_with_GANs_(5k).npy")
+
+#%%
     
 from PIL import Image
 from keras.preprocessing.image import img_to_array
 from keras.utils import to_categorical
 
-PIXEL_MAX = 11356
-#PIXEL_MAX = 65504
-IMG_MEAN = np.load(img_path + "/image_mean.npy")
-IMG_MEAN_WITH_GAN = np.load(img_path + "/image_mean_with_GANs.npy")
-
-#%%
 
 def data_generator(img_path, mask_path, load_size, batch_size, categorical = True,
                    use_GAN = False, img_path_GAN = None, mask_path_GAN = None, 
-                   normalization_constant = PIXEL_MAX, img_mean = IMG_MEAN):
+                   normalization_constant = PIXEL_MAX, img_mean = IMG_MEAN,
+                   real_ratio = 1.0, gan_ratio = 1.0):
     
     img_dirs = [img_path + "/" + s for s in sorted(os.listdir(img_path))]
     mask_dirs = [mask_path + "/" + s for s in sorted(os.listdir(mask_path))]
     
+    # Select subset of (real) data
+    real_cap = np.rint(real_ratio * len(img_dirs)).astype(np.int32)
+    img_dirs = img_dirs[0:real_cap]
+    mask_dirs = mask_dirs[0:real_cap]
+    
     if use_GAN:
         img_dirs_gan = [img_path_GAN + "/" + s for s in sorted(os.listdir(img_path_GAN))]
         mask_dirs_gan = [mask_path_GAN + "/" + s for s in sorted(os.listdir(mask_path_GAN))]
+        
+        # Select subset of GAN data     
+        gan_cap = np.rint(gan_ratio * len(img_dirs_gan)).astype(np.int32)
+        img_dirs_gan = img_dirs_gan[0:gan_cap]
+        mask_dirs_gan = mask_dirs_gan[0:gan_cap]
         
         img_dirs += img_dirs_gan
         mask_dirs += mask_dirs_gan
@@ -171,16 +197,10 @@ sys.path.append(file_dir)
         
 from unet_model import Unet
 
-class_weights = np.load(path + "/Class_weights/class_weights_complete.npy")
-#class_weights = np.load(path + "/Class_weights/class_weights_incomplete.npy")
-#class_weights = np.load(path + "/Class_weights/class_weights_binary.npy")
-
-class_weights_with_GAN = np.load(path + "/Class_weights/complete_with_GANs.npy")
-
 net = Unet(img_size = image_shape,
              Nclasses = Nclasses,
-             class_weights = class_weights,
-             class_weights_with_GAN = class_weights_with_GAN,
+             class_weights = CLASS_WEIGHTS,
+             class_weights_with_GAN = CLASS_WEIGHTS_WITH_GAN,
              use_GAN = USE_GAN,
              depth = 5)
 
@@ -191,14 +211,12 @@ from keras.callbacks import ModelCheckpoint
 weight_path = "/nobackup/data/mehfo331/Code/Unet-weights"
 
 if LOAD_WEIGHTS:
-    net.model.load_weights(weight_path + "/Saved/U-net_weights_complete.h5")
-    #net.model.load_weights(weight_path + "/Saved/U-net_weights_incomplete.h5")
-    #net.model.load_weights(weight_path + "/Saved/U-net_weights_binary.h5")
+    net.model.load_weights(weight_path + "/Saved/" + LOAD_NAME)
 #%%
     
 if SAVE_WEIGHTS:    
 
-    callbacks = [ModelCheckpoint(weight_path + "/U-net_weights_GAN_2.h5",
+    callbacks = [ModelCheckpoint(weight_path + "/" + SAVE_NAME,
                                  verbose = 1,
                                  save_best_only = True,
                                  save_weights_only = True,
@@ -214,14 +232,14 @@ val_img_path = img_path + "/Validation"
 train_mask_path = mask_path + "/Training"
 val_mask_path = mask_path + "/Validation"
 
-Ntraining = len(os.listdir(train_img_path))
+Ntraining = np.rint(TRAIN_RATIO * len(os.listdir(train_img_path))).astype(np.int32)
 Nval = len(os.listdir(val_img_path))
 
 if USE_GAN:
-    Ntraining += len(os.listdir(img_path_GAN))
+    Ntraining += np.rint(GAN_RATIO * len(os.listdir(img_path_GAN))).astype(np.int32)
 
-batch_size = 8
-epochs = 150
+batch_size = BATCH_SIZE
+epochs = EPOCHS
 
 steps_per_epoch = np.ceil(Ntraining/batch_size)
 validation_steps = np.ceil(Nval/batch_size)
@@ -232,9 +250,11 @@ load_size_val = int(validation_steps * batch_size)
 if USE_GAN:
     train_generator = data_generator(train_img_path, train_mask_path, load_size_train, batch_size,
                                      img_path_GAN = img_path_GAN, mask_path_GAN = mask_path_GAN, use_GAN = True,
-                                     normalization_constant = PIXEL_MAX, img_mean = IMG_MEAN_WITH_GAN)
+                                     normalization_constant = PIXEL_MAX, img_mean = IMG_MEAN_WITH_GAN,
+                                     real_ratio = TRAIN_RATIO, gan_ratio = GAN_RATIO)
 else:
-    train_generator = data_generator(train_img_path, train_mask_path, load_size_train, batch_size)
+    train_generator = data_generator(train_img_path, train_mask_path, load_size_train, batch_size,
+                                     real_ratio = TRAIN_RATIO, gan_raio = GAN_RATIO)
     
 val_generator = data_generator(val_img_path, val_mask_path, load_size_val, batch_size)
 
@@ -247,7 +267,7 @@ history = net.model.fit_generator(train_generator,
                                   validation_data = val_generator,
                                   validation_steps = validation_steps,
                                   shuffle = False,
-                                  verbose = verbosity)
+                                  verbose = VERBOSITY)
 
 #%%
 

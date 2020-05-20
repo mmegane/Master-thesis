@@ -56,7 +56,7 @@ def read_data(path):
 masks = read_data(path + "/" + class_dir[class_type] + "/Training")
 
 if USE_GANS:
-    masks_GAN = read_data(path + "/" + class_dir[class_type] + "/GAN_preprocessed/Kept")
+    masks_GAN = read_data(path + "/" + class_dir[class_type] + "/GAN_Preprocessed/Kept")
 
 #%%
 
@@ -71,7 +71,7 @@ def calculate_class_weights(Y):
 class_weights = calculate_class_weights(masks)
 
 if USE_GANS:
-    masks_total = np.concatenate((masks, masks_GAN), axis = 0)
+    masks_total = np.concatenate((masks, masks_GAN[0:4955]), axis = 0)
     class_weights_total = calculate_class_weights(masks_total)
 
 #%%
@@ -79,7 +79,7 @@ if USE_GANS:
 #np.save(path + "/Class_weights/" + class_type + ".npy", class_weights)
 
 if USE_GANS:
-    np.save(path + "/Class_weights/" + class_type + "_with_GANs" + ".npy", class_weights_total)
+    np.save(path + "/Class_weights/" + class_type + "_with_GANs_(5k)" + ".npy", class_weights_total)
 
 #np.save(path + "Class_weights/class_weights_complete.npy", class_weights)
 #np.save(path + "Class_weights/class_weights_incomplete.npy", class_weights)

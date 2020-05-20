@@ -47,13 +47,13 @@ if USE_GANS:
     imgs_GAN = read_data(path + "/GAN_Preprocessed/Kept")
     imgs_GAN = imgs_GAN/PIXEL_MAX
     
-    imgs_total = np.concatenate((imgs, imgs_GAN), axis = 0)
+    imgs_total = np.concatenate((imgs, imgs_GAN[0:4955]), axis = 0)
     image_mean_total = np.mean(imgs_total, axis = (0,1,2))
 
 #%%
 
 #np.save(path + "/imgs_mean.npy", imgs_mean)
 
-# if USE_GANS:
-#     np.save(path + "/image_mean_with_GANs.npy", image_mean_total)
+if USE_GANS:
+    np.save(path + "/image_mean_with_GANs_(5k).npy", image_mean_total)
     
