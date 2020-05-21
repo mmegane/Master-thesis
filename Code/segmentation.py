@@ -27,7 +27,7 @@ warnings.simplefilter(action='ignore', category = FutureWarning)
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 
 # The GPU id to use, usually either "0" or "1";
-os.environ["CUDA_VISIBLE_DEVICES"]="1";
+os.environ["CUDA_VISIBLE_DEVICES"]="0";
 
 # Allow growth of GPU memory (otherwise it will look like all the memory is being used, even if you only use 10 MB)
 config = tf.ConfigProto()
@@ -44,7 +44,7 @@ Nclasses = len(classes)
 
 BATCH_SIZE = 8
 EPOCHS = 150
-VERBOSITY = 2
+VERBOSITY = 1
 
 path = "/nobackup/data/mehfo331/Data/Slices/z/Padded"
 image_shape = (256,256,1)
@@ -62,12 +62,12 @@ LOAD_WEIGHTS = False
 SAVE_WEIGHTS = True
 
 LOAD_NAME = "U-net_weights_GAN.h5"
-SAVE_NAME = "U-net_weights_GAN_(5k).h5"
+#SAVE_NAME = "U-net_weights_GAN_(5k).h5"
 
 USE_GAN = True
 
-TRAIN_RATIO = 1
-GAN_RATIO = 0.5
+TRAIN_RATIO = 0.01
+GAN_RATIO = 0
 
 PIXEL_MAX = 11356
 #PIXEL_MAX = 65504
@@ -206,25 +206,6 @@ net = Unet(img_size = image_shape,
              use_GAN = USE_GAN,
              depth = 5)
 #%%
-
-from keras.callbacks import ModelCheckpoint
-
-weight_path = "/nobackup/data/mehfo331/Code/Unet-weights"
-
-if LOAD_WEIGHTS:
-    net.model.load_weights(weight_path + "/Saved/" + LOAD_NAME)
-#%%
-    
-if SAVE_WEIGHTS:    
-
-    callbacks = [ModelCheckpoint(weight_path + "/" + SAVE_NAME,
-                                 verbose = 1,
-                                 save_best_only = True,
-                                 save_weights_only = True,
-                                 monitor = 'val_weighted_dice_loss')]
-else:
-    callbacks = None
-#%%
         
 train_img_path = img_path + "/Training"
 val_img_path = img_path + "/Validation"
@@ -256,9 +237,31 @@ else:
     train_generator = data_generator(train_img_path, train_mask_path, load_size_train, batch_size, real_ratio = TRAIN_RATIO)
     
 val_generator = data_generator(val_img_path, val_mask_path, load_size_val, batch_size)
+
 #%%
 
-print("\nTraining " + str(Nclasses) + " classes with " + str(Ntraining) + "images (" + str(Ntraining - Ngan) + " real and " + str(NGan) + " GAN images):\n")
+from keras.callbacks import ModelCheckpoint
+
+weight_path = "/nobackup/data/mehfo331/Code/Unet-weights"
+
+if LOAD_WEIGHTS:
+    net.model.load_weights(weight_path + "/Saved/" + LOAD_NAME)
+    
+if SAVE_WEIGHTS:    
+
+    save_name = str(Nclasses) + "_classes_" + str(Ntraining - NGan) + "_reals_" + str(NGan) + "_GANs.h5"
+
+    callbacks = [ModelCheckpoint(weight_path + "/" + save_name,
+                                 verbose = 1,
+                                 save_best_only = True,
+                                 save_weights_only = True,
+                                 monitor = 'val_weighted_dice_loss')]
+else:
+    callbacks = None
+
+#%%
+
+print("\nTraining " + str(Nclasses) + " classes with " + str(Ntraining) + " images (" + str(Ntraining - NGan) + " real and " + str(NGan) + " GAN images):\n")
 
 history = net.model.fit_generator(train_generator,
                                   steps_per_epoch = steps_per_epoch,
