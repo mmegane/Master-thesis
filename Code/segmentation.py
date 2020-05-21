@@ -9,6 +9,8 @@ random.seed(seed)
 import numpy as np
 np.random.seed(seed)
 
+#%%
+
 import tensorflow as tf
 tf.compat.v1.set_random_seed(seed)
 
@@ -40,6 +42,10 @@ classes = ["Background", "NCR/NET", "ED", "ET", "WM", "GM", "CSF"]
 
 Nclasses = len(classes)
 
+BATCH_SIZE = 8
+EPOCHS = 150
+VERBOSITY = 2
+
 path = "/nobackup/data/mehfo331/Data/Slices/z/Padded"
 image_shape = (256,256,1)
 
@@ -53,19 +59,15 @@ mask_path_GAN = mask_path + "/GAN_Preprocessed/Kept"
 #%%
 
 LOAD_WEIGHTS = False
-SAVE_WEIGHTS = False
-
-BATCH_SIZE = 8
-EPOCHS = 150
-VERBOSITY = 1
+SAVE_WEIGHTS = True
 
 LOAD_NAME = "U-net_weights_GAN.h5"
 SAVE_NAME = "U-net_weights_GAN_(5k).h5"
 
 USE_GAN = True
 
-TRAIN_RATIO = 0
-GAN_RATIO = 1
+TRAIN_RATIO = 1
+GAN_RATIO = 0.5
 
 PIXEL_MAX = 11356
 #PIXEL_MAX = 65504
@@ -93,7 +95,7 @@ def data_generator(img_path, mask_path, load_size, batch_size, categorical = Tru
     img_dirs = [img_path + "/" + s for s in sorted(os.listdir(img_path))]
     mask_dirs = [mask_path + "/" + s for s in sorted(os.listdir(mask_path))]
     
-    # Select subset of (real) data
+    # Select subset of real data
     real_cap = np.rint(real_ratio * len(img_dirs)).astype(np.int32)
     img_dirs = img_dirs[0:real_cap]
     mask_dirs = mask_dirs[0:real_cap]
@@ -203,7 +205,6 @@ net = Unet(img_size = image_shape,
              class_weights_with_GAN = CLASS_WEIGHTS_WITH_GAN,
              use_GAN = USE_GAN,
              depth = 5)
-
 #%%
 
 from keras.callbacks import ModelCheckpoint
@@ -223,8 +224,6 @@ if SAVE_WEIGHTS:
                                  monitor = 'val_weighted_dice_loss')]
 else:
     callbacks = None
-
-
 #%%
         
 train_img_path = img_path + "/Training"
@@ -234,9 +233,10 @@ val_mask_path = mask_path + "/Validation"
 
 Ntraining = np.rint(TRAIN_RATIO * len(os.listdir(train_img_path))).astype(np.int32)
 Nval = len(os.listdir(val_img_path))
+NGan = np.rint(GAN_RATIO * len(os.listdir(img_path_GAN))).astype(np.int32)
 
 if USE_GAN:
-    Ntraining += np.rint(GAN_RATIO * len(os.listdir(img_path_GAN))).astype(np.int32)
+    Ntraining += NGan
 
 batch_size = BATCH_SIZE
 epochs = EPOCHS
@@ -253,12 +253,12 @@ if USE_GAN:
                                      normalization_constant = PIXEL_MAX, img_mean = IMG_MEAN_WITH_GAN,
                                      real_ratio = TRAIN_RATIO, gan_ratio = GAN_RATIO)
 else:
-    train_generator = data_generator(train_img_path, train_mask_path, load_size_train, batch_size,
-                                     real_ratio = TRAIN_RATIO, gan_raio = GAN_RATIO)
+    train_generator = data_generator(train_img_path, train_mask_path, load_size_train, batch_size, real_ratio = TRAIN_RATIO)
     
 val_generator = data_generator(val_img_path, val_mask_path, load_size_val, batch_size)
-
 #%%
+
+print("\nTraining " + str(Nclasses) + " classes with " + str(Ntraining) + "images (" + str(Ntraining - Ngan) + " real and " + str(NGan) + " GAN images):\n")
 
 history = net.model.fit_generator(train_generator,
                                   steps_per_epoch = steps_per_epoch,
