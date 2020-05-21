@@ -281,3 +281,23 @@ Epoch 40/150
 Epoch 00040: val_weighted_dice_loss improved from 0.20318 to 0.20159, saving model to /nobackup/data/mehfo331/Code/Unet-weights/U-net_weights_GAN_(5k).h5
 Epoch 41/150
  - 973s - loss: 0.1882 - weighted_dice_loss: 0.1897 - val_loss: 0.3684 - val_weighted_dice_loss: 0.3729
+
+Epoch 00041: val_weighted_dice_loss did not improve from 0.20159
+Epoch 42/150
+ - 973s - loss: 0.1876 - weighted_dice_loss: 0.1891 - val_loss: 0.2012 - val_weighted_dice_loss: 0.2028
+
+Epoch 00042: val_weighted_dice_loss did not improve from 0.20159
+Epoch 43/150
+ - 974s - loss: 0.1871 - weighted_dice_loss: 0.1886 - val_loss: 0.2007 - val_weighted_dice_loss: 0.2024
+
+Epoch 00043: val_weighted_dice_loss did not improve from 0.20159
+Epoch 44/150
+ - 976s - loss: 0.1861 - weighted_dice_loss: 0.1876 - val_loss: 0.1977 - val_weighted_dice_loss: 0.1993
+
+Epoch 00044: val_weighted_dice_loss improved from 0.20159 to 0.19935, saving model to /nobackup/data/mehfo331/Code/Unet-weights/U-net_weights_GAN_(5k).h5
+Epoch 45/150
+ - 975s - loss: 0.1857 - weighted_dice_loss: 0.1872 - val_loss: 0.2129 - val_weighted_dice_loss: 0.2147
+
+Epoch 00045: val_weighted_dice_loss did not improve from 0.19935
+Epoch 46/150
+ - 977s - loss: 0.1845 - weighted_dice_loss: 0.1860 - val_loss: 0.1972 - val_weighted_dice_loss: 0.1988
