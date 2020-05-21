@@ -6,6 +6,9 @@ Code/SPADE/checkpoints/
 Code/SPADE/results/
 Code/SPADE/git-folder/
 
+Code/stylegan2/datasets/
+Code/stylegan2/results/
+
 Code/Unet-weights/
 
 Conda/
