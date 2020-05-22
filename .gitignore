@@ -11,10 +11,12 @@ Code/stylegan2/results/
 
 Code/Unet-weights/
 
-Conda/
+Conda/PGAN/
+Conda/SPADE/
+Conda/Unet/
 
 Data/
 
 old/
 
-nohup.out
+Code/nohup.out
