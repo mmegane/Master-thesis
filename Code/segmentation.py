@@ -42,75 +42,167 @@ classes = ["Background", "NCR/NET", "ED", "ET", "WM", "GM", "CSF"]
 
 Nclasses = len(classes)
 
-BATCH_SIZE = 8
-EPOCHS = 150
-VERBOSITY = 1
-
-path = "/nobackup/data/mehfo331/Data/Slices/z/Padded"
+path = "../Data/Slices/z/Padded"
 image_shape = (256,256,1)
 
 img_path = path + "/t1ce"
 mask_path = path  + "/Masks_complete"
 #mask_path = path + "/Masks"
 
+img_path_train = img_path + "/Training"
+img_path_val = img_path + "/Validation"
+mask_path_train = mask_path + "/Training"
+mask_path_val = mask_path + "/Validation"
+
 img_path_GAN = img_path + "/GAN_Preprocessed/Kept"
 mask_path_GAN = mask_path + "/GAN_Preprocessed/Kept"
 
 #%%
 
+BATCH_SIZE = 8
+EPOCHS = 150
+
+VERBOSITY = 1
+
 LOAD_WEIGHTS = False
-SAVE_WEIGHTS = True
-
 LOAD_NAME = "U-net_weights_GAN.h5"
-#SAVE_NAME = "U-net_weights_GAN_(5k).h5"
 
-USE_GAN = True
+SAVE_WEIGHTS = False
 
-TRAIN_RATIO = 0.01
+TRAIN_RATIO = 1
 GAN_RATIO = 0
 
+#PIXEL_MAX = 11360
 PIXEL_MAX = 11356
 #PIXEL_MAX = 65504
-IMG_MEAN = np.load(img_path + "/image_mean.npy")
-IMG_MEAN_WITH_GAN = np.load(img_path + "/image_mean_with_GANs_(5k).npy")
 
-CLASS_WEIGHTS = np.load(path + "/Class_weights/class_weights_complete.npy")
-#CLASS_WEIGHTS = np.load(path + "/Class_weights/class_weights_incomplete.npy")
-#CLASS_WEIGHTS = np.load(path + "/Class_weights/class_weights_binary.npy")
+#%%
 
-CLASS_WEIGHTS_WITH_GAN = np.load(path + "/Class_weights/complete_with_GANs_(5k).npy")
+from PIL import Image
+
+def return_img_paths(path, ratio = 1):
+    
+    paths = sorted(os.listdir(path))
+    Ndata = np.rint(ratio * len(paths)).astype(np.int32)
+    paths_complete = [path + "/" + paths[i] for i in range(0, Ndata)]
+    
+    return(paths_complete)
+
+def return_img_tensor(path_1, path_2 = None,
+                      img_shape = (256,256),
+                      ratio_1 = 1, ratio_2 = 0,
+                      dtype = 'float16'):
+    
+    dirs_1 = return_img_paths(path_1, ratio_1)
+    
+    if path_2 != None:
+        dirs_2 = return_img_paths(path_2, ratio_2)
+    else:
+        dirs_2 = []
+        
+    dirs_final = dirs_1 + dirs_2
+    
+    Ndata = len(dirs_final)
+    img_tensor = np.zeros((Ndata, *img_shape), dtype = dtype)
+    
+    print("\nReading data...")
+    
+    for i in range(Ndata):
+        img = Image.open(dirs_final[i])
+        img_array = np.asarray(img, dtype = dtype)
+        img_tensor[i] = img_array
+        
+    print("Finished reading data.")
+        
+    return(img_tensor)
+
+#def return_mean(path_1, path)
+
+def return_class_weights(Y):
+    
+    eps = 1e-5
+    num = Y.shape[0]*Y.shape[1]*Y.shape[2]
+    den = Nclasses * np.unique(Y, return_counts = True)[1] + eps
+    
+    weights = num/den
+    
+    return(weights)
 
 #%%
     
-from PIL import Image
+# Calculate means and class weights
+    
+img_tensor_train = return_img_tensor(img_path_train, img_path_GAN,
+                                     ratio_1 = TRAIN_RATIO, ratio_2 = GAN_RATIO, dtype = 'float16')
+
+mask_tensor_train = return_img_tensor(mask_path_train, mask_path_GAN,
+                                      ratio_1 = TRAIN_RATIO, ratio_2 = GAN_RATIO, dtype ='uint8')
+
+pixel_max_train = np.max(img_tensor_train).astype('float32')
+img_mean_train = np.mean(img_tensor_train, axis = (0,1,2))/pixel_max_train
+class_weights_train = return_class_weights(mask_tensor_train)
+
+del(img_tensor_train)
+del(mask_tensor_train)
+
+img_tensor_val = return_img_tensor(img_path_train, ratio_1 = 1)
+mask_tensor_val = return_img_tensor(mask_path_train, ratio_1 = 1, dtype = 'uint8')
+
+pixel_max_val = np.max(img_tensor_val).astype('float32')
+img_mean_val = np.mean(img_tensor_val, axis = (0,1,2))/pixel_max_val
+class_weights_val= return_class_weights(mask_tensor_val)
+
+del(img_tensor_val)
+del(mask_tensor_val)
+
+#%%
+
+# IMG_MEAN = np.load(img_path + "/image_mean.npy")
+# IMG_MEAN_WITH_GAN = np.load(img_path + "/image_mean_with_GANs_(5k).npy")
+
+# CLASS_WEIGHTS = np.load(path + "/Class_weights/class_weights_complete.npy")
+# #CLASS_WEIGHTS = np.load(path + "/Class_weights/class_weights_incomplete.npy")
+# #CLASS_WEIGHTS = np.load(path + "/Class_weights/class_weights_binary.npy")
+
+# CLASS_WEIGHTS_WITH_GAN = np.load(path + "/Class_weights/complete_with_GANs_(5k).npy")
+
+#%%
+    
+
 from keras.preprocessing.image import img_to_array
 from keras.utils import to_categorical
 
-
 def data_generator(img_path, mask_path, load_size, batch_size, categorical = True,
-                   use_GAN = False, img_path_GAN = None, mask_path_GAN = None, 
-                   normalization_constant = PIXEL_MAX, img_mean = IMG_MEAN,
-                   real_ratio = 1.0, gan_ratio = 1.0):
+                   img_path_GAN = None, mask_path_GAN = None, 
+                   normalization_constant = PIXEL_MAX, img_mean = img_mean_train,
+                   real_ratio = 1.0, GAN_ratio = 0):
     
-    img_dirs = [img_path + "/" + s for s in sorted(os.listdir(img_path))]
-    mask_dirs = [mask_path + "/" + s for s in sorted(os.listdir(mask_path))]
+    img_dirs = return_img_paths(img_path, ratio = real_ratio)
+    mask_dirs = return_img_paths(mask_path, ratio = real_ratio)
     
-    # Select subset of real data
-    real_cap = np.rint(real_ratio * len(img_dirs)).astype(np.int32)
-    img_dirs = img_dirs[0:real_cap]
-    mask_dirs = mask_dirs[0:real_cap]
+    if GAN_ratio > 0:   
+        img_dirs += return_img_paths(img_path_GAN, ratio = GAN_ratio)
+        mask_dirs += return_img_paths(mask_path_GAN, ratio = GAN_ratio)
     
-    if use_GAN:
-        img_dirs_gan = [img_path_GAN + "/" + s for s in sorted(os.listdir(img_path_GAN))]
-        mask_dirs_gan = [mask_path_GAN + "/" + s for s in sorted(os.listdir(mask_path_GAN))]
+    # img_dirs = [img_path + "/" + s for s in sorted(os.listdir(img_path))]
+    # mask_dirs = [mask_path + "/" + s for s in sorted(os.listdir(mask_path))]
+    
+    # # Select subset of real data
+    # real_cap = np.rint(real_ratio * len(img_dirs)).astype(np.int32)
+    # img_dirs = img_dirs[0:real_cap]
+    # mask_dirs = mask_dirs[0:real_cap]
+    
+    # if use_GAN:
+    #     img_dirs_gan = [img_path_GAN + "/" + s for s in sorted(os.listdir(img_path_GAN))]
+    #     mask_dirs_gan = [mask_path_GAN + "/" + s for s in sorted(os.listdir(mask_path_GAN))]
         
-        # Select subset of GAN data     
-        gan_cap = np.rint(gan_ratio * len(img_dirs_gan)).astype(np.int32)
-        img_dirs_gan = img_dirs_gan[0:gan_cap]
-        mask_dirs_gan = mask_dirs_gan[0:gan_cap]
+    #     # Select subset of GAN data     
+    #     gan_cap = np.rint(gan_ratio * len(img_dirs_gan)).astype(np.int32)
+    #     img_dirs_gan = img_dirs_gan[0:gan_cap]
+    #     mask_dirs_gan = mask_dirs_gan[0:gan_cap]
         
-        img_dirs += img_dirs_gan
-        mask_dirs += mask_dirs_gan
+    #     img_dirs += img_dirs_gan
+    #     mask_dirs += mask_dirs_gan
     
     Ndata = len(img_dirs)
     
@@ -194,30 +286,23 @@ def data_generator(img_path, mask_path, load_size, batch_size, categorical = Tru
     
 import sys
 
-file_dir = os.path.dirname("/nobackup/data/mehfo331/Code/unet_model.py")
+file_dir = os.path.dirname("unet_model.py")
 sys.path.append(file_dir)
         
 from unet_model import Unet
 
 net = Unet(img_size = image_shape,
              Nclasses = Nclasses,
-             class_weights = CLASS_WEIGHTS,
-             class_weights_with_GAN = CLASS_WEIGHTS_WITH_GAN,
-             use_GAN = USE_GAN,
+             class_weights_train = class_weights_train,
+             class_weights_val = class_weights_val,
              depth = 5)
 #%%
-        
-train_img_path = img_path + "/Training"
-val_img_path = img_path + "/Validation"
-train_mask_path = mask_path + "/Training"
-val_mask_path = mask_path + "/Validation"
 
-Ntraining = np.rint(TRAIN_RATIO * len(os.listdir(train_img_path))).astype(np.int32)
-Nval = len(os.listdir(val_img_path))
+Nreal = np.rint(TRAIN_RATIO * len(os.listdir(img_path_train))).astype(np.int32)
 NGan = np.rint(GAN_RATIO * len(os.listdir(img_path_GAN))).astype(np.int32)
+Nval = len(os.listdir(img_path_val))
 
-if USE_GAN:
-    Ntraining += NGan
+Ntraining = Nreal + NGan
 
 batch_size = BATCH_SIZE
 epochs = EPOCHS
@@ -228,28 +313,26 @@ validation_steps = np.ceil(Nval/batch_size)
 load_size_train = int(steps_per_epoch * batch_size)
 load_size_val = int(validation_steps * batch_size)
 
-if USE_GAN:
-    train_generator = data_generator(train_img_path, train_mask_path, load_size_train, batch_size,
-                                     img_path_GAN = img_path_GAN, mask_path_GAN = mask_path_GAN, use_GAN = True,
-                                     normalization_constant = PIXEL_MAX, img_mean = IMG_MEAN_WITH_GAN,
-                                     real_ratio = TRAIN_RATIO, gan_ratio = GAN_RATIO)
-else:
-    train_generator = data_generator(train_img_path, train_mask_path, load_size_train, batch_size, real_ratio = TRAIN_RATIO)
-    
-val_generator = data_generator(val_img_path, val_mask_path, load_size_val, batch_size)
+train_generator = data_generator(img_path_train, mask_path_train, load_size_train, batch_size,
+                                 img_path_GAN = img_path_GAN, mask_path_GAN = mask_path_GAN,
+                                 normalization_constant = PIXEL_MAX, img_mean = img_mean_train,
+                                 real_ratio = TRAIN_RATIO, GAN_ratio = GAN_RATIO)
+
+val_generator = data_generator(img_path_val, mask_path_val, load_size_val, batch_size,
+                               normalization_constant = PIXEL_MAX, img_mean = img_mean_val)
 
 #%%
 
 from keras.callbacks import ModelCheckpoint
 
-weight_path = "/nobackup/data/mehfo331/Code/Unet-weights"
+weight_path = "/Unet-weights"
 
 if LOAD_WEIGHTS:
     net.model.load_weights(weight_path + "/Saved/" + LOAD_NAME)
     
-if SAVE_WEIGHTS:    
+if SAVE_WEIGHTS:
 
-    save_name = str(Nclasses) + "_classes_" + str(Ntraining - NGan) + "_reals_" + str(NGan) + "_GANs.h5"
+    save_name = str(Nclasses) + "_classes_" + str(Nreal) + "_reals_" + str(NGan) + "_GANs.h5"
 
     callbacks = [ModelCheckpoint(weight_path + "/" + save_name,
                                  verbose = 1,
@@ -274,7 +357,7 @@ history = net.model.fit_generator(train_generator,
 
 #%%
 
-# val_generator = data_generator(val_img_path, val_mask_path, load_size_val, batch_size)
+# val_generator = data_generator(img_path_val, mask_path_val, load_size_val, batch_size)
 
 # _ , dice = net.model.evaluate_generator(val_generator, steps = validation_steps, verbose = 1)
 
@@ -285,13 +368,13 @@ history = net.model.fit_generator(train_generator,
 # Xval = np.zeros((load_size_val, *image_shape), dtype = 'float32')
 # Yval = np.zeros((load_size_val, *image_shape), dtype = 'uint8')
 
-# val_generator = data_generator(val_img_path, val_mask_path, load_size_val, batch_size, categorical = False)
+# val_generator = data_generator(img_path_val, mask_path_val, load_size_val, batch_size, categorical = False)
 
 # for i in range(val_steps):
 #     Xval[(batch_size * i):(batch_size * (i + 1))], Yval[(batch_size * i):(batch_size * (i + 1))] = next(val_generator)
     
 # #%%
-# val_generator = data_generator(val_img_path, val_mask_path, load_size_val, batch_size)
+# val_generator = data_generator(img_path_val, mask_path_val, load_size_val, batch_size)
 
 # Ypred = net.model.predict_generator(val_generator, steps = validation_steps)
 # Ypred = np.argmax(Ypred, axis = -1)

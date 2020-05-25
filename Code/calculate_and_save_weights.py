@@ -12,7 +12,7 @@ class_dir = {"binary": "Masks", "incomplete": "Masks", "complete": "Masks_comple
 Nclasses = len(classes)
 
 slice_dim = "z"
-USE_GANS = True
+USE_GANS = False
 
 #path = "/nobackup/data/mehfo331/Data/Slices/" + slice_dim
 path = "/nobackup/data/mehfo331/Data/Slices/" + slice_dim + "/Padded"

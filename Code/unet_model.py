@@ -8,14 +8,13 @@ from keras import backend as K
 
 class Unet(object):
     
-    def __init__(self, img_size, Nclasses, class_weights, use_GAN = False, class_weights_with_GAN = None, Nfilter_start = 64, depth = 5):
+    def __init__(self, img_size, Nclasses, class_weights_train, class_weights_val = None, Nfilter_start = 64, depth = 5):
         self.img_size = img_size
         self.Nclasses = Nclasses
-        self.class_weights = class_weights
-        self.class_weights_with_GAN = class_weights_with_GAN
+        self.class_weights_train = class_weights_train
+        self.class_weights_val = class_weights_val
         self.Nfilter_start = Nfilter_start
         self.depth = depth
-        self.use_GAN = use_GAN
 
         self.model = Sequential()
         inputs = Input(img_size)
@@ -121,12 +120,15 @@ class Unet(object):
         
         # Create loss and metric
         
-        if self.use_GAN:
-            self.loss = return_weighted_dice_loss(self.class_weights_with_GAN)
-        else:
-            self.loss = return_weighted_dice_loss(self.class_weights)
+        self.loss = return_weighted_dice_loss(self.class_weights_train)
+        self.metric = return_weighted_dice_loss(self.class_weights_val)
+        
+        # if use_GAN:
+        #     self.loss = return_weighted_dice_loss(class_weights_with_GAN)
+        # else:
+        #     self.loss = return_weighted_dice_loss(class_weights)
             
-        self.metric = return_weighted_dice_loss(self.class_weights)
+        # self.metric = return_weighted_dice_loss(class_weights)
         
         
         self.model.compile(loss = self.loss,
