@@ -62,19 +62,19 @@ mask_path_GAN = mask_path + "/GAN_Preprocessed/Kept"
 BATCH_SIZE = 8
 EPOCHS = 150
 
-VERBOSITY = 1
+VERBOSITY = 2
 
 LOAD_WEIGHTS = False
 LOAD_NAME = "U-net_weights_GAN.h5"
 
-SAVE_WEIGHTS = False
+SAVE_WEIGHTS = True
 
 TRAIN_RATIO = 1
 GAN_RATIO = 0
 
 #PIXEL_MAX = 11360
-PIXEL_MAX = 11356
-#PIXEL_MAX = 65504
+#PIXEL_MAX = 11356
+#PIXEL_MAX = 65535
 
 #%%
 
@@ -145,15 +145,15 @@ class_weights_train = return_class_weights(mask_tensor_train)
 del(img_tensor_train)
 del(mask_tensor_train)
 
-img_tensor_val = return_img_tensor(img_path_train, ratio_1 = 1)
-mask_tensor_val = return_img_tensor(mask_path_train, ratio_1 = 1, dtype = 'uint8')
+# img_tensor_val = return_img_tensor(img_path_train, ratio_1 = 1)
+# mask_tensor_val = return_img_tensor(mask_path_train, ratio_1 = 1, dtype = 'uint8')
 
-pixel_max_val = np.max(img_tensor_val).astype('float32')
-img_mean_val = np.mean(img_tensor_val, axis = (0,1,2))/pixel_max_val
-class_weights_val= return_class_weights(mask_tensor_val)
+# pixel_max_val = np.max(img_tensor_val).astype('float32')
+# img_mean_val = np.mean(img_tensor_val, axis = (0,1,2))/pixel_max_val
+# class_weights_val = return_class_weights(mask_tensor_val)
 
-del(img_tensor_val)
-del(mask_tensor_val)
+# del(img_tensor_val)
+# del(mask_tensor_val)
 
 #%%
 
@@ -174,7 +174,7 @@ from keras.utils import to_categorical
 
 def data_generator(img_path, mask_path, load_size, batch_size, categorical = True,
                    img_path_GAN = None, mask_path_GAN = None, 
-                   normalization_constant = PIXEL_MAX, img_mean = img_mean_train,
+                   normalization_constant = pixel_max_train, img_mean = img_mean_train,
                    real_ratio = 1.0, GAN_ratio = 0):
     
     img_dirs = return_img_paths(img_path, ratio = real_ratio)
@@ -294,7 +294,7 @@ from unet_model import Unet
 net = Unet(img_size = image_shape,
              Nclasses = Nclasses,
              class_weights_train = class_weights_train,
-             class_weights_val = class_weights_val,
+             class_weights_val = class_weights_train,
              depth = 5)
 #%%
 
@@ -315,17 +315,17 @@ load_size_val = int(validation_steps * batch_size)
 
 train_generator = data_generator(img_path_train, mask_path_train, load_size_train, batch_size,
                                  img_path_GAN = img_path_GAN, mask_path_GAN = mask_path_GAN,
-                                 normalization_constant = PIXEL_MAX, img_mean = img_mean_train,
+                                 normalization_constant = pixel_max_train, img_mean = img_mean_train,
                                  real_ratio = TRAIN_RATIO, GAN_ratio = GAN_RATIO)
 
 val_generator = data_generator(img_path_val, mask_path_val, load_size_val, batch_size,
-                               normalization_constant = PIXEL_MAX, img_mean = img_mean_val)
+                               normalization_constant = pixel_max_train, img_mean = img_mean_train)
 
 #%%
 
 from keras.callbacks import ModelCheckpoint
 
-weight_path = "/Unet-weights"
+weight_path = "./Unet-weights"
 
 if LOAD_WEIGHTS:
     net.model.load_weights(weight_path + "/Saved/" + LOAD_NAME)
@@ -344,7 +344,7 @@ else:
 
 #%%
 
-print("\nTraining " + str(Nclasses) + " classes with " + str(Ntraining) + " images (" + str(Ntraining - NGan) + " real and " + str(NGan) + " GAN images):\n")
+print("\nTraining " + str(Nclasses) + " classes with " + str(Ntraining) + " images (" + str(Nreal) + " real and " + str(NGan) + " GAN images):\n")
 
 history = net.model.fit_generator(train_generator,
                                   steps_per_epoch = steps_per_epoch,
