@@ -43,6 +43,7 @@ classes = ["Background", "NCR/NET", "ED", "ET", "WM", "GM", "CSF"]
 Nclasses = len(classes)
 
 path = "../Data/Slices/z/Padded"
+#path = "../Data/Slices/z/Padded/temp"
 image_shape = (256,256,1)
 
 img_path = path + "/t1ce"
@@ -64,13 +65,15 @@ EPOCHS = 150
 
 VERBOSITY = 2
 
-LOAD_WEIGHTS = False
-LOAD_NAME = "U-net_weights_GAN.h5"
+LOAD_WEIGHTS = True
+LOAD_NAME = "U-net_weights_complete_padded_no_dropout.h5"
 
 SAVE_WEIGHTS = True
 
 TRAIN_RATIO = 1
 GAN_RATIO = 0
+
+TEST = False
 
 #PIXEL_MAX = 11360
 #PIXEL_MAX = 11356
@@ -215,7 +218,7 @@ def data_generator(img_path, mask_path, load_size, batch_size, categorical = Tru
     j = 0
     k = 0
     
-    shuffle = True
+    shuffle = False
     
     img_load = np.zeros((load_size, *image_shape), dtype = 'float16')
     mask_load = np.zeros((load_size, *image_shape), dtype = 'uint8')
@@ -226,14 +229,14 @@ def data_generator(img_path, mask_path, load_size, batch_size, categorical = Tru
             
             # Randomize dataset after epoch:
             
-            if shuffle:
+            if shuffle:        
                 
                 dirs = list(zip(img_dirs, mask_dirs))
                 random.shuffle(dirs)
                 img_dirs, mask_dirs = zip(*dirs)
                 
-                shuffle = False
-            
+                shuffle = False             
+               
             # Load images into memory
     
             for i in range(j, j + load_size):
@@ -252,6 +255,7 @@ def data_generator(img_path, mask_path, load_size, batch_size, categorical = Tru
                     mask_array[mask_array != 0] = 1
                 
                 mask_load[i - j] = mask_array
+        
             
         # Pick out batch from the data loaded into memory
         
@@ -355,45 +359,49 @@ history = net.model.fit_generator(train_generator,
                                   shuffle = False,
                                   verbose = VERBOSITY)
 
+print("Finished training.")
+
 #%%
 
-# val_generator = data_generator(img_path_val, mask_path_val, load_size_val, batch_size)
+if TEST:
 
-# _ , dice = net.model.evaluate_generator(val_generator, steps = validation_steps, verbose = 1)
-
-# #%%
-
-# val_steps = int(np.ceil(Nval/batch_size))
-
-# Xval = np.zeros((load_size_val, *image_shape), dtype = 'float32')
-# Yval = np.zeros((load_size_val, *image_shape), dtype = 'uint8')
-
-# val_generator = data_generator(img_path_val, mask_path_val, load_size_val, batch_size, categorical = False)
-
-# for i in range(val_steps):
-#     Xval[(batch_size * i):(batch_size * (i + 1))], Yval[(batch_size * i):(batch_size * (i + 1))] = next(val_generator)
+    val_generator = data_generator(img_path_val, mask_path_val, load_size_val, batch_size)
     
-# #%%
-# val_generator = data_generator(img_path_val, mask_path_val, load_size_val, batch_size)
-
-# Ypred = net.model.predict_generator(val_generator, steps = validation_steps)
-# Ypred = np.argmax(Ypred, axis = -1)
-# Ypred = np.expand_dims(Ypred, -1)
-# #%%
-
-# from matplotlib import pyplot as plt
-
-# sample = 1
-
-# plt.figure(figsize = (12,12))
-# plt.subplot(131)
-# plt.imshow(Xval[sample,:,:,0], cmap = "gray")
-# plt.title('Image')
-# plt.subplot(132)
-# plt.imshow(Ypred[sample,:,:,0], cmap = "gray")
-# plt.title('Segmentation result')
-# plt.subplot(133)
-# plt.imshow(Yval[sample,:,:,0], cmap = "gray")
-# plt.title('Ground truth segmentation')
+    _ , dice = net.model.evaluate_generator(val_generator, steps = validation_steps, verbose = 1)
+    
+    #%%
+    
+    val_steps = int(np.ceil(Nval/batch_size))
+    
+    Xval = np.zeros((load_size_val, *image_shape), dtype = 'float32')
+    Yval = np.zeros((load_size_val, *image_shape), dtype = 'uint8')
+    
+    val_generator = data_generator(img_path_val, mask_path_val, load_size_val, batch_size, categorical = False)
+    
+    for i in range(val_steps):
+        Xval[(batch_size * i):(batch_size * (i + 1))], Yval[(batch_size * i):(batch_size * (i + 1))] = next(val_generator)
+        
+    #%%
+    val_generator = data_generator(img_path_val, mask_path_val, load_size_val, batch_size)
+    
+    Ypred = net.model.predict_generator(val_generator, steps = validation_steps)
+    Ypred = np.argmax(Ypred, axis = -1)
+    Ypred = np.expand_dims(Ypred, -1)
+    #%%
+    
+    from matplotlib import pyplot as plt
+    
+    sample = 1
+    
+    plt.figure(figsize = (12,12))
+    plt.subplot(131)
+    plt.imshow(Xval[sample,:,:,0], cmap = "gray")
+    plt.title('Image')
+    plt.subplot(132)
+    plt.imshow(Ypred[sample,:,:,0], cmap = "gray")
+    plt.title('Segmentation result')
+    plt.subplot(133)
+    plt.imshow(Yval[sample,:,:,0], cmap = "gray")
+    plt.title('Ground truth segmentation')
 
 #%%
