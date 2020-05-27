@@ -171,3 +171,7 @@ Epoch 11/150
 Epoch 00011: val_weighted_dice_loss did not improve from 0.11354
 Epoch 12/150
  - 820s - loss: 0.0849 - weighted_dice_loss: 0.0849 - val_loss: 0.8821 - val_weighted_dice_loss: 0.8821
+
+Epoch 00012: val_weighted_dice_loss did not improve from 0.11354
+Epoch 13/150
+ - 819s - loss: 0.0848 - weighted_dice_loss: 0.0848 - val_loss: 0.1196 - val_weighted_dice_loss: 0.1196
