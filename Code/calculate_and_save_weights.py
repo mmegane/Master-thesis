@@ -8,14 +8,13 @@ classes = ["Background", "NCR/NET", "ED", "ET", "WM", "GM", "CSF"]
 class_type = "complete"
 class_dir = {"binary": "Masks", "incomplete": "Masks", "complete": "Masks_complete"}
 
-
 Nclasses = len(classes)
 
 slice_dim = "z"
 USE_GANS = False
 
 #path = "/nobackup/data/mehfo331/Data/Slices/" + slice_dim
-path = "/nobackup/data/mehfo331/Data/Slices/" + slice_dim + "/Padded"
+path = "/nobackup/data/mehfo331_suzuki/Data/Slices/" + slice_dim + "/Padded"
 
 # if Ndata != len(os.listdir(path + "/Masks/Training")):
 #     raise Exception('The number of images and image masks do not match.')

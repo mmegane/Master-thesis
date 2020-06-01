@@ -7,7 +7,7 @@ USE_GANS = True
 PIXEL_MAX = 11356
 
 #path = "/nobackup/local/mehfo331/Thesis/Data/Slices/z"
-path = "/nobackup/data/mehfo331/Data/Slices/" + slice_dim + "/Padded/" + format
+path = "/nobackup/data/mehfo331_suzuki/Data/Slices/" + slice_dim + "/Padded/" + format
 
 #%%
 
