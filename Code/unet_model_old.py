@@ -110,5 +110,5 @@ class Unet(object):
         
         self.model.compile(loss = weighted_dice_loss,
                            optimizer = Adam(lr = 1e-4),
-                           metrics = [dice_acc]) 
+                           metrics = [weighted_dice_loss]) 
     
