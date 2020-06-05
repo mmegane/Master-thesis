@@ -214,5 +214,5 @@ dependencies:
     - pypng==0.0.20
     - python-utils==2.4.0
     - tables==3.6.1
-prefix: /nobackup/data/mehfo331/Conda/Unet
+prefix: /nobackup/data/mehfo331_suzuki/Conda/Unet
 

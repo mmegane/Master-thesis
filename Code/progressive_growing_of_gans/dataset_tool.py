@@ -598,7 +598,12 @@ def create_celebahq(tfrecord_dir, celeba_dir, delta_dir, num_threads=4, num_task
 def create_from_images(tfrecord_dir, image_dir, shuffle):
     print('Loading images from "%s"' % image_dir)
     image_filenames = sorted(glob.glob(os.path.join(image_dir, '*')))
-    if len(image_filenames) == 0:
+
+    factor = 0.2
+
+    Nimg = int(len(image_filenames) * factor)
+
+    if Nimg == 0:
         error('No input images found')
         
     img = np.asarray(PIL.Image.open(image_filenames[0]))
@@ -611,8 +616,8 @@ def create_from_images(tfrecord_dir, image_dir, shuffle):
     if channels not in [1, 3]:
         error('Input images must be stored as RGB or grayscale')
     
-    with TFRecordExporter(tfrecord_dir, len(image_filenames)) as tfr:
-        order = tfr.choose_shuffled_order() if shuffle else np.arange(len(image_filenames))
+    with TFRecordExporter(tfrecord_dir, Nimg) as tfr:
+        order = tfr.choose_shuffled_order() if shuffle else np.arange(Nimg)
         for idx in range(order.size):
             img = np.asarray(PIL.Image.open(image_filenames[order[idx]]))
             

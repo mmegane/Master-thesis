@@ -65,15 +65,15 @@ mask_path_GAN = mask_path + "/GAN_Preprocessed/Kept"
 BATCH_SIZE = 8
 EPOCHS = 150
 
-VERBOSITY = 1
+VERBOSITY = 2
 
 LOAD_WEIGHTS = False
 LOAD_NAME = "U-net_weights_complete_padded_no_dropout.h5"
 
-SAVE_WEIGHTS = False
+SAVE_WEIGHTS = True
 
 TRAIN_RATIO = 1
-GAN_RATIO = 0
+GAN_RATIO = 1
 
 TEST = False
 
@@ -144,7 +144,6 @@ mask_tensor_train = return_img_tensor(mask_path_train, mask_path_GAN,
                                       ratio_1 = TRAIN_RATIO, ratio_2 = GAN_RATIO, dtype ='uint8')
 
 pixel_max_train = int(np.max(img_tensor_train))
-#pixel_max_train = 11356
 img_mean_train = np.mean(img_tensor_train/pixel_max_train, axis = (0,1,2))
 class_weights_train = return_class_weights(mask_tensor_train)
 
