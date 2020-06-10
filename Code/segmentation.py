@@ -36,21 +36,18 @@ K.tensorflow_backend.set_session(tf.Session(config=config))
 
 #%%
 
-classes = ["Background", "NCR/NET", "ED", "ET", "WM", "GM", "CSF"]
-#classes = ["Background", "NCR/NET", "ED", "ET"]
+#classes = ["Background", "NCR/NET", "ED", "ET", "WM", "GM", "CSF"]
+classes = ["Background", "NCR/NET", "ED", "ET"]
 #classes = ["Non-tumor", "Tumor"]
 
 Nclasses = len(classes)
 
 path = "../Data/Slices/z"
-
-#path = "../Data/Slices/z"
-#path = "../Data/Slices/z/temp"
 image_shape = (256,256,1)
 
 img_path = path + "/t1ce"
-mask_path = path  + "/Masks_complete"
-#mask_path = path + "/Masks"
+#mask_path = path  + "/Masks_complete"
+mask_path = path + "/Masks"
 
 img_path_train = img_path + "/Training"
 img_path_val = img_path + "/Validation"
@@ -65,7 +62,7 @@ mask_path_GAN = mask_path + "/GAN_Preprocessed/Kept"
 BATCH_SIZE = 8
 EPOCHS = 150
 
-VERBOSITY = 1
+VERBOSITY = 2
 
 LOAD_WEIGHTS = False
 #LOAD_NAME = "U-net_weights_complete_padded_no_dropout.h5"
@@ -90,7 +87,7 @@ def return_img_paths(path, ratio = 1):
     paths = sorted(os.listdir(path))
     Ndata = np.rint(ratio * len(paths)).astype(np.int32)
     paths_complete = [path + "/" + paths[i] for i in range(0, Ndata)]
-    
+     
     return(paths_complete)
 
 def return_img_tensor(path_1, path_2 = None,
@@ -100,7 +97,7 @@ def return_img_tensor(path_1, path_2 = None,
     
     dirs_1 = return_img_paths(path_1, ratio_1)
     
-    if path_2 != None:
+    if ratio_2 != 0:
         dirs_2 = return_img_paths(path_2, ratio_2)
     else:
         dirs_2 = []
@@ -116,6 +113,15 @@ def return_img_tensor(path_1, path_2 = None,
         img = Image.open(dirs_final[i])
         img_array = np.asarray(img, dtype = dtype)
         img_tensor[i] = img_array
+        
+    if dtype == 'uint8':
+        if Nclasses == 2:  
+            img_tensor = img_tensor.copy()
+            img_tensor[img_tensor != 0] = 1
+                    
+        elif Nclasses == 4:
+            img_tensor = img_tensor.copy()
+            img_tensor[img_tensor == 4] = 3  
         
     print("Finished reading data.")
         
@@ -182,7 +188,7 @@ def data_generator(img_path, mask_path, load_size, batch_size, categorical = Tru
     mask_load = np.zeros((load_size, *image_shape), dtype = 'uint8')
 
     while True:
-        
+             
         if k == 0:
             
             # Randomize dataset after epoch:
@@ -211,6 +217,10 @@ def data_generator(img_path, mask_path, load_size, batch_size, categorical = Tru
                 if Nclasses == 2:  
                     mask_array = mask_array.copy()
                     mask_array[mask_array != 0] = 1
+                    
+                elif Nclasses == 4:
+                    mask_array = mask_array.copy()
+                    mask_array[mask_array == 4] = 3  
                 
                 mask_load[i - j] = mask_array
         
@@ -292,7 +302,7 @@ load_size_val = int(validation_steps * batch_size)
 train_generator = data_generator(img_path_train, mask_path_train, load_size_train, batch_size,
                                   img_path_GAN = img_path_GAN, mask_path_GAN = mask_path_GAN,
                                   normalization_constant = pixel_max_train, img_mean = img_mean_train,
-                                  real_ratio = TRAIN_RATIO, GAN_ratio = GAN_RATIO)
+                                  real_ratio = TRAIN_RATIO, GAN_ratio = GAN_RATIO, training = True)
 
 val_generator = data_generator(img_path_val, mask_path_val, load_size_val, batch_size,
                                 normalization_constant = pixel_max_train, img_mean = img_mean_train)
