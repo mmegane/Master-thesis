@@ -36,8 +36,8 @@ K.tensorflow_backend.set_session(tf.Session(config=config))
 
 #%%
 
-#classes = ["Background", "NCR/NET", "ED", "ET", "WM", "GM", "CSF"]
-classes = ["Background", "NCR/NET", "ED", "ET"]
+classes = ["Background", "NCR/NET", "ED", "ET", "WM", "GM", "CSF"]
+#classes = ["Background", "NCR/NET", "ED", "ET"]
 #classes = ["Non-tumor", "Tumor"]
 
 Nclasses = len(classes)
@@ -46,8 +46,8 @@ path = "../Data/Slices/z"
 image_shape = (256,256,1)
 
 img_path = path + "/t1ce"
-#mask_path = path  + "/Masks_complete"
-mask_path = path + "/Masks"
+mask_path = path  + "/Masks_complete"
+#mask_path = path + "/Masks"
 
 img_path_train = img_path + "/Training"
 img_path_val = img_path + "/Validation"
@@ -302,7 +302,7 @@ load_size_val = int(validation_steps * batch_size)
 train_generator = data_generator(img_path_train, mask_path_train, load_size_train, batch_size,
                                   img_path_GAN = img_path_GAN, mask_path_GAN = mask_path_GAN,
                                   normalization_constant = pixel_max_train, img_mean = img_mean_train,
-                                  real_ratio = TRAIN_RATIO, GAN_ratio = GAN_RATIO, training = True)
+                                  real_ratio = TRAIN_RATIO, GAN_ratio = GAN_RATIO)
 
 val_generator = data_generator(img_path_val, mask_path_val, load_size_val, batch_size,
                                 normalization_constant = pixel_max_train, img_mean = img_mean_train)
