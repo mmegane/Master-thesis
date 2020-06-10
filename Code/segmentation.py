@@ -42,10 +42,10 @@ classes = ["Background", "NCR/NET", "ED", "ET", "WM", "GM", "CSF"]
 
 Nclasses = len(classes)
 
-path = "/nobackup/data/mehfo331_suzuki/Data/Slices/z/Padded"
+path = "../Data/Slices/z"
 
-#path = "../Data/Slices/z/Padded"
-#path = "../Data/Slices/z/Padded/temp"
+#path = "../Data/Slices/z"
+#path = "../Data/Slices/z/temp"
 image_shape = (256,256,1)
 
 img_path = path + "/t1ce"
@@ -65,15 +65,15 @@ mask_path_GAN = mask_path + "/GAN_Preprocessed/Kept"
 BATCH_SIZE = 8
 EPOCHS = 150
 
-VERBOSITY = 2
+VERBOSITY = 1
 
 LOAD_WEIGHTS = False
-LOAD_NAME = "U-net_weights_complete_padded_no_dropout.h5"
+#LOAD_NAME = "U-net_weights_complete_padded_no_dropout.h5"
 
 SAVE_WEIGHTS = True
 
 TRAIN_RATIO = 1
-GAN_RATIO = 1
+GAN_RATIO = 0
 
 TEST = False
 
@@ -120,8 +120,6 @@ def return_img_tensor(path_1, path_2 = None,
     print("Finished reading data.")
         
     return(img_tensor)
-
-#def return_mean(path_1, path)
 
 def return_class_weights(Y):
     
