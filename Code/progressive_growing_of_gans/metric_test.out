@@ -1,0 +1,29 @@
+nohup: ignoring input
+Initializing TensorFlow...
+Running util_scripts.evaluate_metrics()...
+Logging output to results/000-pgan-masks_complete_fifth_no_empty-preset-v2-1gpu-fp32/metric-swd-16k.txt
+Streaming data using dataset.TFRecordDataset...
+WARNING:tensorflow:From /nobackup/data/mehfo331/Code/progressive_growing_of_gans/dataset.py:74: tf_record_iterator (from tensorflow.python.lib.io.tf_record) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use eager execution and: 
+`tf.data.TFRecordDataset(path)`
+WARNING:tensorflow:From /nobackup/data/mehfo331/Conda/PGAN/lib/python3.6/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+Dataset shape = [1, 256, 256]
+Dynamic range = [0, 6]
+Label size    = 0
+Initializing metrics.sliced_wasserstein.API...
+
+Snapshot  Time_eval   SWDx1e3_256  SWDx1e3_128  SWDx1e3_64   SWDx1e3_32   SWDx1e3_16   SWDx1e3_avg  
+---       ---         ---          ---          ---          ---          ---          ---          
+Reals     14m 42s     0.0000       0.0000       0.0000       0.0000       0.0000       0.0000       
+Reals2    14m 42s     1.5145       1.4371       1.6464       1.4349       0.9970       1.4060       
+10200     17m 41s     10.5009      3.2080       2.8209       3.0615       5.3362       4.9855       
+10160     17m 37s     10.4863      3.8532       2.8548       3.6597       3.5138       4.8736       
+10120     17m 41s     12.6915      5.4806       3.1750       3.9812       4.4479       5.9553       
+10080     17m 38s     12.2633      4.5530       3.1259       3.6673       3.8292       5.4878       
+10040     17m 42s     12.4883      5.2326       4.2395       3.9906       5.0230       6.1948       
+10000     17m 41s     10.3580      3.5737       3.2541       3.8409       4.6044       5.1262       
+9960      17m 57s     10.6233      3.0048       2.6646       3.6069       3.9942       4.7788       
+9920      

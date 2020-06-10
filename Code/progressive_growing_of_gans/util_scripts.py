@@ -197,6 +197,9 @@ def evaluate_metrics(run_id, log, metrics, num_images, real_passes, minibatch_si
         for begin in range(0, num_images, minibatch_size):
             end = min(begin + minibatch_size, num_images)
             images, labels[begin:end] = dataset_obj.get_minibatch_np(end - begin)
+
+            #images = misc.adjust_dynamic_range(images, [0,6], [0, 255])
+
             if mirror_augment:
                 images = misc.apply_mirror_augment(images)
             if images.shape[1] == 1:
@@ -225,7 +228,12 @@ def evaluate_metrics(run_id, log, metrics, num_images, real_passes, minibatch_si
             for begin in range(0, num_images, minibatch_size):
                 end = min(begin + minibatch_size, num_images)
                 latents = misc.random_latents(end - begin, Gs)
-                images = Gs.run(latents, labels[begin:end], num_gpus=config.num_gpus, out_mul=127.5, out_add=127.5, out_dtype=np.uint8)
+                #images = Gs.run(latents, labels[begin:end], num_gpus=config.num_gpus, out_mul=127.5, out_add=127.5, out_dtype=np.uint8)
+
+                images = Gs.run(latents, labels[begin:end], num_gpus=config.num_gpus)
+                images = misc.adjust_dynamic_range(images, [-1,1], [0, 6])
+                images = np.rint(images).clip(0,6).astype(np.uint8)
+
                 if images.shape[1] == 1:
                     images = np.tile(images, [1, 3, 1, 1]) # grayscale => RGB
                 [obj.feed(mode, images) for obj in metric_objs]

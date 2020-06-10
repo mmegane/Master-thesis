@@ -89,9 +89,9 @@ class Unet(object):
         # Make bridge, that connects encoder and decoder using "convs" between them. 
         # Use Dropout before and after the bridge, for regularization. Use dropout probability of 0.2.
             
-        #x = Dropout(0.2)(x)
+        x = Dropout(0.2)(x)
         x = convs(x, self.Nfilter_start * np.power(2, self.depth - 1))
-        #x = Dropout(0.2)(x)        
+        x = Dropout(0.2)(x)        
         
         # Make decoder with 'self.depth' layers, 
         # note that the number of filters in each layer will be halved compared to the previous "step" in the decoder
