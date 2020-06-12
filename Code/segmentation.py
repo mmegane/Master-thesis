@@ -42,16 +42,16 @@ classes = ["Background", "NCR/NET", "ED", "ET", "WM", "GM", "CSF"]
 
 Nclasses = len(classes)
 
-path = "../Data/Slices/z"
+path = "../Data/Slices/z/New"
 image_shape = (256,256,1)
 
 img_path = path + "/t1ce"
 mask_path = path  + "/Masks_complete"
 #mask_path = path + "/Masks"
 
-img_path_train = img_path + "/Training"
+img_path_train = img_path + "/Training/Full"
 img_path_val = img_path + "/Validation"
-mask_path_train = mask_path + "/Training"
+mask_path_train = mask_path + "/Training/Full"
 mask_path_val = mask_path + "/Validation"
 
 img_path_GAN = img_path + "/GAN_Preprocessed/Kept"
@@ -65,7 +65,7 @@ EPOCHS = 150
 VERBOSITY = 2
 
 LOAD_WEIGHTS = False
-#LOAD_NAME = "U-net_weights_complete_padded_no_dropout.h5"
+LOAD_NAME = None
 
 SAVE_WEIGHTS = True
 
@@ -121,7 +121,7 @@ def return_img_tensor(path_1, path_2 = None,
                     
         elif Nclasses == 4:
             img_tensor = img_tensor.copy()
-            img_tensor[img_tensor == 4] = 3  
+            img_tensor[img_tensor == 4] = 3 
         
     print("Finished reading data.")
         
@@ -285,7 +285,8 @@ net = Unet(img_size = image_shape,
 #%%
 
 Nreal = np.rint(TRAIN_RATIO * len(os.listdir(img_path_train))).astype(np.int32)
-NGan = np.rint(GAN_RATIO * len(os.listdir(img_path_GAN))).astype(np.int32)
+#NGan = np.rint(GAN_RATIO * len(os.listdir(img_path_GAN))).astype(np.int32)
+NGan = 0
 Nval = len(os.listdir(img_path_val))
 
 Ntraining = Nreal + NGan
@@ -311,7 +312,7 @@ val_generator = data_generator(img_path_val, mask_path_val, load_size_val, batch
 
 from keras.callbacks import ModelCheckpoint
 
-weight_path = "./Unet-weights"
+weight_path = "./Unet-weights/New"
 
 if LOAD_WEIGHTS:
     net.model.load_weights(weight_path + "/Saved/" + LOAD_NAME)

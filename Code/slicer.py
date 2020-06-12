@@ -54,10 +54,9 @@ for dir in file_list:
         
         if PADDING:
             slice = np.pad(slice, pad_width = PAD_WIDTH, constant_values = 0)           
-            path = output_path + "/" + slice_dim + "/Padded/" + format + "/"+ str(j).zfill(5) + ".png"
-        else:
-            path = output_path + "/" + slice_dim + "/" + format + "/"+ str(j).zfill(5) + ".png"
-             
+        
+        path = output_path + "/" + slice_dim + "/New/" + format + "/"+ str(j).zfill(5) + ".png"
+        
         png.from_array(slice, mode = 'L' + ';16').save(path)
         
         j += 1
@@ -96,9 +95,8 @@ for dir in mask_list:
         
         if PADDING:
             slice = np.pad(slice, pad_width = PAD_WIDTH, constant_values = 0)    
-            path = output_path + "/" + slice_dim + "/Padded/Masks/"+ str(j).zfill(5) + ".png" 
-        else:
-            path = output_path + "/" + slice_dim + "/Masks/"+ str(j).zfill(5) + ".png" 
+            
+        path = output_path + "/" + slice_dim + "/New/Masks/"+ str(j).zfill(5) + ".png" 
         
         png.from_array(slice.copy(), mode = 'L' + ';8').save(path)
         
@@ -137,9 +135,8 @@ for dir in mask_list:
         
         if PADDING:
             slice = np.pad(slice, pad_width = PAD_WIDTH, constant_values = 0)     
-            path = output_path + "/" + slice_dim + "/Padded/Masks_complete/" + str(j).zfill(5) + ".png" 
-        else:
-            path = output_path + "/" + slice_dim + "/Masks_complete/" + str(j).zfill(5) + ".png"
+        
+        path = output_path + "/" + slice_dim + "/New/Masks_complete/" + str(j).zfill(5) + ".png" 
         
         png.from_array(slice.copy(), mode = 'L' + ';8').save(path)
         
