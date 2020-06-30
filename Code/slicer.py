@@ -25,6 +25,15 @@ complete_mask_path = "/nobackup/data/mehfo331/Data/CompleteTargetsOrient_RAI/HGG
 
 #%%
 
+def adjust_dynamic_range(data, drange_in, drange_out):
+    if drange_in != drange_out:
+        scale = (np.float32(drange_out[1]) - np.float32(drange_out[0])) / (np.float32(drange_in[1]) - np.float32(drange_in[0]))
+        bias = (np.float32(drange_out[0]) - np.float32(drange_in[0]) * scale)
+        data = data * scale + bias
+    return data
+
+#%%
+
 # MR images
 
 file_list = []
@@ -53,9 +62,12 @@ for dir in file_list:
         slice = slice.astype('uint16')
         
         if PADDING:
-            slice = np.pad(slice, pad_width = PAD_WIDTH, constant_values = 0)           
+            slice = np.pad(slice, pad_width = PAD_WIDTH, constant_values = 0)
         
-        path = output_path + "/" + slice_dim + "/New/" + format + "/"+ str(j).zfill(5) + ".png"
+        path = output_path + "/" + slice_dim + "/test/" + format + "/"+ str(j).zfill(5) + ".png"
+        
+        slice = adjust_dynamic_range(slice, [0,11360], [0,65535])
+        slice = np.rint(slice).clip(0,65535).astype(np.uint16)  
         
         png.from_array(slice, mode = 'L' + ';16').save(path)
         
@@ -96,7 +108,10 @@ for dir in mask_list:
         if PADDING:
             slice = np.pad(slice, pad_width = PAD_WIDTH, constant_values = 0)    
             
-        path = output_path + "/" + slice_dim + "/New/Masks/"+ str(j).zfill(5) + ".png" 
+        path = output_path + "/" + slice_dim + "/test/Masks/"+ str(j).zfill(5) + ".png"
+        
+        slice = adjust_dynamic_range(slice, [0,4], [0,255])
+        slice = np.rint(slice).clip(0,255).astype(np.uint8) 
         
         png.from_array(slice.copy(), mode = 'L' + ';8').save(path)
         
@@ -136,7 +151,10 @@ for dir in mask_list:
         if PADDING:
             slice = np.pad(slice, pad_width = PAD_WIDTH, constant_values = 0)     
         
-        path = output_path + "/" + slice_dim + "/New/Masks_complete/" + str(j).zfill(5) + ".png" 
+        path = output_path + "/" + slice_dim + "/test/Masks_complete/" + str(j).zfill(5) + ".png"
+        
+        slice = adjust_dynamic_range(slice, [0,6], [0,255])
+        slice = np.rint(slice).clip(0,255).astype(np.uint8) 
         
         png.from_array(slice.copy(), mode = 'L' + ';8').save(path)
         

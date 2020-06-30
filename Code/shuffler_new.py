@@ -2,16 +2,12 @@ import os
 import shutil
 
 import random
-random.seed(1)
-
-from numpy.random import seed
-seed(1)
+#random.seed(1)
 
 slice_dim = "z"
 format = "t1ce"
 
-#data_path = "/nobackup/local/mehfo331/Data/Slices/" + slice_dim
-data_path = "/nobackup/data/mehfo331/Data/Slices/" + slice_dim + "/Padded"
+data_path = "/nobackup/data/mehfo331/Data/Slices/" + slice_dim + "/New"
 
 #%%
 
@@ -41,42 +37,41 @@ if Ndata != len(os.listdir(seg_path_complete)) - 3:
 # test_ratio = 0.1
 
 train_size = 26040
+train_size_new = 5208
 validation_size = 3255
 test_size = 3255
 
 #%%
 
-sample_indeces = list(range(0, Ndata))
-random.shuffle(sample_indeces)
-
-#%%
-
-def copy_data(src, dst, a = 0, b = None, shuffle = True):
-    j = 0
+def copy_data(src, dst, a = 0, b = None, shuffle = True, seed = 0):
     
     dir_list = sorted(os.listdir(src))
     dir_list = [s for s in dir_list if '.png' in s]
     
     if b == None:
         b = len(dir_list)
+        
+    sample_indeces = list(range(a, b))
     
-    for i in range(a,b):
+    if shuffle:
+        rng = random.Random(seed)
+        rng.shuffle(sample_indeces)
+    
+    Ndata = len(sample_indeces)
+    
+    for i in range(Ndata):
         
-        if shuffle:
-            index = sample_indeces[i]
-        else:
-            index = j
-        
-        #shutil.copyfile(src + "/" + str(index).zfill(5) + ".png", dst + "/" + str(j).zfill(5) + ".png")
-        shutil.copyfile(src + "/" + dir_list[index], dst + "/" + str(j).zfill(5) + ".png")
-        j += 1
+        index = sample_indeces[i] 
+        shutil.copyfile(src + "/" + dir_list[index], dst + "/" + str(i).zfill(5) + ".png")
 
 def delete_data(src):
+    
     Ndata = len(os.listdir(src))
     for i in range(Ndata):
         os.remove(src + "/" + str(i).zfill(5) + ".png")
     
 def rename_files(src):
+    
     files = sorted(os.listdir(src))
     for i in range(len(files)):
         os.rename(src + "/" + files[i], src + "/" + str(i).zfill(5) + ".png")
@@ -87,9 +82,11 @@ def rename_files(src):
 # MR images
 
 src = MR_path
-dst = MR_path + "/Training"
+dst = MR_path + "/Training/Full"
+dst_new = MR_path + "/Training/Fifth"
 
-copy_data(src, dst, 0, train_size, shuffle = True)
+copy_data(src, dst, 0, train_size)
+copy_data(src, dst_new, 0, train_size_new)
 
 dst = MR_path + "/Validation"
 
@@ -97,7 +94,7 @@ copy_data(src, dst, train_size, train_size + validation_size)
 
 dst = MR_path + "/Test"
 
-copy_data(src, dst, train_size + validation_size, Ndata)
+copy_data(src, dst, train_size + test_size, Ndata)
 
 #%%
 
@@ -108,9 +105,11 @@ delete_data(src)
 # Segmentation masks (4 classes)
 
 src = seg_path
-dst = seg_path + "/Training"
+dst = seg_path + "/Training/Full"
+dst_new = seg_path + "/Training/Fifth"
 
 copy_data(src, dst, 0, train_size)
+copy_data(src, dst_new, 0, train_size_new)
 
 dst = seg_path + "/Validation"
 
@@ -129,9 +128,11 @@ delete_data(src)
 # Segmentation masks (7 classes)
 
 src = seg_path_complete + "/"
-dst = seg_path_complete + "/Training/"
+dst = seg_path_complete + "/Training/Full"
+dst_new = seg_path_complete + "/Training/Fifth"
 
 copy_data(src, dst, 0, train_size)
+copy_data(src, dst_new, 0, train_size_new)
 
 dst = seg_path_complete + "/Validation/"
 
@@ -160,8 +161,8 @@ copy_data(src, dst, shuffle = False)
 
 # Segmentation masks (7 classes, GAN)
 
-src = "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/results/002-fake-images-1"
-dst = "/nobackup/data/mehfo331/Data/Slices/z/New/Masks_complete/GAN/Fifth/Raw"
+src = "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/results/051-fake-images-47"
+dst = "/nobackup/data/mehfo331/Data/Slices/z/Padded/Masks_complete/GAN"
 
 copy_data(src, dst, shuffle = False)
 

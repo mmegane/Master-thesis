@@ -5,8 +5,8 @@ import os
 
 #image_shape = (256,256)
 
-train_dir = "/nobackup/data/mehfo331/Data/Slices/z/Padded/Masks_complete/Training"
-gan_dir = "/nobackup/data/mehfo331/Data/Slices/z/Padded/Masks_complete/GAN"
+train_dir = "/nobackup/data/mehfo331/Data/Slices/z/New/Masks_complete/Training/Fifth"
+gan_dir = "/nobackup/data/mehfo331/Data/Slices/z/New/Masks_complete/GAN/Fifth/Raw"
 
 #%%
 
@@ -46,6 +46,8 @@ train_std = np.std(train_tensor, axis = axis)
 dir = gan_dir
 gan_tensor = load_array(gan_dir)
 
+gan_tensor = gan_tensor[50000:100000]
+
 #%%
 
 gan_mean = np.mean(gan_tensor, axis = axis)
@@ -68,15 +70,15 @@ gan_Z_L = np.linalg.norm(gan_Z, ord = ord, axis = 1)
 
 import matplotlib.pyplot as plt
 
-x = np.arange(340, 550, 0.1)
+x = np.arange(200, 1000, 0.1)
 y_train = np.zeros(len(x))
 y_gan = np.zeros(len(x))
 
 for i in range(len(x)):
     threshold = x[i]
     
-    train_indeces = np.where(train_Z_L > threshold)
-    gan_indeces = np.where(gan_Z_L > threshold)
+    train_indeces = np.where(train_Z_L < threshold)
+    gan_indeces = np.where(gan_Z_L < threshold)
      
     ratio_train = np.size(train_indeces)/train_tensor.shape[0]
     ratio_gan = np.size(gan_indeces)/gan_tensor.shape[0]
@@ -94,9 +96,9 @@ plt.show()
 
 #Candidates (axis = 0, ord = 2): 410, 490, 100
 
-threshold = 490
-train_indeces = np.where(train_Z_L > threshold)[0]
-gan_indeces = np.where(gan_Z_L > threshold)[0]
+threshold =  500
+train_indeces = np.where(train_Z_L < threshold)[0]
+gan_indeces = np.where(gan_Z_L < threshold)[0]
 
 ratio_train = np.size(train_indeces)/train_tensor.shape[0]
 ratio_gan = np.size(gan_indeces)/gan_tensor.shape[0]
@@ -112,20 +114,19 @@ def adjust_dynamic_range(data, drange_in, drange_out):
         data = data * scale + bias
     return data
 
-gan_tensor_255 = adjust_dynamic_range(gan_tensor, [0,6], [0,255])
+path = "/nobackup/data/mehfo331/Data/Slices/z/New/Masks_complete/GAN/Fifth/Preprocessed/Kept"
 
-path = "/nobackup/data/mehfo331/Data/Slices/z/Padded/Masks_complete/GAN_preprocessed/Removed"
-#path = "/nobackup/data/mehfo331/Data/Slices/z/Padded/Masks_complete/GAN_preprocessed/Kept"
-
-files = os.listdir(path)
-for i in range(len(files)):
-    os.remove(path + "/" + files[i])
+# files = os.listdir(path)
+# for i in range(len(files)):
+#     os.remove(path + "/" + files[i])
 
 for i in range(len(gan_indeces)):
 
     index = gan_indeces[i] 
-    #slice = gan_tensor_255[index]
     slice = gan_tensor[index]
+    
+    #slice = adjust_dynamic_range(slice, [0,6], [0, 255])
+    
     slice = slice.astype('uint8')
     
-    png.from_array(slice, mode = 'L' + ';8').save(path + "/" + str(i).zfill(5) + ".png")
+    png.from_array(slice, mode = 'L' + ';8').save(path + "/" + str(49073 + i).zfill(5) + ".png")

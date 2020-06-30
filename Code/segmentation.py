@@ -42,17 +42,26 @@ classes = ["Background", "NCR/NET", "ED", "ET", "WM", "GM", "CSF"]
 
 Nclasses = len(classes)
 
-path = "../Data/Slices/z/New"
 image_shape = (256,256,1)
+
+path = "/nobackup/data/mehfo331/Data/Slices/z/New"
+#path = "../Data/Slices/z/New"
 
 img_path = path + "/t1ce"
 mask_path = path  + "/Masks_complete"
 #mask_path = path + "/Masks"
 
-img_path_train = img_path + "/Training/Full"
+#img_path_train = img_path + "/Training"
+img_path_train = img_path + "/Training/Fifth"
 img_path_val = img_path + "/Validation"
-mask_path_train = mask_path + "/Training/Full"
+
+#img_path_val = "/nobackup/data/mehfo331/Data/Slices/z/Old/t1ce/Validation"
+
+#mask_path_train = mask_path + "/Training"
+mask_path_train = mask_path + "/Training/Fifth"
 mask_path_val = mask_path + "/Validation"
+
+#mask_path_val = "/nobackup/data/mehfo331/Data/Slices/z/Old/Masks_complete/Validation"
 
 img_path_GAN = img_path + "/GAN_Preprocessed/Kept"
 mask_path_GAN = mask_path + "/GAN_Preprocessed/Kept"
@@ -62,12 +71,12 @@ mask_path_GAN = mask_path + "/GAN_Preprocessed/Kept"
 BATCH_SIZE = 8
 EPOCHS = 150
 
-VERBOSITY = 2
+VERBOSITY = 1
 
 LOAD_WEIGHTS = False
 LOAD_NAME = None
 
-SAVE_WEIGHTS = True
+SAVE_WEIGHTS = False
 
 TRAIN_RATIO = 1
 GAN_RATIO = 0
@@ -151,8 +160,15 @@ pixel_max_train = int(np.max(img_tensor_train))
 img_mean_train = np.mean(img_tensor_train/pixel_max_train, axis = (0,1,2))
 class_weights_train = return_class_weights(mask_tensor_train)
 
-del(img_tensor_train)
-del(mask_tensor_train)
+#del(img_tensor_train)
+#del(mask_tensor_train)
+
+img_tensor_val = return_img_tensor(img_path_val, ratio_1 = TRAIN_RATIO, dtype = 'float16')
+mask_tensor_val = return_img_tensor(mask_path_val, ratio_1 = TRAIN_RATIO, dtype = 'uint8')
+
+pixel_max_val = int(np.max(img_tensor_val))
+img_mean_val = np.mean(img_tensor_val/pixel_max_train, axis = (0,1,2))
+class_weights_val = return_class_weights(mask_tensor_val)
 
 #%%
     
