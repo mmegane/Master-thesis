@@ -17,6 +17,7 @@ Conda/Unet/
 
 Data/
 
+old/
 ./old/
 
 Code/*.out
