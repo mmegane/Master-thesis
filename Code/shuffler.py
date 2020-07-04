@@ -149,8 +149,8 @@ delete_data(src)
 
 # MR_images (GAN):
 
-src = "/nobackup/data/mehfo331/Code/SPADE/results/PGAN-brains2/test_latest/images/synthesized_image"
-dst = "/nobackup/data/mehfo331/Data/Slices/z/Padded/t1ce/GAN_Preprocessed/Kept"
+src = "/nobackup/data/mehfo331/Code/SPADE/results/PGAN-brains_fifth_useable/PGAN-brains_fifth/test_250/images/synthesized_image"
+dst = "/nobackup/data/mehfo331/Data/Slices/z/New/t1ce/GAN/Fifth/Preprocessed"
 
 Ndata = len(os.listdir(src))
 

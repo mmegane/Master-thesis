@@ -51,20 +51,14 @@ img_path = path + "/t1ce"
 mask_path = path  + "/Masks_complete"
 #mask_path = path + "/Masks"
 
-#img_path_train = img_path + "/Training"
-img_path_train = img_path + "/Training/Fifth"
+img_path_train = img_path + "/Training/Full"
 img_path_val = img_path + "/Validation"
 
-#img_path_val = "/nobackup/data/mehfo331/Data/Slices/z/Old/t1ce/Validation"
-
-#mask_path_train = mask_path + "/Training"
-mask_path_train = mask_path + "/Training/Fifth"
+mask_path_train = mask_path + "/Training/Full"
 mask_path_val = mask_path + "/Validation"
 
-#mask_path_val = "/nobackup/data/mehfo331/Data/Slices/z/Old/Masks_complete/Validation"
-
-img_path_GAN = img_path + "/GAN_Preprocessed/Kept"
-mask_path_GAN = mask_path + "/GAN_Preprocessed/Kept"
+img_path_GAN = img_path + "/GAN/Fifth/Preprocessed/Kept"
+mask_path_GAN = mask_path + "/GAN/Fifth/Preprocessed/Kept"
 
 #%%
 
@@ -78,14 +72,10 @@ LOAD_NAME = None
 
 SAVE_WEIGHTS = False
 
-TRAIN_RATIO = 1
-GAN_RATIO = 0
+TRAIN_RATIO = 0.2
+GAN_RATIO = 20832/len(os.listdir(img_path_GAN))
 
 TEST = False
-
-#PIXEL_MAX = 11360
-#PIXEL_MAX = 11356
-#PIXEL_MAX = 65535
 
 #%%
 
@@ -301,8 +291,7 @@ net = Unet(img_size = image_shape,
 #%%
 
 Nreal = np.rint(TRAIN_RATIO * len(os.listdir(img_path_train))).astype(np.int32)
-#NGan = np.rint(GAN_RATIO * len(os.listdir(img_path_GAN))).astype(np.int32)
-NGan = 0
+NGan = np.rint(GAN_RATIO * len(os.listdir(img_path_GAN))).astype(np.int32)
 Nval = len(os.listdir(img_path_val))
 
 Ntraining = Nreal + NGan
