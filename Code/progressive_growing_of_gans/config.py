@@ -59,7 +59,8 @@ grid        = EasyDict(size='1080p', layout='random')       # Options for train.
 #desc += '-mnistrgb';            dataset = EasyDict(tfrecord_dir='mnistrgb')
 #desc += '-masks_complete_dr';       dataset = EasyDict(tfrecord_dir='masks_complete')
 #desc += '-masks_complete_no_blacks';       dataset = EasyDict(tfrecord_dir='masks_complete_no_blacks')
-desc += '-masks_complete_fifth_no_empty';       dataset = EasyDict(tfrecord_dir='masks_complete_fifth_no_empty')
+#desc += '-masks_complete_fifth_no_empty';       dataset = EasyDict(tfrecord_dir='masks_complete_fifth_no_empty')
+desc += '-masks_complete_full_no_empty';       dataset = EasyDict(tfrecord_dir='masks_complete_fifth_no_empty')
 #desc += '-syn1024rgb';          dataset = EasyDict(class_name='dataset.SyntheticDataset', resolution=1024, num_channels=3)
 #desc += '-lsun-airplane';       dataset = EasyDict(tfrecord_dir='lsun-airplane-100k');       train.mirror_augment = True
 #desc += '-lsun-bedroom';        dataset = EasyDict(tfrecord_dir='lsun-bedroom-100k');        train.mirror_augment = True
@@ -129,7 +130,7 @@ desc += '-fp32'; sched.max_minibatch_per_gpu = {256: 16, 512: 8, 1024: 4}
 # Utility scripts.
 # To run, uncomment the appropriate line and launch train.py.
 
-train = EasyDict(func='util_scripts.generate_fake_images', run_id=1, num_pngs=100000, drange_in = [-1,1], drange_out = [0,6]); num_gpus = 1; desc = 'fake-images-' + str(train.run_id)
+#train = EasyDict(func='util_scripts.generate_fake_images', run_id=1, num_pngs=100000, drange_in = [-1,1], drange_out = [0,6]); num_gpus = 1; desc = 'fake-images-' + str(train.run_id)
 #train = EasyDict(func='util_scripts.generate_fake_images', run_id=23, grid_size=[15,8], num_pngs=10, image_shrink=4); num_gpus = 1; desc = 'fake-grids-' + str(train.run_id)
 #train = EasyDict(func='util_scripts.generate_interpolation_video', run_id=41, grid_size=[1,1], duration_sec=60.0, smoothing_sec=1.0); num_gpus = 1; desc = 'interpolation-video-' + str(train.run_id)
 #train = EasyDict(func='util_scripts.generate_training_video', run_id=38, duration_sec=200.0); num_gpus = 1; desc = 'training-video-' + str(train.run_id)
