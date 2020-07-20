@@ -5,8 +5,8 @@ import os
 
 #image_shape = (256,256)
 
-train_dir = "/nobackup/data/mehfo331/Data/Slices/z/New/Masks_complete/Training/Fifth"
-gan_dir = "/nobackup/data/mehfo331/Data/Slices/z/New/Masks_complete/GAN/Fifth/Raw"
+train_dir = "/nobackup/data/mehfo331/Data/Slices/z/Masks_complete/Training/Full"
+gan_dir = "/nobackup/data/mehfo331/Data/Slices/z/Masks_complete/GAN/Full/Raw"
 
 #%%
 
@@ -46,7 +46,7 @@ train_std = np.std(train_tensor, axis = axis)
 dir = gan_dir
 gan_tensor = load_array(gan_dir)
 
-gan_tensor = gan_tensor[50000:100000]
+gan_tensor = gan_tensor[0:33334]
 
 #%%
 
@@ -70,15 +70,15 @@ gan_Z_L = np.linalg.norm(gan_Z, ord = ord, axis = 1)
 
 import matplotlib.pyplot as plt
 
-x = np.arange(200, 1000, 0.1)
+x = np.arange(200, 5000, 0.1)
 y_train = np.zeros(len(x))
 y_gan = np.zeros(len(x))
 
 for i in range(len(x)):
     threshold = x[i]
     
-    train_indeces = np.where(train_Z_L < threshold)
-    gan_indeces = np.where(gan_Z_L < threshold)
+    train_indeces = np.where(train_Z_L > threshold)
+    gan_indeces = np.where(gan_Z_L > threshold)
      
     ratio_train = np.size(train_indeces)/train_tensor.shape[0]
     ratio_gan = np.size(gan_indeces)/gan_tensor.shape[0]
@@ -96,9 +96,9 @@ plt.show()
 
 #Candidates (axis = 0, ord = 2): 410, 490, 100
 
-threshold =  500
-train_indeces = np.where(train_Z_L < threshold)[0]
-gan_indeces = np.where(gan_Z_L < threshold)[0]
+threshold =  200
+train_indeces = np.where(train_Z_L > threshold)[0]
+gan_indeces = np.where(gan_Z_L > threshold)[0]
 
 ratio_train = np.size(train_indeces)/train_tensor.shape[0]
 ratio_gan = np.size(gan_indeces)/gan_tensor.shape[0]

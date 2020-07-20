@@ -160,8 +160,8 @@ copy_data(src, dst, shuffle = False)
 
 # Segmentation masks (7 classes, GAN)
 
-src = "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/results/002-fake-images-1"
-dst = "/nobackup/data/mehfo331/Data/Slices/z/New/Masks_complete/GAN/Fifth/Raw"
+src = "/nobackup/data/mehfo331/Code/progressive_growing_of_gans/results/006-fake-images-2"
+dst = "/nobackup/data/mehfo331/Data/Slices/z/Masks_complete/GAN/Full/Raw"
 
 copy_data(src, dst, shuffle = False)
 
