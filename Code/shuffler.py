@@ -87,6 +87,7 @@ def rename_files(src):
 # MR images
 
 src = MR_path
+
 dst = MR_path + "/Training"
 
 copy_data(src, dst, 0, train_size, shuffle = True)
@@ -149,8 +150,8 @@ delete_data(src)
 
 # MR_images (GAN):
 
-src = "/nobackup/data/mehfo331/Code/SPADE/results/PGAN-brains_fifth_useable/PGAN-brains_fifth/test_250/images/synthesized_image"
-dst = "/nobackup/data/mehfo331/Data/Slices/z/New/t1ce/GAN/Fifth/Preprocessed"
+src = "/nobackup/data/mehfo331/Code/SPADE/results/PGAN-brains_full_useable/PGAN-brains_full/test_latest/images/synthesized_image"
+dst = "/nobackup/data/mehfo331/Data/Slices/z/t1ce/GAN/Full/Preprocessed/Kept"
 
 Ndata = len(os.listdir(src))
 

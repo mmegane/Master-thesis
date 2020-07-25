@@ -4,5 +4,6 @@ python test.py --name PGAN-brains_fifth --dataset_mode custom --no_instance --la
 
 nohup python train.py --name PGAN-brains_full --dataset_mode custom --label_dir /flush/mehfo331/Data/Slices/z/Masks_complete/Training --image_dir /flush/mehfo331/Data/Slices/z/t1ce/Training --label_nc 7 --gpu_ids 0,1 --preprocess_mode none --no_flip --no_instance --output_nc 1 --no_vgg_loss --continue_train --batchSize 2 &
 
-
 python test.py --name PGAN-brains_fifth --dataset_mode custom --no_instance --label_nc 7 --preprocess_mode none --no_flip --no_instance --output_nc 1 --label_dir /nobackup/data/mehfo331/Data/Slices/z/New/Masks_complete/GAN/Fifth/Preprocessed/Kept --image_dir /nobackup/data/mehfo331/Data/Slices/z/New/Masks_complete/GAN/Fifth/Preprocessed/Kept --which_epoch 250 --how_many 200 --results_dir ./results/PGAN-brains_fifth_visible
+
+python test.py --name PGAN-brains_full --dataset_mode custom --no_instance --label_nc 7 --preprocess_mode none --no_flip --no_instance --output_nc 1 --label_dir /nobackup/data/mehfo331/Data/Slices/z/Masks_complete/GAN/Full/Preprocessed/Kept --image_dir /nobackup/data/mehfo331/Data/Slices/z/Masks_complete/GAN/Full/Preprocessed/Kept --how_many 200 --results_dir ./results/PGAN-brains_full_visible

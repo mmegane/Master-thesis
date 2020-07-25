@@ -96,9 +96,9 @@ def tensor2im(image_tensor, imtype=np.uint16, normalize=True, tile=False):
     image_numpy = image_tensor.detach().cpu().float().numpy()
     
     # Full
-    #PIXEL_MAX = 11360
+    PIXEL_MAX = 11360
     # Fifth
-    PIXEL_MAX = 11136
+    #PIXEL_MAX = 11136
     
     if normalize:
 

@@ -57,26 +57,23 @@ img_path_val = img_path + "/Validation"
 mask_path_train = mask_path + "/Training/Full"
 mask_path_val = mask_path + "/Validation"
 
-img_path_GAN = img_path + "/GAN/Fifth/Preprocessed/Kept"
-mask_path_GAN = mask_path + "/GAN/Fifth/Preprocessed/Kept"
+img_path_GAN = img_path + "/GAN/Full/Preprocessed/Kept"
+mask_path_GAN = mask_path + "/GAN/Full/Preprocessed/Kept"
 
 #%%
 
 BATCH_SIZE = 8
 EPOCHS = 150
 
-VERBOSITY = 1
+VERBOSITY = 2
 
 LOAD_WEIGHTS = False
 LOAD_NAME = "7_classes_26040_reals_0_GANs.h5"
 
-SAVE_WEIGHTS = False
-
-TRAIN_RATIO = 0.2
-GAN_RATIO = 20832/len(os.listdir(img_path_GAN))
+SAVE_WEIGHTS = True
 
 TRAIN_RATIO = 1
-GAN_RATIO = 0
+GAN_RATIO = 23960/len(os.listdir(img_path_GAN))
 
 TEST = False
 
@@ -153,15 +150,15 @@ pixel_max_train = int(np.max(img_tensor_train))
 img_mean_train = np.mean(img_tensor_train/pixel_max_train, axis = (0,1,2))
 class_weights_train = return_class_weights(mask_tensor_train)
 
-#del(img_tensor_train)
-#del(mask_tensor_train)
+del(img_tensor_train)
+del(mask_tensor_train)
 
-img_tensor_val = return_img_tensor(img_path_val, ratio_1 = TRAIN_RATIO, dtype = 'float16')
-mask_tensor_val = return_img_tensor(mask_path_val, ratio_1 = TRAIN_RATIO, dtype = 'uint8')
+# img_tensor_val = return_img_tensor(img_path_val, ratio_1 = TRAIN_RATIO, dtype = 'float16')
+# mask_tensor_val = return_img_tensor(mask_path_val, ratio_1 = TRAIN_RATIO, dtype = 'uint8')
 
-pixel_max_val = int(np.max(img_tensor_val))
-img_mean_val = np.mean(img_tensor_val/pixel_max_train, axis = (0,1,2))
-class_weights_val = return_class_weights(mask_tensor_val)
+# pixel_max_val = int(np.max(img_tensor_val))
+# img_mean_val = np.mean(img_tensor_val/pixel_max_train, axis = (0,1,2))
+# class_weights_val = return_class_weights(mask_tensor_val)
 
 #%%
     
@@ -195,6 +192,7 @@ def data_generator(img_path, mask_path, load_size, batch_size, categorical = Tru
     
     img_load = np.zeros((load_size, *image_shape), dtype = 'float16')
     mask_load = np.zeros((load_size, *image_shape), dtype = 'uint8')
+    
 
     while True:
              

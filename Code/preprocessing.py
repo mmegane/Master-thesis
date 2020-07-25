@@ -46,7 +46,7 @@ train_std = np.std(train_tensor, axis = axis)
 dir = gan_dir
 gan_tensor = load_array(gan_dir)
 
-gan_tensor = gan_tensor[0:33334]
+gan_tensor = gan_tensor[66667:100000]
 
 #%%
 
@@ -70,7 +70,7 @@ gan_Z_L = np.linalg.norm(gan_Z, ord = ord, axis = 1)
 
 import matplotlib.pyplot as plt
 
-x = np.arange(200, 5000, 0.1)
+x = np.arange(400, 1000, 0.1)
 y_train = np.zeros(len(x))
 y_gan = np.zeros(len(x))
 
@@ -96,7 +96,7 @@ plt.show()
 
 #Candidates (axis = 0, ord = 2): 410, 490, 100
 
-threshold =  200
+threshold = 500
 train_indeces = np.where(train_Z_L > threshold)[0]
 gan_indeces = np.where(gan_Z_L > threshold)[0]
 
@@ -114,7 +114,7 @@ def adjust_dynamic_range(data, drange_in, drange_out):
         data = data * scale + bias
     return data
 
-path = "/nobackup/data/mehfo331/Data/Slices/z/New/Masks_complete/GAN/Fifth/Preprocessed/Kept"
+path = "/nobackup/data/mehfo331/Data/Slices/z/Masks_complete/GAN/Full/Preprocessed/Removed"
 
 # files = os.listdir(path)
 # for i in range(len(files)):
@@ -125,8 +125,8 @@ for i in range(len(gan_indeces)):
     index = gan_indeces[i] 
     slice = gan_tensor[index]
     
-    #slice = adjust_dynamic_range(slice, [0,6], [0, 255])
+    slice = adjust_dynamic_range(slice, [0,6], [0, 255])
     
     slice = slice.astype('uint8')
     
-    png.from_array(slice, mode = 'L' + ';8').save(path + "/" + str(49073 + i).zfill(5) + ".png")
+    png.from_array(slice, mode = 'L' + ';8').save(path + "/" + str(398 + i).zfill(5) + ".png")
