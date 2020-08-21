@@ -81,9 +81,9 @@ class Pix2pixDataset(BaseDataset):
         image = np.expand_dims(image, axis = 0)
     
         # Full:
-        PIXEL_MAX = 11360
+        #PIXEL_MAX = 11360
         # Fifth:
-        #PIXEL_MAX = 11136
+        PIXEL_MAX = 11136
         
         image = util.adjust_dynamic_range(image, [0,PIXEL_MAX], [0,1])        
         image = (image - 0.5)/0.5

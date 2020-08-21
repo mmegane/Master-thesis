@@ -1,18 +1,18 @@
-seed = 0
+SEED = 0
 
 import os
-os.environ['PYTHONHASHSEED'] = str(seed)
+os.environ['PYTHONHASHSEED'] = str(SEED)
 
 import random
-random.seed(seed)
+random.seed(SEED)
 
 import numpy as np
-np.random.seed(seed)
+np.random.seed(SEED)
 
 #%%
 
 import tensorflow as tf
-tf.compat.v1.set_random_seed(seed)
+tf.compat.v1.set_random_seed(SEED)
 
 from keras import backend as K
 session_conf = tf.compat.v1.ConfigProto(intra_op_parallelism_threads=1, inter_op_parallelism_threads=1)
@@ -36,8 +36,8 @@ K.tensorflow_backend.set_session(tf.Session(config=config))
 
 #%%
 
-classes = ["Background", "NCR/NET", "ED", "ET", "WM", "GM", "CSF"]
-#classes = ["Background", "NCR/NET", "ED", "ET"]
+#classes = ["Background", "NCR/NET", "ED", "ET", "WM", "GM", "CSF"]
+classes = ["Background", "NCR/NET", "ED", "ET"]
 #classes = ["Non-tumor", "Tumor"]
 
 Nclasses = len(classes)
@@ -45,7 +45,6 @@ Nclasses = len(classes)
 image_shape = (256,256,1)
 
 path = "/nobackup/data/mehfo331/Data/Slices/z"
-#path = "../Data/Slices/z/New"
 
 img_path = path + "/t1ce"
 mask_path = path  + "/Masks_complete"
@@ -53,9 +52,11 @@ mask_path = path  + "/Masks_complete"
 
 img_path_train = img_path + "/Training/Full"
 img_path_val = img_path + "/Validation"
+img_path_test = img_path + "/Test"
 
 mask_path_train = mask_path + "/Training/Full"
 mask_path_val = mask_path + "/Validation"
+mask_path_test = mask_path + "/Test"
 
 img_path_GAN = img_path + "/GAN/Full/Preprocessed/Kept"
 mask_path_GAN = mask_path + "/GAN/Full/Preprocessed/Kept"
@@ -65,21 +66,41 @@ mask_path_GAN = mask_path + "/GAN/Full/Preprocessed/Kept"
 BATCH_SIZE = 8
 EPOCHS = 150
 
-VERBOSITY = 2
+VERBOSITY = 1
 
 LOAD_WEIGHTS = False
-LOAD_NAME = "7_classes_26040_reals_0_GANs.h5"
+LOAD_NAME = "7_classes_5208_reals_20832_GANs.h5"
 
-SAVE_WEIGHTS = True
+SAVE_WEIGHTS = False
 
 TRAIN_RATIO = 1
-GAN_RATIO = 23960/len(os.listdir(img_path_GAN))
+GAN_RATIO = 8960/len(os.listdir(img_path_GAN))
 
 TEST = False
 
 #%%
 
 from PIL import Image
+
+def seven_classes_to_four_classes(mask):
+    img = mask.copy()
+    
+    img[(img <= 3) & (img >= 1)] = 0
+    img[img == 4] = 1
+    img[img == 5] = 2
+    img[img == 6] = 3
+
+    return(img)
+
+def seven_classes_to_two_classes(mask):
+    img = mask.copy()
+    
+    img[(img <= 3) & (img >= 1)] = 0
+    img[img == 4] = 1
+    img[img == 4] = 1
+    img[img == 6] = 1
+
+    return(img)
 
 def return_img_paths(path, ratio = 1):
     
@@ -115,12 +136,10 @@ def return_img_tensor(path_1, path_2 = None,
         
     if dtype == 'uint8':
         if Nclasses == 2:  
-            img_tensor = img_tensor.copy()
-            img_tensor[img_tensor != 0] = 1
+            img_tensor = seven_classes_to_two_classes(img_tensor)
                     
         elif Nclasses == 4:
-            img_tensor = img_tensor.copy()
-            img_tensor[img_tensor == 4] = 3 
+            img_tensor = seven_classes_to_four_classes(img_tensor)
         
     print("Finished reading data.")
         
@@ -168,7 +187,8 @@ from keras.utils import to_categorical
 def data_generator(img_path, mask_path, load_size, batch_size, categorical = True,
                     img_path_GAN = None, mask_path_GAN = None, 
                     normalization_constant = pixel_max_train, img_mean = img_mean_train,
-                    real_ratio = 1.0, GAN_ratio = 0):
+                    real_ratio = 1.0, GAN_ratio = 0,
+                    initial_shuffle = True):
     
     img_dirs = return_img_paths(img_path, ratio = real_ratio)
     mask_dirs = return_img_paths(mask_path, ratio = real_ratio)
@@ -184,11 +204,13 @@ def data_generator(img_path, mask_path, load_size, batch_size, categorical = Tru
         
     if load_size % batch_size != 0:
         raise Exception('batch_size does not divide load_size evenly')
+    
         
     j = 0
     k = 0
     
-    shuffle = True
+    rng = random.Random(SEED) 
+    shuffle = initial_shuffle
     
     img_load = np.zeros((load_size, *image_shape), dtype = 'float16')
     mask_load = np.zeros((load_size, *image_shape), dtype = 'uint8')
@@ -203,7 +225,8 @@ def data_generator(img_path, mask_path, load_size, batch_size, categorical = Tru
             if shuffle:        
                 
                 dirs = list(zip(img_dirs, mask_dirs))
-                random.shuffle(dirs)
+                #random.shuffle(dirs)
+                rng.shuffle(dirs)
                 img_dirs, mask_dirs = zip(*dirs)
                 
                 shuffle = False       
@@ -221,13 +244,11 @@ def data_generator(img_path, mask_path, load_size, batch_size, categorical = Tru
                 mask_array = img_to_array(mask, dtype = 'uint8')
                 #mask_array = np.asarray(mask, dtype = 'uint8')
                 
-                if Nclasses == 2:  
-                    mask_array = mask_array.copy()
-                    mask_array[mask_array != 0] = 1
+                if Nclasses == 2:            
+                    mask_array = seven_classes_to_two_classes(mask_array)
                     
-                elif Nclasses == 4:
-                    mask_array = mask_array.copy()
-                    mask_array[mask_array == 4] = 3  
+                elif Nclasses == 4:                  
+                    mask_array = seven_classes_to_four_classes(mask_array)
                 
                 mask_load[i - j] = mask_array
         
@@ -353,44 +374,72 @@ print("Finished training.")
 #%%
 
 if TEST:
-
-    val_generator = data_generator(img_path_val, mask_path_val, load_size_val, batch_size)
     
-    _ , dice = net.model.evaluate_generator(val_generator, steps = validation_steps, verbose = 1)
+    print("\nStarting test...")
+    
+    Ntest = len(os.listdir(img_path_test))
+    test_steps = np.ceil(Ntest/batch_size)
+
+    load_size_test = int(test_steps * batch_size)
+    
+    test_generator = data_generator(img_path_test, mask_path_test, load_size_test, batch_size)
+    
+    _ , dice = net.model.evaluate_generator(test_generator, steps = test_steps, verbose = 1)
     
     #%%
     
-    val_steps = int(np.ceil(Nval/batch_size))
+    test_steps = int(np.ceil(Ntest/batch_size))
     
-    Xval = np.zeros((load_size_val, *image_shape), dtype = 'float32')
-    Yval = np.zeros((load_size_val, *image_shape), dtype = 'uint8')
+    Xtest = np.zeros((load_size_test, *image_shape), dtype = 'float32')
+    Ytest = np.zeros((load_size_test, *image_shape), dtype = 'uint8')
     
-    val_generator = data_generator(img_path_val, mask_path_val, load_size_val, batch_size, categorical = False)
+    test_generator = data_generator(img_path_test, mask_path_test, load_size_test, batch_size, categorical = False,
+                                    initial_shuffle = False)
     
-    for i in range(val_steps):
-        Xval[(batch_size * i):(batch_size * (i + 1))], Yval[(batch_size * i):(batch_size * (i + 1))] = next(val_generator)
+    for i in range(test_steps):
+        Xtest[(batch_size * i):(batch_size * (i + 1))], Ytest[(batch_size * i):(batch_size * (i + 1))] = next(test_generator)
         
     #%%
-    val_generator = data_generator(img_path_val, mask_path_val, load_size_val, batch_size)
+    test_generator = data_generator(img_path_test, mask_path_test, load_size_test, batch_size,
+                                    initial_shuffle = False)
     
-    Ypred = net.model.predict_generator(val_generator, steps = validation_steps)
+    Ypred = net.model.predict_generator(test_generator, steps = test_steps)
+    #Ypred = net.model.predict(Xtest)
     Ypred = np.argmax(Ypred, axis = -1)
     Ypred = np.expand_dims(Ypred, -1)
     #%%
     
     from matplotlib import pyplot as plt
     
-    sample = 1
+    sample = 3
     
     plt.figure(figsize = (12,12))
     plt.subplot(131)
-    plt.imshow(Xval[sample,:,:,0], cmap = "gray")
+    plt.axis('off')
+    plt.imshow(Xtest[sample,:,:,0], cmap = "gray")
     plt.title('Image')
     plt.subplot(132)
+    plt.axis('off')
     plt.imshow(Ypred[sample,:,:,0], cmap = "gray")
     plt.title('Segmentation result')
     plt.subplot(133)
-    plt.imshow(Yval[sample,:,:,0], cmap = "gray")
+    plt.axis('off')
+    plt.imshow(Ytest[sample,:,:,0], cmap = "gray")
     plt.title('Ground truth segmentation')
 
 #%%
+
+from save_visible import *
+
+out_dir = "/nobackup/data/mehfo331/Results/Images/Segmentations/7_classes_5208_reals_20832_GANs"
+
+N = 200
+dtype = 'uint8'
+#colors = ['black', 'white']
+#colors = ['black', '#ff0000', '#ffe517', '#ff8b17']
+colors = ['black', '#2389da','#aeaeae', 'white', '#ff0000', '#ffe517', '#ff8b17']
+
+array = np.squeeze(Ypred, axis = -1)
+array = array.astype(dtype)
+save_array(array, N, out_dir, colors)
+    
