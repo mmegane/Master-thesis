@@ -66,15 +66,15 @@ mask_path_GAN = mask_path + "/GAN/Full/Preprocessed/Kept"
 BATCH_SIZE = 8
 EPOCHS = 150
 
-VERBOSITY = 1
+VERBOSITY = 2
 
 LOAD_WEIGHTS = False
 LOAD_NAME = "7_classes_5208_reals_20832_GANs.h5"
 
-SAVE_WEIGHTS = False
+SAVE_WEIGHTS = True
 
 TRAIN_RATIO = 1
-GAN_RATIO = 8960/len(os.listdir(img_path_GAN))
+GAN_RATIO = 23960/len(os.listdir(img_path_GAN))
 
 TEST = False
 
@@ -85,7 +85,7 @@ from PIL import Image
 def seven_classes_to_four_classes(mask):
     img = mask.copy()
     
-    img[(img <= 3) & (img >= 1)] = 0
+    img[(img >= 1) & (img <= 3)] = 0
     img[img == 4] = 1
     img[img == 5] = 2
     img[img == 6] = 3
@@ -95,9 +95,9 @@ def seven_classes_to_four_classes(mask):
 def seven_classes_to_two_classes(mask):
     img = mask.copy()
     
-    img[(img <= 3) & (img >= 1)] = 0
+    img[(img >= 1) & (img <= 3)] = 0
     img[img == 4] = 1
-    img[img == 4] = 1
+    img[img == 5] = 1
     img[img == 6] = 1
 
     return(img)
@@ -429,17 +429,17 @@ if TEST:
 
 #%%
 
-from save_visible import *
+# from save_visible import *
 
-out_dir = "/nobackup/data/mehfo331/Results/Images/Segmentations/7_classes_5208_reals_20832_GANs"
+# out_dir = "/nobackup/data/mehfo331/Results/Images/Segmentations/7_classes_5208_reals_20832_GANs"
 
-N = 200
-dtype = 'uint8'
-#colors = ['black', 'white']
-#colors = ['black', '#ff0000', '#ffe517', '#ff8b17']
-colors = ['black', '#2389da','#aeaeae', 'white', '#ff0000', '#ffe517', '#ff8b17']
+# N = 200
+# dtype = 'uint8'
+# #colors = ['black', 'white']
+# #colors = ['black', '#ff0000', '#ffe517', '#ff8b17']
+# colors = ['black', '#2389da','#aeaeae', 'white', '#ff0000', '#ffe517', '#ff8b17']
 
-array = np.squeeze(Ypred, axis = -1)
-array = array.astype(dtype)
-save_array(array, N, out_dir, colors)
+# array = np.squeeze(Ypred, axis = -1)
+# array = array.astype(dtype)
+# save_array(array, N, out_dir, colors)
     
