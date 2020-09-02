@@ -1,0 +1,704 @@
+nohup: ignoring input
+2020-08-30 13:36:18.463179: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX
+2020-08-30 13:36:18.553613: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 3601770000 Hz
+2020-08-30 13:36:18.555297: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x557a9f30b570 executing computations on platform Host. Devices:
+2020-08-30 13:36:18.555378: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): <undefined>, <undefined>
+2020-08-30 13:36:18.563379: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcuda.so.1
+2020-08-30 13:36:18.592988: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:1005] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-08-30 13:36:18.597073: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1640] Found device 0 with properties: 
+name: GeForce GTX 1080 major: 6 minor: 1 memoryClockRate(GHz): 1.7715
+pciBusID: 0000:01:00.0
+2020-08-30 13:36:19.085133: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudart.so.10.1
+2020-08-30 13:36:20.997361: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcublas.so.10
+2020-08-30 13:36:21.877171: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcufft.so.10
+2020-08-30 13:36:22.490472: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcurand.so.10
+2020-08-30 13:36:23.499761: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcusolver.so.10
+2020-08-30 13:36:24.397380: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcusparse.so.10
+2020-08-30 13:36:26.520849: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudnn.so.7
+2020-08-30 13:36:26.521232: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:1005] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-08-30 13:36:26.522968: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:1005] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-08-30 13:36:26.524506: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1763] Adding visible gpu devices: 0
+2020-08-30 13:36:26.524621: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudart.so.10.1
+2020-08-30 13:36:26.705091: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1181] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-08-30 13:36:26.705193: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1187]      0 
+2020-08-30 13:36:26.705230: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1200] 0:   N 
+2020-08-30 13:36:26.705662: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:1005] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-08-30 13:36:26.707145: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:1005] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-08-30 13:36:26.708558: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:1005] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-08-30 13:36:26.709909: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1326] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7486 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080, pci bus id: 0000:01:00.0, compute capability: 6.1)
+2020-08-30 13:36:26.715149: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x557a9fe18170 executing computations on platform CUDA. Devices:
+2020-08-30 13:36:26.715218: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): GeForce GTX 1080, Compute Capability 6.1
+/home/mehfo331/.conda/envs/thesis/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:516: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/home/mehfo331/.conda/envs/thesis/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:517: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/home/mehfo331/.conda/envs/thesis/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:518: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/home/mehfo331/.conda/envs/thesis/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:519: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/home/mehfo331/.conda/envs/thesis/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:520: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/home/mehfo331/.conda/envs/thesis/lib/python3.6/site-packages/tensorflow/python/framework/dtypes.py:525: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+/home/mehfo331/.conda/envs/thesis/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:541: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/home/mehfo331/.conda/envs/thesis/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:542: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/home/mehfo331/.conda/envs/thesis/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:543: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/home/mehfo331/.conda/envs/thesis/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:544: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/home/mehfo331/.conda/envs/thesis/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:545: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/home/mehfo331/.conda/envs/thesis/lib/python3.6/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:550: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+Using TensorFlow backend.
+WARNING:tensorflow:From segmentation.py:20: The name tf.keras.backend.set_session is deprecated. Please use tf.compat.v1.keras.backend.set_session instead.
+
+WARNING:tensorflow:From segmentation.py:33: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From segmentation.py:35: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2020-08-30 13:36:26.720813: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:1005] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-08-30 13:36:26.722114: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1640] Found device 0 with properties: 
+name: GeForce GTX 1080 major: 6 minor: 1 memoryClockRate(GHz): 1.7715
+pciBusID: 0000:01:00.0
+2020-08-30 13:36:26.722205: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudart.so.10.1
+2020-08-30 13:36:26.722261: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcublas.so.10
+2020-08-30 13:36:26.722375: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcufft.so.10
+2020-08-30 13:36:26.722433: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcurand.so.10
+2020-08-30 13:36:26.722482: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcusolver.so.10
+2020-08-30 13:36:26.722530: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcusparse.so.10
+2020-08-30 13:36:26.722578: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudnn.so.7
+2020-08-30 13:36:26.722759: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:1005] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-08-30 13:36:26.724126: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:1005] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-08-30 13:36:26.725414: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1763] Adding visible gpu devices: 0
+2020-08-30 13:36:26.725486: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1181] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-08-30 13:36:26.725520: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1187]      0 
+2020-08-30 13:36:26.725546: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1200] 0:   N 
+2020-08-30 13:36:26.725784: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:1005] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-08-30 13:36:26.727162: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:1005] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-08-30 13:36:26.728470: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1326] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7486 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080, pci bus id: 0000:01:00.0, compute capability: 6.1)
+WARNING:tensorflow:From /home/mehfo331/.conda/envs/thesis/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:74: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+
+WARNING:tensorflow:From /home/mehfo331/.conda/envs/thesis/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:517: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From /home/mehfo331/.conda/envs/thesis/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:4185: The name tf.truncated_normal is deprecated. Please use tf.random.truncated_normal instead.
+
+WARNING:tensorflow:From /home/mehfo331/.conda/envs/thesis/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:1834: The name tf.nn.fused_batch_norm is deprecated. Please use tf.compat.v1.nn.fused_batch_norm instead.
+
+WARNING:tensorflow:From /home/mehfo331/.conda/envs/thesis/lib/python3.6/site-packages/keras/backend/tensorflow_backend.py:3976: The name tf.nn.max_pool is deprecated. Please use tf.nn.max_pool2d instead.
+
+WARNING:tensorflow:From /home/mehfo331/.conda/envs/thesis/lib/python3.6/site-packages/keras/optimizers.py:790: The name tf.train.Optimizer is deprecated. Please use tf.compat.v1.train.Optimizer instead.
+
+2020-08-30 13:39:39.462288: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudnn.so.7
+
+Reading data...
+Finished reading data.
+
+Reading data...
+Finished reading data.
+
+Training 2 classes with 10000 images (5208 real and 4792 GAN images):
+
+Epoch 1/150
+ - 708s - loss: 0.3809 - weighted_dice_loss: 0.3809 - val_loss: 0.3415 - val_weighted_dice_loss: 0.3415
+
+Epoch 00001: val_weighted_dice_loss improved from inf to 0.34145, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 2/150
+ - 637s - loss: 0.2159 - weighted_dice_loss: 0.2159 - val_loss: 0.6493 - val_weighted_dice_loss: 0.6493
+
+Epoch 00002: val_weighted_dice_loss did not improve from 0.34145
+Epoch 3/150
+ - 639s - loss: 0.1736 - weighted_dice_loss: 0.1736 - val_loss: 0.1633 - val_weighted_dice_loss: 0.1633
+
+Epoch 00003: val_weighted_dice_loss improved from 0.34145 to 0.16329, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 4/150
+ - 640s - loss: 0.1486 - weighted_dice_loss: 0.1486 - val_loss: 0.1643 - val_weighted_dice_loss: 0.1643
+
+Epoch 00004: val_weighted_dice_loss did not improve from 0.16329
+Epoch 5/150
+ - 638s - loss: 0.1344 - weighted_dice_loss: 0.1344 - val_loss: 0.1402 - val_weighted_dice_loss: 0.1402
+
+Epoch 00005: val_weighted_dice_loss improved from 0.16329 to 0.14019, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 6/150
+ - 640s - loss: 0.1284 - weighted_dice_loss: 0.1284 - val_loss: 0.2124 - val_weighted_dice_loss: 0.2124
+
+Epoch 00006: val_weighted_dice_loss did not improve from 0.14019
+Epoch 7/150
+ - 641s - loss: 0.1223 - weighted_dice_loss: 0.1223 - val_loss: 0.1301 - val_weighted_dice_loss: 0.1301
+
+Epoch 00007: val_weighted_dice_loss improved from 0.14019 to 0.13012, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 8/150
+ - 641s - loss: 0.1199 - weighted_dice_loss: 0.1199 - val_loss: 0.1189 - val_weighted_dice_loss: 0.1189
+
+Epoch 00008: val_weighted_dice_loss improved from 0.13012 to 0.11889, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 9/150
+ - 639s - loss: 0.1143 - weighted_dice_loss: 0.1143 - val_loss: 0.1210 - val_weighted_dice_loss: 0.1210
+
+Epoch 00009: val_weighted_dice_loss did not improve from 0.11889
+Epoch 10/150
+ - 639s - loss: 0.1109 - weighted_dice_loss: 0.1109 - val_loss: 0.1059 - val_weighted_dice_loss: 0.1059
+
+Epoch 00010: val_weighted_dice_loss improved from 0.11889 to 0.10595, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 11/150
+ - 640s - loss: 0.1083 - weighted_dice_loss: 0.1083 - val_loss: 0.1039 - val_weighted_dice_loss: 0.1039
+
+Epoch 00011: val_weighted_dice_loss improved from 0.10595 to 0.10390, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 12/150
+ - 639s - loss: 0.1071 - weighted_dice_loss: 0.1071 - val_loss: 0.1153 - val_weighted_dice_loss: 0.1153
+
+Epoch 00012: val_weighted_dice_loss did not improve from 0.10390
+Epoch 13/150
+ - 639s - loss: 0.1030 - weighted_dice_loss: 0.1030 - val_loss: 0.1015 - val_weighted_dice_loss: 0.1015
+
+Epoch 00013: val_weighted_dice_loss improved from 0.10390 to 0.10154, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 14/150
+ - 640s - loss: 0.1013 - weighted_dice_loss: 0.1013 - val_loss: 0.0966 - val_weighted_dice_loss: 0.0966
+
+Epoch 00014: val_weighted_dice_loss improved from 0.10154 to 0.09657, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 15/150
+ - 638s - loss: 0.0974 - weighted_dice_loss: 0.0974 - val_loss: 0.1280 - val_weighted_dice_loss: 0.1280
+
+Epoch 00015: val_weighted_dice_loss did not improve from 0.09657
+Epoch 16/150
+ - 639s - loss: 0.0948 - weighted_dice_loss: 0.0948 - val_loss: 0.0996 - val_weighted_dice_loss: 0.0996
+
+Epoch 00016: val_weighted_dice_loss did not improve from 0.09657
+Epoch 17/150
+ - 638s - loss: 0.0950 - weighted_dice_loss: 0.0950 - val_loss: 0.1003 - val_weighted_dice_loss: 0.1003
+
+Epoch 00017: val_weighted_dice_loss did not improve from 0.09657
+Epoch 18/150
+ - 640s - loss: 0.0930 - weighted_dice_loss: 0.0930 - val_loss: 0.1164 - val_weighted_dice_loss: 0.1164
+
+Epoch 00018: val_weighted_dice_loss did not improve from 0.09657
+Epoch 19/150
+ - 641s - loss: 0.0897 - weighted_dice_loss: 0.0897 - val_loss: 0.1018 - val_weighted_dice_loss: 0.1018
+
+Epoch 00019: val_weighted_dice_loss did not improve from 0.09657
+Epoch 20/150
+ - 640s - loss: 0.0879 - weighted_dice_loss: 0.0879 - val_loss: 0.0945 - val_weighted_dice_loss: 0.0945
+
+Epoch 00020: val_weighted_dice_loss improved from 0.09657 to 0.09451, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 21/150
+ - 642s - loss: 0.0859 - weighted_dice_loss: 0.0859 - val_loss: 0.0985 - val_weighted_dice_loss: 0.0985
+
+Epoch 00021: val_weighted_dice_loss did not improve from 0.09451
+Epoch 22/150
+ - 642s - loss: 0.0876 - weighted_dice_loss: 0.0876 - val_loss: 0.0964 - val_weighted_dice_loss: 0.0964
+
+Epoch 00022: val_weighted_dice_loss did not improve from 0.09451
+Epoch 23/150
+ - 643s - loss: 0.0842 - weighted_dice_loss: 0.0842 - val_loss: 0.0930 - val_weighted_dice_loss: 0.0930
+
+Epoch 00023: val_weighted_dice_loss improved from 0.09451 to 0.09295, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 24/150
+ - 644s - loss: 0.0821 - weighted_dice_loss: 0.0821 - val_loss: 0.0934 - val_weighted_dice_loss: 0.0934
+
+Epoch 00024: val_weighted_dice_loss did not improve from 0.09295
+Epoch 25/150
+ - 642s - loss: 0.0807 - weighted_dice_loss: 0.0807 - val_loss: 0.0891 - val_weighted_dice_loss: 0.0891
+
+Epoch 00025: val_weighted_dice_loss improved from 0.09295 to 0.08909, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 26/150
+ - 640s - loss: 0.0798 - weighted_dice_loss: 0.0798 - val_loss: 0.1067 - val_weighted_dice_loss: 0.1067
+
+Epoch 00026: val_weighted_dice_loss did not improve from 0.08909
+Epoch 27/150
+ - 641s - loss: 0.0791 - weighted_dice_loss: 0.0791 - val_loss: 0.0929 - val_weighted_dice_loss: 0.0929
+
+Epoch 00027: val_weighted_dice_loss did not improve from 0.08909
+Epoch 28/150
+ - 638s - loss: 0.0772 - weighted_dice_loss: 0.0772 - val_loss: 0.0911 - val_weighted_dice_loss: 0.0911
+
+Epoch 00028: val_weighted_dice_loss did not improve from 0.08909
+Epoch 29/150
+ - 642s - loss: 0.0766 - weighted_dice_loss: 0.0766 - val_loss: 0.1069 - val_weighted_dice_loss: 0.1069
+
+Epoch 00029: val_weighted_dice_loss did not improve from 0.08909
+Epoch 30/150
+ - 640s - loss: 0.0741 - weighted_dice_loss: 0.0741 - val_loss: 0.1189 - val_weighted_dice_loss: 0.1189
+
+Epoch 00030: val_weighted_dice_loss did not improve from 0.08909
+Epoch 31/150
+ - 640s - loss: 0.0729 - weighted_dice_loss: 0.0729 - val_loss: 0.0900 - val_weighted_dice_loss: 0.0900
+
+Epoch 00031: val_weighted_dice_loss did not improve from 0.08909
+Epoch 32/150
+ - 643s - loss: 0.0726 - weighted_dice_loss: 0.0726 - val_loss: 0.1005 - val_weighted_dice_loss: 0.1005
+
+Epoch 00032: val_weighted_dice_loss did not improve from 0.08909
+Epoch 33/150
+ - 641s - loss: 0.0725 - weighted_dice_loss: 0.0725 - val_loss: 0.0925 - val_weighted_dice_loss: 0.0925
+
+Epoch 00033: val_weighted_dice_loss did not improve from 0.08909
+Epoch 34/150
+ - 644s - loss: 0.0701 - weighted_dice_loss: 0.0701 - val_loss: 0.1010 - val_weighted_dice_loss: 0.1010
+
+Epoch 00034: val_weighted_dice_loss did not improve from 0.08909
+Epoch 35/150
+ - 639s - loss: 0.0689 - weighted_dice_loss: 0.0689 - val_loss: 0.0941 - val_weighted_dice_loss: 0.0941
+
+Epoch 00035: val_weighted_dice_loss did not improve from 0.08909
+Epoch 36/150
+ - 643s - loss: 0.0674 - weighted_dice_loss: 0.0674 - val_loss: 0.0863 - val_weighted_dice_loss: 0.0863
+
+Epoch 00036: val_weighted_dice_loss improved from 0.08909 to 0.08629, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 37/150
+ - 640s - loss: 0.0669 - weighted_dice_loss: 0.0669 - val_loss: 0.0847 - val_weighted_dice_loss: 0.0847
+
+Epoch 00037: val_weighted_dice_loss improved from 0.08629 to 0.08472, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 38/150
+ - 640s - loss: 0.0661 - weighted_dice_loss: 0.0661 - val_loss: 0.0830 - val_weighted_dice_loss: 0.0830
+
+Epoch 00038: val_weighted_dice_loss improved from 0.08472 to 0.08297, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 39/150
+ - 642s - loss: 0.0641 - weighted_dice_loss: 0.0641 - val_loss: 0.0819 - val_weighted_dice_loss: 0.0819
+
+Epoch 00039: val_weighted_dice_loss improved from 0.08297 to 0.08187, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 40/150
+ - 640s - loss: 0.0636 - weighted_dice_loss: 0.0636 - val_loss: 0.0909 - val_weighted_dice_loss: 0.0909
+
+Epoch 00040: val_weighted_dice_loss did not improve from 0.08187
+Epoch 41/150
+ - 640s - loss: 0.0654 - weighted_dice_loss: 0.0654 - val_loss: 0.0830 - val_weighted_dice_loss: 0.0830
+
+Epoch 00041: val_weighted_dice_loss did not improve from 0.08187
+Epoch 42/150
+ - 643s - loss: 0.0617 - weighted_dice_loss: 0.0617 - val_loss: 0.0772 - val_weighted_dice_loss: 0.0772
+
+Epoch 00042: val_weighted_dice_loss improved from 0.08187 to 0.07724, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 43/150
+ - 640s - loss: 0.0613 - weighted_dice_loss: 0.0613 - val_loss: 0.0844 - val_weighted_dice_loss: 0.0844
+
+Epoch 00043: val_weighted_dice_loss did not improve from 0.07724
+Epoch 44/150
+ - 641s - loss: 0.0603 - weighted_dice_loss: 0.0603 - val_loss: 0.0894 - val_weighted_dice_loss: 0.0894
+
+Epoch 00044: val_weighted_dice_loss did not improve from 0.07724
+Epoch 45/150
+ - 641s - loss: 0.0608 - weighted_dice_loss: 0.0608 - val_loss: 0.0841 - val_weighted_dice_loss: 0.0841
+
+Epoch 00045: val_weighted_dice_loss did not improve from 0.07724
+Epoch 46/150
+ - 639s - loss: 0.0574 - weighted_dice_loss: 0.0574 - val_loss: 0.0960 - val_weighted_dice_loss: 0.0960
+
+Epoch 00046: val_weighted_dice_loss did not improve from 0.07724
+Epoch 47/150
+ - 641s - loss: 0.0585 - weighted_dice_loss: 0.0585 - val_loss: 0.0996 - val_weighted_dice_loss: 0.0996
+
+Epoch 00047: val_weighted_dice_loss did not improve from 0.07724
+Epoch 48/150
+ - 641s - loss: 0.0570 - weighted_dice_loss: 0.0570 - val_loss: 0.0789 - val_weighted_dice_loss: 0.0789
+
+Epoch 00048: val_weighted_dice_loss did not improve from 0.07724
+Epoch 49/150
+ - 644s - loss: 0.0563 - weighted_dice_loss: 0.0563 - val_loss: 0.0767 - val_weighted_dice_loss: 0.0767
+
+Epoch 00049: val_weighted_dice_loss improved from 0.07724 to 0.07674, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 50/150
+ - 642s - loss: 0.0564 - weighted_dice_loss: 0.0564 - val_loss: 0.0768 - val_weighted_dice_loss: 0.0768
+
+Epoch 00050: val_weighted_dice_loss did not improve from 0.07674
+Epoch 51/150
+ - 642s - loss: 0.0552 - weighted_dice_loss: 0.0552 - val_loss: 0.0817 - val_weighted_dice_loss: 0.0817
+
+Epoch 00051: val_weighted_dice_loss did not improve from 0.07674
+Epoch 52/150
+ - 641s - loss: 0.0541 - weighted_dice_loss: 0.0541 - val_loss: 0.0735 - val_weighted_dice_loss: 0.0735
+
+Epoch 00052: val_weighted_dice_loss improved from 0.07674 to 0.07351, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 53/150
+ - 641s - loss: 0.0525 - weighted_dice_loss: 0.0525 - val_loss: 0.0760 - val_weighted_dice_loss: 0.0760
+
+Epoch 00053: val_weighted_dice_loss did not improve from 0.07351
+Epoch 54/150
+ - 641s - loss: 0.0537 - weighted_dice_loss: 0.0537 - val_loss: 0.0906 - val_weighted_dice_loss: 0.0906
+
+Epoch 00054: val_weighted_dice_loss did not improve from 0.07351
+Epoch 55/150
+ - 641s - loss: 0.0520 - weighted_dice_loss: 0.0520 - val_loss: 0.0786 - val_weighted_dice_loss: 0.0786
+
+Epoch 00055: val_weighted_dice_loss did not improve from 0.07351
+Epoch 56/150
+ - 642s - loss: 0.0522 - weighted_dice_loss: 0.0522 - val_loss: 0.0965 - val_weighted_dice_loss: 0.0965
+
+Epoch 00056: val_weighted_dice_loss did not improve from 0.07351
+Epoch 57/150
+ - 642s - loss: 0.0519 - weighted_dice_loss: 0.0519 - val_loss: 0.0751 - val_weighted_dice_loss: 0.0751
+
+Epoch 00057: val_weighted_dice_loss did not improve from 0.07351
+Epoch 58/150
+ - 641s - loss: 0.0498 - weighted_dice_loss: 0.0498 - val_loss: 0.1390 - val_weighted_dice_loss: 0.1390
+
+Epoch 00058: val_weighted_dice_loss did not improve from 0.07351
+Epoch 59/150
+ - 641s - loss: 0.0486 - weighted_dice_loss: 0.0486 - val_loss: 0.0746 - val_weighted_dice_loss: 0.0746
+
+Epoch 00059: val_weighted_dice_loss did not improve from 0.07351
+Epoch 60/150
+ - 641s - loss: 0.0495 - weighted_dice_loss: 0.0495 - val_loss: 0.0793 - val_weighted_dice_loss: 0.0793
+
+Epoch 00060: val_weighted_dice_loss did not improve from 0.07351
+Epoch 61/150
+ - 642s - loss: 0.0484 - weighted_dice_loss: 0.0484 - val_loss: 0.0719 - val_weighted_dice_loss: 0.0719
+
+Epoch 00061: val_weighted_dice_loss improved from 0.07351 to 0.07189, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 62/150
+ - 641s - loss: 0.0475 - weighted_dice_loss: 0.0475 - val_loss: 0.0777 - val_weighted_dice_loss: 0.0777
+
+Epoch 00062: val_weighted_dice_loss did not improve from 0.07189
+Epoch 63/150
+ - 639s - loss: 0.0474 - weighted_dice_loss: 0.0474 - val_loss: 0.0714 - val_weighted_dice_loss: 0.0714
+
+Epoch 00063: val_weighted_dice_loss improved from 0.07189 to 0.07137, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 64/150
+ - 639s - loss: 0.0466 - weighted_dice_loss: 0.0466 - val_loss: 0.0726 - val_weighted_dice_loss: 0.0726
+
+Epoch 00064: val_weighted_dice_loss did not improve from 0.07137
+Epoch 65/150
+ - 639s - loss: 0.0461 - weighted_dice_loss: 0.0461 - val_loss: 0.0707 - val_weighted_dice_loss: 0.0707
+
+Epoch 00065: val_weighted_dice_loss improved from 0.07137 to 0.07072, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 66/150
+ - 640s - loss: 0.0459 - weighted_dice_loss: 0.0459 - val_loss: 0.1182 - val_weighted_dice_loss: 0.1182
+
+Epoch 00066: val_weighted_dice_loss did not improve from 0.07072
+Epoch 67/150
+ - 641s - loss: 0.0444 - weighted_dice_loss: 0.0444 - val_loss: 0.0720 - val_weighted_dice_loss: 0.0720
+
+Epoch 00067: val_weighted_dice_loss did not improve from 0.07072
+Epoch 68/150
+ - 640s - loss: 0.0449 - weighted_dice_loss: 0.0449 - val_loss: 0.0735 - val_weighted_dice_loss: 0.0735
+
+Epoch 00068: val_weighted_dice_loss did not improve from 0.07072
+Epoch 69/150
+ - 640s - loss: 0.0436 - weighted_dice_loss: 0.0436 - val_loss: 0.0724 - val_weighted_dice_loss: 0.0724
+
+Epoch 00069: val_weighted_dice_loss did not improve from 0.07072
+Epoch 70/150
+ - 640s - loss: 0.0433 - weighted_dice_loss: 0.0433 - val_loss: 0.0796 - val_weighted_dice_loss: 0.0796
+
+Epoch 00070: val_weighted_dice_loss did not improve from 0.07072
+Epoch 71/150
+ - 641s - loss: 0.0436 - weighted_dice_loss: 0.0436 - val_loss: 0.6224 - val_weighted_dice_loss: 0.6224
+
+Epoch 00071: val_weighted_dice_loss did not improve from 0.07072
+Epoch 72/150
+ - 641s - loss: 0.0425 - weighted_dice_loss: 0.0425 - val_loss: 0.0681 - val_weighted_dice_loss: 0.0681
+
+Epoch 00072: val_weighted_dice_loss improved from 0.07072 to 0.06806, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 73/150
+ - 642s - loss: 0.0414 - weighted_dice_loss: 0.0414 - val_loss: 0.0685 - val_weighted_dice_loss: 0.0685
+
+Epoch 00073: val_weighted_dice_loss did not improve from 0.06806
+Epoch 74/150
+ - 639s - loss: 0.0417 - weighted_dice_loss: 0.0417 - val_loss: 0.0676 - val_weighted_dice_loss: 0.0676
+
+Epoch 00074: val_weighted_dice_loss improved from 0.06806 to 0.06764, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 75/150
+ - 639s - loss: 0.0410 - weighted_dice_loss: 0.0410 - val_loss: 0.1162 - val_weighted_dice_loss: 0.1162
+
+Epoch 00075: val_weighted_dice_loss did not improve from 0.06764
+Epoch 76/150
+ - 640s - loss: 0.0406 - weighted_dice_loss: 0.0406 - val_loss: 0.0704 - val_weighted_dice_loss: 0.0704
+
+Epoch 00076: val_weighted_dice_loss did not improve from 0.06764
+Epoch 77/150
+ - 641s - loss: 0.0414 - weighted_dice_loss: 0.0414 - val_loss: 0.0694 - val_weighted_dice_loss: 0.0694
+
+Epoch 00077: val_weighted_dice_loss did not improve from 0.06764
+Epoch 78/150
+ - 641s - loss: 0.0392 - weighted_dice_loss: 0.0392 - val_loss: 0.0660 - val_weighted_dice_loss: 0.0660
+
+Epoch 00078: val_weighted_dice_loss improved from 0.06764 to 0.06602, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 79/150
+ - 641s - loss: 0.0391 - weighted_dice_loss: 0.0391 - val_loss: 0.0750 - val_weighted_dice_loss: 0.0750
+
+Epoch 00079: val_weighted_dice_loss did not improve from 0.06602
+Epoch 80/150
+ - 639s - loss: 0.0387 - weighted_dice_loss: 0.0387 - val_loss: 0.0686 - val_weighted_dice_loss: 0.0686
+
+Epoch 00080: val_weighted_dice_loss did not improve from 0.06602
+Epoch 81/150
+ - 642s - loss: 0.0386 - weighted_dice_loss: 0.0386 - val_loss: 0.0679 - val_weighted_dice_loss: 0.0679
+
+Epoch 00081: val_weighted_dice_loss did not improve from 0.06602
+Epoch 82/150
+ - 643s - loss: 0.0384 - weighted_dice_loss: 0.0384 - val_loss: 0.0675 - val_weighted_dice_loss: 0.0675
+
+Epoch 00082: val_weighted_dice_loss did not improve from 0.06602
+Epoch 83/150
+ - 640s - loss: 0.0381 - weighted_dice_loss: 0.0381 - val_loss: 0.0674 - val_weighted_dice_loss: 0.0674
+
+Epoch 00083: val_weighted_dice_loss did not improve from 0.06602
+Epoch 84/150
+ - 642s - loss: 0.0373 - weighted_dice_loss: 0.0373 - val_loss: 0.0660 - val_weighted_dice_loss: 0.0660
+
+Epoch 00084: val_weighted_dice_loss did not improve from 0.06602
+Epoch 85/150
+ - 641s - loss: 0.0373 - weighted_dice_loss: 0.0373 - val_loss: 0.0669 - val_weighted_dice_loss: 0.0669
+
+Epoch 00085: val_weighted_dice_loss did not improve from 0.06602
+Epoch 86/150
+ - 641s - loss: 0.0376 - weighted_dice_loss: 0.0376 - val_loss: 0.0674 - val_weighted_dice_loss: 0.0674
+
+Epoch 00086: val_weighted_dice_loss did not improve from 0.06602
+Epoch 87/150
+ - 640s - loss: 0.0357 - weighted_dice_loss: 0.0357 - val_loss: 0.0668 - val_weighted_dice_loss: 0.0668
+
+Epoch 00087: val_weighted_dice_loss did not improve from 0.06602
+Epoch 88/150
+ - 640s - loss: 0.0355 - weighted_dice_loss: 0.0355 - val_loss: 0.0656 - val_weighted_dice_loss: 0.0656
+
+Epoch 00088: val_weighted_dice_loss improved from 0.06602 to 0.06562, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 89/150
+ - 640s - loss: 0.0354 - weighted_dice_loss: 0.0354 - val_loss: 0.0668 - val_weighted_dice_loss: 0.0668
+
+Epoch 00089: val_weighted_dice_loss did not improve from 0.06562
+Epoch 90/150
+ - 642s - loss: 0.0354 - weighted_dice_loss: 0.0354 - val_loss: 0.3512 - val_weighted_dice_loss: 0.3512
+
+Epoch 00090: val_weighted_dice_loss did not improve from 0.06562
+Epoch 91/150
+ - 640s - loss: 0.0350 - weighted_dice_loss: 0.0350 - val_loss: 0.3504 - val_weighted_dice_loss: 0.3504
+
+Epoch 00091: val_weighted_dice_loss did not improve from 0.06562
+Epoch 92/150
+ - 641s - loss: 0.0347 - weighted_dice_loss: 0.0347 - val_loss: 0.0661 - val_weighted_dice_loss: 0.0661
+
+Epoch 00092: val_weighted_dice_loss did not improve from 0.06562
+Epoch 93/150
+ - 640s - loss: 0.0343 - weighted_dice_loss: 0.0343 - val_loss: 0.0628 - val_weighted_dice_loss: 0.0628
+
+Epoch 00093: val_weighted_dice_loss improved from 0.06562 to 0.06280, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 94/150
+ - 641s - loss: 0.0339 - weighted_dice_loss: 0.0339 - val_loss: 0.0676 - val_weighted_dice_loss: 0.0676
+
+Epoch 00094: val_weighted_dice_loss did not improve from 0.06280
+Epoch 95/150
+ - 640s - loss: 0.0337 - weighted_dice_loss: 0.0337 - val_loss: 0.0667 - val_weighted_dice_loss: 0.0667
+
+Epoch 00095: val_weighted_dice_loss did not improve from 0.06280
+Epoch 96/150
+ - 639s - loss: 0.0333 - weighted_dice_loss: 0.0333 - val_loss: 0.0672 - val_weighted_dice_loss: 0.0672
+
+Epoch 00096: val_weighted_dice_loss did not improve from 0.06280
+Epoch 97/150
+ - 641s - loss: 0.0332 - weighted_dice_loss: 0.0332 - val_loss: 0.0706 - val_weighted_dice_loss: 0.0706
+
+Epoch 00097: val_weighted_dice_loss did not improve from 0.06280
+Epoch 98/150
+ - 642s - loss: 0.0331 - weighted_dice_loss: 0.0331 - val_loss: 0.0671 - val_weighted_dice_loss: 0.0671
+
+Epoch 00098: val_weighted_dice_loss did not improve from 0.06280
+Epoch 99/150
+ - 640s - loss: 0.0326 - weighted_dice_loss: 0.0326 - val_loss: 0.0645 - val_weighted_dice_loss: 0.0645
+
+Epoch 00099: val_weighted_dice_loss did not improve from 0.06280
+Epoch 100/150
+ - 642s - loss: 0.0323 - weighted_dice_loss: 0.0323 - val_loss: 0.0665 - val_weighted_dice_loss: 0.0665
+
+Epoch 00100: val_weighted_dice_loss did not improve from 0.06280
+Epoch 101/150
+ - 642s - loss: 0.0318 - weighted_dice_loss: 0.0318 - val_loss: 0.0820 - val_weighted_dice_loss: 0.0820
+
+Epoch 00101: val_weighted_dice_loss did not improve from 0.06280
+Epoch 102/150
+ - 642s - loss: 0.0316 - weighted_dice_loss: 0.0316 - val_loss: 0.0824 - val_weighted_dice_loss: 0.0824
+
+Epoch 00102: val_weighted_dice_loss did not improve from 0.06280
+Epoch 103/150
+ - 642s - loss: 0.0313 - weighted_dice_loss: 0.0313 - val_loss: 0.0643 - val_weighted_dice_loss: 0.0643
+
+Epoch 00103: val_weighted_dice_loss did not improve from 0.06280
+Epoch 104/150
+ - 643s - loss: 0.0310 - weighted_dice_loss: 0.0310 - val_loss: 0.0680 - val_weighted_dice_loss: 0.0680
+
+Epoch 00104: val_weighted_dice_loss did not improve from 0.06280
+Epoch 105/150
+ - 641s - loss: 0.0309 - weighted_dice_loss: 0.0309 - val_loss: 0.0651 - val_weighted_dice_loss: 0.0651
+
+Epoch 00105: val_weighted_dice_loss did not improve from 0.06280
+Epoch 106/150
+ - 642s - loss: 0.0307 - weighted_dice_loss: 0.0307 - val_loss: 0.0687 - val_weighted_dice_loss: 0.0687
+
+Epoch 00106: val_weighted_dice_loss did not improve from 0.06280
+Epoch 107/150
+ - 640s - loss: 0.0304 - weighted_dice_loss: 0.0304 - val_loss: 0.0648 - val_weighted_dice_loss: 0.0648
+
+Epoch 00107: val_weighted_dice_loss did not improve from 0.06280
+Epoch 108/150
+ - 642s - loss: 0.0301 - weighted_dice_loss: 0.0301 - val_loss: 0.0647 - val_weighted_dice_loss: 0.0647
+
+Epoch 00108: val_weighted_dice_loss did not improve from 0.06280
+Epoch 109/150
+ - 641s - loss: 0.0298 - weighted_dice_loss: 0.0298 - val_loss: 0.0644 - val_weighted_dice_loss: 0.0644
+
+Epoch 00109: val_weighted_dice_loss did not improve from 0.06280
+Epoch 110/150
+ - 642s - loss: 0.0295 - weighted_dice_loss: 0.0295 - val_loss: 0.0636 - val_weighted_dice_loss: 0.0636
+
+Epoch 00110: val_weighted_dice_loss did not improve from 0.06280
+Epoch 111/150
+ - 642s - loss: 0.0296 - weighted_dice_loss: 0.0296 - val_loss: 0.0618 - val_weighted_dice_loss: 0.0618
+
+Epoch 00111: val_weighted_dice_loss improved from 0.06280 to 0.06175, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 112/150
+ - 640s - loss: 0.0296 - weighted_dice_loss: 0.0296 - val_loss: 0.0756 - val_weighted_dice_loss: 0.0756
+
+Epoch 00112: val_weighted_dice_loss did not improve from 0.06175
+Epoch 113/150
+ - 641s - loss: 0.0290 - weighted_dice_loss: 0.0290 - val_loss: 0.0623 - val_weighted_dice_loss: 0.0623
+
+Epoch 00113: val_weighted_dice_loss did not improve from 0.06175
+Epoch 114/150
+ - 643s - loss: 0.0285 - weighted_dice_loss: 0.0285 - val_loss: 0.0651 - val_weighted_dice_loss: 0.0651
+
+Epoch 00114: val_weighted_dice_loss did not improve from 0.06175
+Epoch 115/150
+ - 641s - loss: 0.0286 - weighted_dice_loss: 0.0286 - val_loss: 0.7517 - val_weighted_dice_loss: 0.7517
+
+Epoch 00115: val_weighted_dice_loss did not improve from 0.06175
+Epoch 116/150
+ - 642s - loss: 0.0285 - weighted_dice_loss: 0.0285 - val_loss: 0.0654 - val_weighted_dice_loss: 0.0654
+
+Epoch 00116: val_weighted_dice_loss did not improve from 0.06175
+Epoch 117/150
+ - 644s - loss: 0.0281 - weighted_dice_loss: 0.0281 - val_loss: 0.2677 - val_weighted_dice_loss: 0.2677
+
+Epoch 00117: val_weighted_dice_loss did not improve from 0.06175
+Epoch 118/150
+ - 641s - loss: 0.0282 - weighted_dice_loss: 0.0282 - val_loss: 0.0637 - val_weighted_dice_loss: 0.0637
+
+Epoch 00118: val_weighted_dice_loss did not improve from 0.06175
+Epoch 119/150
+ - 642s - loss: 0.0277 - weighted_dice_loss: 0.0277 - val_loss: 0.0653 - val_weighted_dice_loss: 0.0653
+
+Epoch 00119: val_weighted_dice_loss did not improve from 0.06175
+Epoch 120/150
+ - 642s - loss: 0.0274 - weighted_dice_loss: 0.0274 - val_loss: 0.0896 - val_weighted_dice_loss: 0.0896
+
+Epoch 00120: val_weighted_dice_loss did not improve from 0.06175
+Epoch 121/150
+ - 643s - loss: 0.0273 - weighted_dice_loss: 0.0273 - val_loss: 0.0667 - val_weighted_dice_loss: 0.0667
+
+Epoch 00121: val_weighted_dice_loss did not improve from 0.06175
+Epoch 122/150
+ - 640s - loss: 0.0270 - weighted_dice_loss: 0.0270 - val_loss: 0.1885 - val_weighted_dice_loss: 0.1885
+
+Epoch 00122: val_weighted_dice_loss did not improve from 0.06175
+Epoch 123/150
+ - 642s - loss: 0.0270 - weighted_dice_loss: 0.0270 - val_loss: 0.2655 - val_weighted_dice_loss: 0.2655
+
+Epoch 00123: val_weighted_dice_loss did not improve from 0.06175
+Epoch 124/150
+ - 641s - loss: 0.0267 - weighted_dice_loss: 0.0267 - val_loss: 0.0914 - val_weighted_dice_loss: 0.0914
+
+Epoch 00124: val_weighted_dice_loss did not improve from 0.06175
+Epoch 125/150
+ - 642s - loss: 0.0265 - weighted_dice_loss: 0.0265 - val_loss: 0.0627 - val_weighted_dice_loss: 0.0627
+
+Epoch 00125: val_weighted_dice_loss did not improve from 0.06175
+Epoch 126/150
+ - 641s - loss: 0.0263 - weighted_dice_loss: 0.0263 - val_loss: 0.2080 - val_weighted_dice_loss: 0.2080
+
+Epoch 00126: val_weighted_dice_loss did not improve from 0.06175
+Epoch 127/150
+ - 643s - loss: 0.0263 - weighted_dice_loss: 0.0263 - val_loss: 0.0628 - val_weighted_dice_loss: 0.0628
+
+Epoch 00127: val_weighted_dice_loss did not improve from 0.06175
+Epoch 128/150
+ - 642s - loss: 0.0259 - weighted_dice_loss: 0.0259 - val_loss: 0.0625 - val_weighted_dice_loss: 0.0625
+
+Epoch 00128: val_weighted_dice_loss did not improve from 0.06175
+Epoch 129/150
+ - 641s - loss: 0.0259 - weighted_dice_loss: 0.0259 - val_loss: 0.7509 - val_weighted_dice_loss: 0.7509
+
+Epoch 00129: val_weighted_dice_loss did not improve from 0.06175
+Epoch 130/150
+ - 642s - loss: 0.0256 - weighted_dice_loss: 0.0256 - val_loss: 0.0687 - val_weighted_dice_loss: 0.0687
+
+Epoch 00130: val_weighted_dice_loss did not improve from 0.06175
+Epoch 131/150
+ - 641s - loss: 0.0256 - weighted_dice_loss: 0.0256 - val_loss: 0.0630 - val_weighted_dice_loss: 0.0630
+
+Epoch 00131: val_weighted_dice_loss did not improve from 0.06175
+Epoch 132/150
+ - 642s - loss: 0.0255 - weighted_dice_loss: 0.0255 - val_loss: 0.0828 - val_weighted_dice_loss: 0.0828
+
+Epoch 00132: val_weighted_dice_loss did not improve from 0.06175
+Epoch 133/150
+ - 643s - loss: 0.0251 - weighted_dice_loss: 0.0251 - val_loss: 0.0624 - val_weighted_dice_loss: 0.0624
+
+Epoch 00133: val_weighted_dice_loss did not improve from 0.06175
+Epoch 134/150
+ - 641s - loss: 0.0251 - weighted_dice_loss: 0.0251 - val_loss: 0.0631 - val_weighted_dice_loss: 0.0631
+
+Epoch 00134: val_weighted_dice_loss did not improve from 0.06175
+Epoch 135/150
+ - 643s - loss: 0.0251 - weighted_dice_loss: 0.0251 - val_loss: 0.0639 - val_weighted_dice_loss: 0.0639
+
+Epoch 00135: val_weighted_dice_loss did not improve from 0.06175
+Epoch 136/150
+ - 646s - loss: 0.0248 - weighted_dice_loss: 0.0248 - val_loss: 0.0627 - val_weighted_dice_loss: 0.0627
+
+Epoch 00136: val_weighted_dice_loss did not improve from 0.06175
+Epoch 137/150
+ - 645s - loss: 0.0245 - weighted_dice_loss: 0.0245 - val_loss: 0.0620 - val_weighted_dice_loss: 0.0620
+
+Epoch 00137: val_weighted_dice_loss did not improve from 0.06175
+Epoch 138/150
+ - 643s - loss: 0.0246 - weighted_dice_loss: 0.0246 - val_loss: 0.0631 - val_weighted_dice_loss: 0.0631
+
+Epoch 00138: val_weighted_dice_loss did not improve from 0.06175
+Epoch 139/150
+ - 644s - loss: 0.0243 - weighted_dice_loss: 0.0243 - val_loss: 0.0619 - val_weighted_dice_loss: 0.0619
+
+Epoch 00139: val_weighted_dice_loss did not improve from 0.06175
+Epoch 140/150
+ - 641s - loss: 0.0242 - weighted_dice_loss: 0.0242 - val_loss: 0.0697 - val_weighted_dice_loss: 0.0697
+
+Epoch 00140: val_weighted_dice_loss did not improve from 0.06175
+Epoch 141/150
+ - 644s - loss: 0.0246 - weighted_dice_loss: 0.0246 - val_loss: 0.0661 - val_weighted_dice_loss: 0.0661
+
+Epoch 00141: val_weighted_dice_loss did not improve from 0.06175
+Epoch 142/150
+ - 645s - loss: 0.0239 - weighted_dice_loss: 0.0239 - val_loss: 0.0618 - val_weighted_dice_loss: 0.0618
+
+Epoch 00142: val_weighted_dice_loss did not improve from 0.06175
+Epoch 143/150
+ - 644s - loss: 0.0236 - weighted_dice_loss: 0.0236 - val_loss: 0.2810 - val_weighted_dice_loss: 0.2810
+
+Epoch 00143: val_weighted_dice_loss did not improve from 0.06175
+Epoch 144/150
+ - 641s - loss: 0.0236 - weighted_dice_loss: 0.0236 - val_loss: 0.0622 - val_weighted_dice_loss: 0.0622
+
+Epoch 00144: val_weighted_dice_loss did not improve from 0.06175
+Epoch 145/150
+ - 643s - loss: 0.0234 - weighted_dice_loss: 0.0234 - val_loss: 0.0622 - val_weighted_dice_loss: 0.0622
+
+Epoch 00145: val_weighted_dice_loss did not improve from 0.06175
+Epoch 146/150
+ - 642s - loss: 0.0232 - weighted_dice_loss: 0.0232 - val_loss: 0.5408 - val_weighted_dice_loss: 0.5408
+
+Epoch 00146: val_weighted_dice_loss did not improve from 0.06175
+Epoch 147/150
+ - 645s - loss: 0.0233 - weighted_dice_loss: 0.0233 - val_loss: 0.0617 - val_weighted_dice_loss: 0.0617
+
+Epoch 00147: val_weighted_dice_loss improved from 0.06175 to 0.06171, saving model to ./Unet-weights/2_classes_5208_reals_4792_GANs.h5
+Epoch 148/150
+ - 643s - loss: 0.0232 - weighted_dice_loss: 0.0232 - val_loss: 0.0625 - val_weighted_dice_loss: 0.0625
+
+Epoch 00148: val_weighted_dice_loss did not improve from 0.06171
+Epoch 149/150
+ - 643s - loss: 0.0229 - weighted_dice_loss: 0.0229 - val_loss: 0.0635 - val_weighted_dice_loss: 0.0635
+
+Epoch 00149: val_weighted_dice_loss did not improve from 0.06171
+Epoch 150/150
+ - 644s - loss: 0.0229 - weighted_dice_loss: 0.0229 - val_loss: 0.7950 - val_weighted_dice_loss: 0.7950
+
+Epoch 00150: val_weighted_dice_loss did not improve from 0.06171
+Finished training.

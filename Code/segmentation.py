@@ -37,8 +37,8 @@ K.tensorflow_backend.set_session(tf.Session(config=config))
 #%%
 
 #classes = ["Background", "NCR/NET", "ED", "ET", "WM", "GM", "CSF"]
-classes = ["Background", "NCR/NET", "ED", "ET"]
-#classes = ["Non-tumor", "Tumor"]
+#classes = ["Background", "NCR/NET", "ED", "ET"]
+classes = ["Non-tumor", "Tumor"]
 
 Nclasses = len(classes)
 
@@ -58,25 +58,26 @@ mask_path_train = mask_path + "/Training/Full"
 mask_path_val = mask_path + "/Validation"
 mask_path_test = mask_path + "/Test"
 
-img_path_GAN = img_path + "/GAN/Full/Preprocessed/Kept"
-mask_path_GAN = mask_path + "/GAN/Full/Preprocessed/Kept"
+img_path_GAN = img_path + "/GAN/Fifth/Preprocessed/Kept"
+mask_path_GAN = mask_path + "/GAN/Fifth/Preprocessed/Kept"
 
 #%%
 
 BATCH_SIZE = 8
-EPOCHS = 150
+EPOCHS = 0
 
 VERBOSITY = 2
 
-LOAD_WEIGHTS = False
-LOAD_NAME = "7_classes_5208_reals_20832_GANs.h5"
+LOAD_WEIGHTS = True
+INSTANCE_NAME = "2_classes_5208_reals_20832_GANs"
 
-SAVE_WEIGHTS = True
+SAVE_WEIGHTS = False
 
-TRAIN_RATIO = 1
-GAN_RATIO = 23960/len(os.listdir(img_path_GAN))
+TRAIN_RATIO = 0.2
+GAN_RATIO = 20832/len(os.listdir(img_path_GAN))
 
-TEST = False
+TEST = True
+SAVE_IMAGES = True
 
 #%%
 
@@ -342,7 +343,7 @@ from keras.callbacks import ModelCheckpoint
 weight_path = "./Unet-weights"
 
 if LOAD_WEIGHTS:
-    net.model.load_weights(weight_path + "/Saved/" + LOAD_NAME)
+    net.model.load_weights(weight_path + "/Saved/" + INSTANCE_NAME + ".h5")
     
 if SAVE_WEIGHTS:
 
@@ -407,6 +408,10 @@ if TEST:
     #Ypred = net.model.predict(Xtest)
     Ypred = np.argmax(Ypred, axis = -1)
     Ypred = np.expand_dims(Ypred, -1)
+    
+    print("\n")
+    print("DICE: " + str(dice))
+    print("\n")
     #%%
     
     from matplotlib import pyplot as plt
@@ -429,17 +434,28 @@ if TEST:
 
 #%%
 
-# from save_visible import *
-
-# out_dir = "/nobackup/data/mehfo331/Results/Images/Segmentations/7_classes_5208_reals_20832_GANs"
-
-# N = 200
-# dtype = 'uint8'
-# #colors = ['black', 'white']
-# #colors = ['black', '#ff0000', '#ffe517', '#ff8b17']
-# colors = ['black', '#2389da','#aeaeae', 'white', '#ff0000', '#ffe517', '#ff8b17']
-
-# array = np.squeeze(Ypred, axis = -1)
-# array = array.astype(dtype)
-# save_array(array, N, out_dir, colors)
+from save_visible import *
+    
+if SAVE_IMAGES:
+    
+    N = 200
+    dtype = 'uint8'
+    
+    array = np.squeeze(Ypred, axis = -1)
+    array = array.astype(dtype)
+    color_array = convert_to_color(array, N, Nclasses)
+    
+    if (Nclasses == 2 or Nclasses == 4):
+        out_dir = "/nobackup/data/mehfo331/Results/Images/Segmentations/" + INSTANCE_NAME + "/Predictions"
+        save_color_arrays(color_array, N, out_dir)
+        
+        array_GT = np.squeeze(Ytest, axis = -1)
+        array_GT = array_GT.astype(dtype)
+        color_array_GT = convert_to_color(array_GT, N, Nclasses)
+        out_dir = "/nobackup/data/mehfo331/Results/Images/Segmentations/" + INSTANCE_NAME + "/GT"
+        save_color_arrays(color_array_GT, N, out_dir)
+        
+    elif Nclasses == 7:
+        out_dir = "/nobackup/data/mehfo331/Results/Images/Segmentations/" + INSTANCE_NAME
+        save_color_arrays(color_array, N, out_dir)
     
