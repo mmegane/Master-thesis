@@ -36,9 +36,9 @@ K.tensorflow_backend.set_session(tf.Session(config=config))
 
 #%%
 
-#classes = ["Background", "NCR/NET", "ED", "ET", "WM", "GM", "CSF"]
+classes = ["Background", "NCR/NET", "ED", "ET", "WM", "GM", "CSF"]
 #classes = ["Background", "NCR/NET", "ED", "ET"]
-classes = ["Non-tumor", "Tumor"]
+#classes = ["Non-tumor", "Tumor"]
 
 Nclasses = len(classes)
 
@@ -69,15 +69,15 @@ EPOCHS = 0
 VERBOSITY = 2
 
 LOAD_WEIGHTS = True
-INSTANCE_NAME = "2_classes_5208_reals_20832_GANs"
+INSTANCE_NAME = "7_classes_5208_reals_4792_GANs"
 
 SAVE_WEIGHTS = False
 
 TRAIN_RATIO = 0.2
-GAN_RATIO = 20832/len(os.listdir(img_path_GAN))
+GAN_RATIO = 4792/len(os.listdir(img_path_GAN))
 
 TEST = True
-SAVE_IMAGES = True
+SAVE_IMAGES = False
 
 #%%
 
